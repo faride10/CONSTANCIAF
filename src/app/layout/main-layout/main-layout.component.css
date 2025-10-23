@@ -1,0 +1,77 @@
+.layout-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #f4f7fa;
+}
+
+.sidenav {
+  width: 260px;
+  background-color: #002347;
+  border-right: none;
+  box-shadow: 3px 0 6px rgba(0, 0, 0, 0.1);
+}
+.sidenav-header {
+  padding: 20px 15px;
+  text-align: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 10px;
+}
+.sidenav-header img {
+  max-width: 70%;
+  height: auto;
+}
+
+.sidenav mat-nav-list .mat-mdc-list-item .mdc-list-item__primary-text {
+  color: rgba(255, 255, 255, 0.85) !important;
+  font-size: 0.9rem;
+}
+.sidenav mat-nav-list .mat-mdc-list-item .mat-icon {
+  color: rgba(255, 255, 255, 0.7) !important;
+  margin-right: 16px;
+}
+.sidenav mat-nav-list .mat-mdc-list-item {
+  height: 48px;
+  margin: 0 10px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.sidenav mat-nav-list .mat-mdc-list-item.active-link {
+  background-color: rgba(63, 81, 181, 0.5) !important;
+}
+.sidenav mat-nav-list .mat-mdc-list-item.active-link .mdc-list-item__primary-text,
+.sidenav mat-nav-list .mat-mdc-list-item.active-link .mat-icon {
+  color: white !important;
+  font-weight: 500;
+}
+
+.sidenav mat-nav-list .mat-mdc-list-item:hover {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+}
+.sidenav mat-nav-list .mat-mdc-list-item:hover .mdc-list-item__primary-text,
+.sidenav mat-nav-list .mat-mdc-list-item:hover .mat-icon {
+  color: white !important;
+}
+
+mat-divider {
+  border-top-color: rgba(255, 255, 255, 0.1);
+  margin: 10px 10px;
+}
+
+.main-content { display: flex; flex-direction: column; }
+.toolbar {
+  background-color: white; color: #333;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  height: 64px; position: sticky; top: 0; z-index: 2;
+  padding: 0 24px;
+}
+.toolbar-spacer { flex: 1 1 auto; }
+.profile-button {
+  width: 40px; height: 40px; border-radius: 50%;
+  background-color: #e0e0e0; margin-left: 16px;
+  background-size: cover; background-position: center;
+}
+.content-area { flex-grow: 1; padding: 24px; overflow-y: auto; }

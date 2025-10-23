@@ -1,0 +1,85 @@
+<h2 mat-dialog-title>
+  Nueva Conferencia
+  <button mat-icon-button class="close-button" (click)="onCancel()" aria-label="Cerrar">
+    <mat-icon>close</mat-icon>
+  </button>
+</h2>
+
+<mat-dialog-content class="mat-typography">
+  <form [formGroup]="conferenceForm">
+
+    <mat-form-field appearance="outline">
+      <mat-label>Nombre de la Conferencia</mat-label>
+      <input matInput formControlName="NOMBRE_CONFERENCIA" required>
+      <mat-error *ngIf="conferenceForm.get('NOMBRE_CONFERENCIA')?.hasError('required')">
+        El nombre es requerido.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Tema</mat-label>
+      <textarea matInput formControlName="TEMA" rows="3"></textarea>
+    </mat-form-field>
+
+    <div class="form-row three-cols">
+      <mat-form-field appearance="outline">
+        <mat-label>Fecha</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="FECHA" required readonly>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+         <mat-error *ngIf="conferenceForm.get('FECHA')?.hasError('required')">
+          La fecha es requerida.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Hora</mat-label>
+        <input matInput type="time" formControlName="HORA" required placeholder="HH:mm">
+         <mat-error *ngIf="conferenceForm.get('HORA')?.hasError('required')">
+          La hora es requerida.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Lugar</mat-label>
+        <input matInput formControlName="LUGAR" required>
+        <mat-error *ngIf="conferenceForm.get('LUGAR')?.hasError('required')">
+          El lugar es requerido.
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Num. de Participantes</mat-label>
+        <input matInput type="number" formControlName="NUM_PARTICIPANTES">
+         <mat-error *ngIf="conferenceForm.get('NUM_PARTICIPANTES')?.hasError('pattern')">
+          Debe ser un número.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Ponente</mat-label>
+        <mat-select formControlName="ID_PONENTE">
+          <mat-option [value]="null">-- Selecciona un ponente --</mat-option>
+          <mat-option *ngFor="let ponente of ponentes" [value]="ponente.ID_PONENTE">
+            {{ ponente.NOMBRE }}
+          </mat-option>
+        </mat-select>
+        <mat-hint *ngIf="isLoadingPonentes">Cargando ponentes...</mat-hint>
+      </mat-form-field>
+    </div>
+
+     <div *ngIf="errorMessage" class="form-error-message">
+       {{ errorMessage }}
+     </div>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancelar</button>
+  <button mat-flat-button color="primary" (click)="onSave()" [disabled]="conferenceForm.invalid || isLoadingPonentes">
+    Guardar
+  </button>
+</mat-dialog-actions>

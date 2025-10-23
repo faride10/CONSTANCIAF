@@ -1,0 +1,117 @@
+.dashboard-admin-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+h2 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.summary-card {
+  background-color: white;
+  border-radius: 8px;
+}
+
+.summary-card mat-card-header {
+  padding-bottom: 8px;
+}
+
+.summary-card mat-card-title {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #555;
+}
+
+.summary-card mat-card-content {
+  text-align: center;
+}
+
+.summary-card .count {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #003366;
+  display: block;
+  margin-top: 10px;
+}
+
+.recent-activities {
+  background-color: white;
+  border-radius: 8px;
+  
+  margin-top: 30px; 
+}
+
+.recent-activities mat-card-title {
+   font-size: 1rem;
+   font-weight: 600;
+   color: #333;
+   border-bottom: 1px solid #eee;
+   padding-bottom: 10px;
+}
+
+.recent-activities ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.recent-activities li {
+  display: flex;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+.recent-activities li:last-child {
+  border-bottom: none;
+}
+
+.recent-activities .activity-icon {
+  margin-right: 15px;
+  font-size: 1.8rem;
+}
+.recent-activities .activity-icon.success { color: green; }
+.recent-activities .activity-icon.info { color: dodgerblue; }
+.recent-activities .activity-icon.warning { color: orange; }
+
+.recent-activities li div {
+  display: flex;
+  flex-direction: column;
+}
+
+.recent-activities li span {
+  font-size: 0.9rem;
+  color: #444;
+}
+
+.recent-activities li small {
+  font-size: 0.75rem;
+  color: #888;
+  margin-top: 2px;
+}
+
+.loading-indicator {
+  text-align: center;
+  padding: 2rem;
+  font-style: italic;
+  color: #666;
+}
+
+.error-message {
+  text-align: center;
+  padding: 1rem;
+  background-color: #ffebee;
+  color: #c62828;
+  border: 1px solid #ef9a9a;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}

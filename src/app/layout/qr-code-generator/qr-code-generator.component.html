@@ -1,0 +1,50 @@
+<h2 mat-dialog-title>
+  Generar QR para: {{ conference?.NOMBRE_CONFERENCIA || 'Conferencia' }}
+  <button mat-icon-button class="close-button" (click)="onCancel()" aria-label="Cerrar">
+    <mat-icon>close</mat-icon>
+  </button>
+</h2>
+
+<mat-dialog-content class="mat-typography">
+  <form [formGroup]="selectGroupForm">
+    <mat-form-field appearance="outline">
+      <mat-label>Seleccionar Grupo</mat-label>
+      <mat-select formControlName="grupoId" required (selectionChange)="onGenerateQr()">
+        <mat-option *ngIf="isLoadingGrupos" disabled>Cargando grupos...</mat-option>
+        <mat-option *ngFor="let grupo of grupos" [value]="grupo.ID_GRUPO">
+          {{ grupo.NOMBRE }} {{ grupo.docente ? '(' + grupo.docente.NOMBRE + ')' : '' }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="selectGroupForm.get('grupoId')?.hasError('required')">
+        Debes seleccionar un grupo.
+      </mat-error>
+      <mat-hint *ngIf="!isLoadingGrupos && grupos.length === 0">No hay grupos disponibles.</mat-hint>
+    </mat-form-field>
+  </form>
+
+  <div class="qr-section">
+
+    <div *ngIf="isLoadingQr" class="loading-spinner">
+      <mat-spinner diameter="50"></mat-spinner>
+      <p>Generando QR...</p>
+    </div>
+
+    <div *ngIf="!isLoadingQr && qrCodeBase64" class="qr-code">
+      <h3>Código QR Generado</h3>
+      <img [src]="qrCodeBase64" alt="Código QR">
+      <div *ngIf="displayInfo" class="display-info">
+        <p><strong>Grupo:</strong> {{ displayInfo.group_name }}</p>
+        <p><strong>Fecha:</strong> {{ displayInfo.date }}</p>
+      </div>
+    </div>
+
+    <div *ngIf="errorMessage && !isLoadingQr" class="error-message">
+      {{ errorMessage }}
+    </div>
+  </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cerrar</button>
+</mat-dialog-actions>

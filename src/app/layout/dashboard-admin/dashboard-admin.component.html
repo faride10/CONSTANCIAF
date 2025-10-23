@@ -1,0 +1,77 @@
+<div class="dashboard-admin-container">
+
+  <h2>BIENVENIDO, ADMINISTRADOR</h2>
+
+  <div *ngIf="isLoading" class="loading-indicator">Cargando datos...</div>
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+
+  <div *ngIf="!isLoading && !errorMessage">
+    <div class="summary-cards">
+      <mat-card class="summary-card">
+        <mat-card-header>
+          <mat-card-title>CONFERENCIAS ACTIVAS</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <span class="count">{{ conferenciasActivas }}</span>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="summary-card">
+        <mat-card-header>
+          <mat-card-title>ALUMNOS REGISTRADOS</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <span class="count">{{ alumnosRegistrados }}</span>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="summary-card">
+        <mat-card-header>
+          <mat-card-title>DOCENTES ACTIVOS</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <span class="count">{{ docentesActivos }}</span>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="summary-card">
+        <mat-card-header>
+          <mat-card-title>CONSTANCIAS EMITIDAS</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <span class="count">{{ constanciasEmitidas }}</span>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <mat-card class="recent-activities">
+       <mat-card-header>
+        <mat-card-title>ACTIVIDADES RECIENTES</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <ul>
+          <li>
+            <mat-icon class="activity-icon success">check_circle</mat-icon>
+            <div>
+              <span>Constancia generada para 211020317</span>
+              <small>Hace 5 minutos</small>
+            </div>
+          </li>
+          <li>
+            <mat-icon class="activity-icon info">info</mat-icon>
+            <div>
+              <span>Nueva conferencia: "Introducción a las TICs"</span>
+              <small>Hace 1 hora</small>
+            </div>
+          </li>
+          <li>
+            <mat-icon class="activity-icon warning">person_add</mat-icon>
+             <div>
+              <span>Docente Jose Juan Perez ha sido Pre-autorizado</span>
+              <small>Hace 1 hora</small>
+            </div>
+          </li>
+        </ul>
+      </mat-card-content>
+    </mat-card>
+  </div> </div>

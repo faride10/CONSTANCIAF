@@ -1,0 +1,169 @@
+.login-page-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #002347;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+.login-wrapper {
+  display: flex;
+  width: 600px; 
+  background-color: white;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+  overflow: hidden;
+  min-height: 590px; 
+  margin-right: 5rem;
+}
+
+.form-section {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}
+
+.top-bar {
+  height: 60px;
+  background-color: #004a99;
+  display: flex;
+  align-items: center;
+  padding: 0 2rem; 
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+.back-arrow {
+  color: white;
+  cursor: pointer;
+  transform: scale(1.1);
+}
+
+.form-content {
+  padding: 2rem 3rem 3rem 3rem; 
+  flex-grow: 5;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 2.5rem;
+  width: 100%;
+}
+
+.form-header img {
+  height: 85px; 
+  margin-bottom: 2.5rem; 
+  align-self: flex-start;
+}
+
+.title-group {
+  text-align: center;
+  width: 100%;
+}
+
+.title-group h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  margin: 0 0 4px 0;
+  color: #1a1a1a;
+}
+
+.title-group p {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #005A9C;
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: auto;
+}
+
+.custom-form-group {
+  position: relative;
+  margin-bottom: 2.5rem;
+}
+
+.custom-form-group label {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #444;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 0.3rem;
+  display: block;
+}
+
+.custom-form-group input {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #b0b0b0;
+  padding: 0.5rem 0;
+  font-size: 0.9rem;
+  outline: none;
+  background-color: transparent;
+  transition: border-color 0.2s ease;
+}
+
+.custom-form-group input:focus {
+  border-bottom-color: #003366;
+  border-bottom-width: 2px;
+}
+
+.password-group {
+  position: relative;
+}
+.password-icon {
+  position: absolute;
+  right: 0;
+  bottom: 8px;
+  cursor: pointer;
+  color: #666;
+}
+
+.login-button {
+  background-color: #003366;
+  color: white;
+  padding: 1rem 0;
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-top: 1.2rem;
+  border-radius: 4px;
+  width: 100%;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.login-button:disabled {
+  background-color: rgba(0, 0, 0, 0.12);
+  color: rgba(0, 0, 0, 0.26);
+}
+
+.error-message {
+  color: #d32f2f;
+  font-size: 0.75rem;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.itsal-logo-container {
+  width: 400px; 
+}
+
+.itsal-logo-container img {
+  width: 100%;
+  height: auto;
+  display: block;
+  opacity: 0.9;
+}

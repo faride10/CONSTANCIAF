@@ -1,0 +1,36 @@
+mat-form-field {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.form-row {
+  display: flex;
+  gap: 15px;
+}
+
+.form-row mat-form-field {
+  flex: 1; 
+}
+
+.form-row.three-cols mat-form-field {
+  flex-basis: calc(33.333% - 10px); 
+  flex-grow: 0; 
+}
+
+
+.close-button {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+}
+
+.form-error-message {
+    color: #d32f2f;
+    font-size: 0.85rem;
+    margin-top: 10px;
+    text-align: center;
+}
+
+mat-dialog-actions {
+    padding: 8px 24px 16px 24px;
+}
