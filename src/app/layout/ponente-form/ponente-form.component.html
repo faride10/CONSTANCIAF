@@ -1,0 +1,58 @@
+<h2 mat-dialog-title>
+  {{ isEditMode ? 'Editar Ponente' : 'Nuevo Ponente' }}
+  <button mat-icon-button class="close-button" (click)="onCancel()" aria-label="Cerrar">
+    <mat-icon>close</mat-icon>
+  </button>
+</h2>
+
+<mat-dialog-content class="mat-typography">
+  <form [formGroup]="ponenteForm">
+
+    <mat-form-field appearance="fill">
+      <mat-label>Nombre Completo</mat-label>
+      <input matInput formControlName="NOMBRE" required>
+      <mat-error *ngIf="ponenteForm.get('NOMBRE')?.hasError('required')">
+        El nombre es requerido.
+      </mat-error>
+    </mat-form-field>
+
+    <div class="form-row">
+      <mat-form-field appearance="fill">
+        <mat-label>Título Profesional</mat-label>
+        <input matInput formControlName="TITULO">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Cargo</mat-label>
+        <input matInput formControlName="CARGO">
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field appearance="fill">
+        <mat-label>Empresa o Institución</mat-label>
+        <input matInput formControlName="EMPRESA">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Correo Electrónico</mat-label>
+        <input matInput type="email" formControlName="CORREO" placeholder="ejemplo@correo.com">
+        <mat-error *ngIf="ponenteForm.get('CORREO')?.hasError('email')">
+          Ingresa un correo válido.
+        </mat-error>
+      </mat-form-field>
+    </div>
+    
+    <div *ngIf="errorMessage" class="form-error-message">
+       {{ errorMessage }}
+     </div>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancelar</button>
+  <button mat-flat-button color="primary" (click)="onSave()" [disabled]="ponenteForm.invalid">
+    Guardar
+  </button>
+</mat-dialog-actions>

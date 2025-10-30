@@ -1,0 +1,9 @@
+.grupo-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.full-width {
+  width: 100%;
+  min-width: 400px; /* Asegura un ancho mínimo */
+}

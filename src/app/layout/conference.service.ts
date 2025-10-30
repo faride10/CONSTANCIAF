@@ -40,7 +40,18 @@ export class ConferenceService {
     if (!headers) return new Observable(observer => observer.error('No autenticado'));
     return this.http.post(`${this.apiUrl}/conferencias`, conferenceData, { headers });
   }
+  updateConference(id: number, conferenceData: any): Observable<any> {
+    const headers = this.getAuthHeaders();
+    if (!headers) return new Observable(observer => observer.error('No autenticado'));
+    return this.http.put(`${this.apiUrl}/conferencias/${id}`, conferenceData, { headers });
+  }
 
+  deleteConference(id: number): Observable<any> {
+    const headers = this.getAuthHeaders();
+    if (!headers) return new Observable(observer => observer.error('No autenticado'));
+    return this.http.delete(`${this.apiUrl}/conferencias/${id}`, { headers });
+  }
+  
   getGrupos(): Observable<any> {
     const headers = this.getAuthHeaders();
     if (!headers) return new Observable(observer => observer.error('No autenticado'));
@@ -52,5 +63,15 @@ export class ConferenceService {
     if (!headers) return new Observable(observer => observer.error('No autenticado'));
     return this.http.get(`${this.apiUrl}/conferencias/${conferenceId}/grupos/${grupoId}/qr-data`, { headers });
   }
-
+  createPonente(ponenteData: any): Observable<any> {
+    const headers = this.getAuthHeaders();
+    if (!headers) return new Observable(observer => observer.error('No autenticado'));
+    return this.http.post(`${this.apiUrl}/ponentes`, ponenteData, { headers });
+  }
+  
+deletePonente(id: number): Observable<any> {
+    const headers = this.getAuthHeaders();
+    if (!headers) return new Observable(observer => observer.error('No autenticado'));
+    return this.http.delete(`${this.apiUrl}/ponentes/${id}`, { headers });
+  }
 }

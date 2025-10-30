@@ -1,0 +1,40 @@
+<h1 mat-dialog-title>{{ titulo }}</h1>
+
+<div mat-dialog-content>
+  <form [formGroup]="grupoForm" class="grupo-form">
+
+    <mat-form-field class="full-width">
+      <mat-label>Nombre del Grupo</mat-label>
+      <input matInput formControlName="NOMBRE" placeholder="Ej. Grupo 3-A">
+      <mat-error *ngIf="grupoForm.get('NOMBRE')?.hasError('required')">
+        El nombre es requerido
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Carrera</mat-label>
+      <input matInput formControlName="CARRERA" placeholder="Ej. Ing. en Mecánica">
+      <mat-error *ngIf="grupoForm.get('CARRERA')?.hasError('required')">
+        La carrera es requerida
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Docente a Cargo</mat-label>
+      <mat-select formControlName="ID_DOCENTE">
+        <mat-option [value]="null">Sin Asignar</mat-option>
+        <mat-option *ngFor="let docente of docentes" [value]="docente.ID_DOCENTE">
+          {{ docente.NOMBRE }} {{ docente.APELLIDO_PATERNO }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+  </form>
+</div>
+
+<div mat-dialog-actions align="end">
+  <button mat-stroked-button (click)="cerrarModal()">Cancelar</button>
+  <button mat-flat-button color="primary" (click)="guardarGrupo()" [disabled]="grupoForm.invalid">
+    Guardar
+  </button>
+</div>
