@@ -1,105 +1,172 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
-import { ConferenceService } from '../conference.service';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router'; 
+import { Location, CommonModule } from '@angular/common'; 
+import { FormsModule } from '@angular/forms';   
 
-import { CommonModule } from '@angular/common';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
-import { MatButtonModule } from '@angular/material/button';
+import { DocenteService } from '../docente.service'; 
+import { ConferenceService } from '../conference.service'; 
+
+import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';  
+import { MatInputModule } from '@angular/material/input';           
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatInputModule } from '@angular/material/input';
+import { QrCodeDisplayComponent } from '../qr-code-display/qr-code-display.component'; 
+import { RegistroManualComponent } from '../registro-manual/registro-manual.component'; 
 
 @Component({
-  selector: 'app-qr-code-generator',
+  selector: 'app-qr-code-generator', 
   standalone: true,
   imports: [
     CommonModule,
-    ReactiveFormsModule,
-    MatDialogModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatButtonModule,
+    FormsModule,  
+    MatCardModule,
     MatIconModule,
-    MatProgressSpinnerModule,
-    MatInputModule
+    MatButtonModule,
+    MatFormFieldModule,   
+    MatInputModule,       
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatDialogModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './qr-code-generator.component.html',
-  styleUrl: './qr-code-generator.component.css'
+  styleUrls: ['./qr-code-generator.component.css']
 })
-export class QrCodeGeneratorComponent implements OnInit {
+export class QrCodeGeneratorComponent implements OnInit, AfterViewInit {
 
-  selectGroupForm: FormGroup;
-  grupos: any[] = [];
-  isLoadingGrupos = true;
-  isLoadingQr = false;
-  qrCodeBase64: string | null = null;
-  displayInfo: any = null;
-  errorMessage: string | null = null;
-  conference: any;
+  tituloConferencia: string = 'Cargando...';
+  nombreGrupo: string = 'Cargando...';
+  carreraGrupo: string = '...';
+  contadorAsistencia: number = 0;
+  totalAlumnos: number = 0;
+  idConferencia: number | null = null;
+  idGrupo: number | null = null;
+  isLoading = true;
+  alumnosDelGrupo: any[] = []; 
+  
+  filterValue: string = '';   
+
+  displayedColumns: string[] = ['nombre', 'numControl', 'fechaRegistro', 'acciones'];
+  dataSource = new MatTableDataSource<any>(); 
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
   constructor(
-    private fb: FormBuilder,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialogRef: MatDialogRef<QrCodeGeneratorComponent>,
-    private conferenceService: ConferenceService
-  ) {
-    this.conference = data.conferenceData;
-    this.selectGroupForm = this.fb.group({
-      grupoId: [null, Validators.required]
-    });
-  }
+    private route: ActivatedRoute, 
+    private docenteService: DocenteService, 
+    private location: Location, 
+    public dialog: MatDialog 
+  ) { }
 
   ngOnInit(): void {
-    this.loadGrupos();
-  }
+    this.isLoading = true;
+    this.idConferencia = +this.route.snapshot.paramMap.get('id')!;
+    this.docenteService.getMiGrupo().subscribe({
+      next: (data) => {
+        if (!data || !data.grupo) throw new Error('No se pudo obtener el grupo.');
+        
+        this.idGrupo = data.grupo.ID_GRUPO;
+        this.nombreGrupo = data.grupo.NOMBRE;
+        this.carreraGrupo = data.grupo.CARRERA;
+        this.totalAlumnos = data.grupo.alumnos?.length || 0;
+        this.alumnosDelGrupo = data.grupo.alumnos || [];
 
-  loadGrupos(): void {
-    this.isLoadingGrupos = true;
-    this.errorMessage = null;
-    this.conferenceService.getGrupos().subscribe({
-      next: (data: any) => {
-        this.grupos = data;
-        this.isLoadingGrupos = false;
+        const miConferencia = data.grupo.conferencias?.find((c: any) => c.ID_CONFERENCIA == this.idConferencia); 
+        this.tituloConferencia = miConferencia?.NOMBRE_CONFERENCIA || 'Detalle de Conferencia';
+
+        this.cargarAsistencias();
       },
-      error: (err: any) => {
-        console.error('Error al cargar grupos:', err);
-        this.errorMessage = 'No se pudieron cargar los grupos.';
-        this.isLoadingGrupos = false;
+      error: (err) => {
+        console.error("Error al cargar datos del grupo:", err);
+        this.isLoading = false;
       }
     });
   }
 
-  onGenerateQr(): void {
-    if (this.selectGroupForm.invalid) {
-      this.qrCodeBase64 = null;
-      this.displayInfo = null;
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
+  cargarAsistencias(): void {
+    if (!this.idConferencia || !this.idGrupo) return;
+    this.docenteService.getAsistencias(this.idConferencia, this.idGrupo).subscribe({
+      next: (asistencias) => {
+        this.dataSource.data = asistencias; 
+        this.contadorAsistencia = asistencias.length;
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error("Error al cargar asistencias:", err);
+        this.isLoading = false;
+      }
+    });
+  }
+
+  applyFilter() {   
+    const filterValue = this.filterValue; 
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
+  abrirModalQR(): void {
+    this.dialog.open(QrCodeDisplayComponent, {
+      width: '400px',
+      data: { 
+        idConferencia: this.idConferencia, 
+        idGrupo: this.idGrupo,
+        nombreConferencia: this.tituloConferencia,
+        nombreGrupo: this.nombreGrupo
+      }
+    });
+  }
+
+  volverAtras(): void {
+    this.location.back();
+  }
+  
+  eliminarAsistencia(asistencia: any): void {
+    const nombreAlumno = asistencia.alumno?.NOMBRE || 'este alumno';
+    if (!confirm(`¿Estás seguro de que deseas eliminar la asistencia de "${nombreAlumno}"? Esta acción no se puede deshacer.`)) {
       return;
     }
-    this.isLoadingQr = true;
-    this.qrCodeBase64 = null;
-    this.displayInfo = null;
-    this.errorMessage = null;
-
-    const selectedGroupId = this.selectGroupForm.value.grupoId;
-
-    this.conferenceService.getQrData(this.conference.ID_CONFERENCIA, selectedGroupId).subscribe({
-      next: (response: any) => {
-        this.qrCodeBase64 = response.qr_code_base64;
-        this.displayInfo = response.display_info;
-        this.isLoadingQr = false;
-        console.log('Datos QR recibidos:', response);
+    this.docenteService.deleteAsistencia(asistencia.ID_ASISTENCIA).subscribe({
+      next: () => {
+        console.log('Asistencia eliminada');
+        this.cargarAsistencias(); 
       },
-      error: (err: any) => {
-        console.error('Error al generar QR:', err);
-        this.errorMessage = 'Error al generar el código QR.';
-        this.isLoadingQr = false;
+      error: (err) => {
+        console.error('Error al eliminar asistencia:', err);
+        alert('No se pudo eliminar la asistencia.');
       }
     });
   }
 
-  onCancel(): void {
-    this.dialogRef.close();
+  abrirModalRegistroManual(): void {
+    const dialogRef = this.dialog.open(RegistroManualComponent, {
+      width: '500px', 
+      data: { 
+        idConferencia: this.idConferencia,
+        idGrupo: this.idGrupo,
+        alumnosDelGrupo: this.alumnosDelGrupo, 
+        asistenciasActuales: this.dataSource.data 
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'saved') {
+        this.cargarAsistencias(); 
+      }
+    });
   }
 }

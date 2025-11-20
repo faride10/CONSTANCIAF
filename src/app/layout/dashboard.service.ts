@@ -1,31 +1,44 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http'; 
 import { Observable } from 'rxjs';
-import { AuthService } from '../auth/auth.service'; 
+import { AuthService } from './auth.service';
 
 @Injectable({
-  providedIn: 'root' 
-})
+  providedIn: 'root'
+  })
+
 export class DashboardService {
 
-  private apiUrl = 'http://127.0.0.1:8000/api'; 
+  private apiUrl = 'http://127.0.0.1:8000/api';   
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 
-  getAdminSummary(): Observable<any> {
-    const token = this.authService.getToken(); 
-
+  private getAuthHeaders(): HttpHeaders {
+    const token = this.authService.getToken();
     if (!token) {
-   
-      console.error('No se encontró token de autenticación.');
-      return new Observable(observer => observer.error('No autenticado'));
+      return new HttpHeaders();
     }
-
-    const headers = new HttpHeaders({
+    return new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
-
-    return this.http.get(`${this.apiUrl}/dashboard/admin/summary`, { headers: headers });
   }
 
+  getAdminSummary(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/dashboard/admin/summary`, { headers: this.getAuthHeaders() });
+  }
+
+  getRecentActivities(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/dashboard/recent-activities`, { headers: this.getAuthHeaders() });
+  }
+
+  getReportePorConferencia(idConferencia: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/admin/reporte/conferencia/${idConferencia}`, { 
+      headers: this.getAuthHeaders() 
+    });
+  }
+  getReportePorAlumnos(idConferencia: number, idGrupo: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/admin/reporte/conferencia/${idConferencia}/grupo/${idGrupo}`, { 
+      headers: this.getAuthHeaders() 
+    });
+  }
 }

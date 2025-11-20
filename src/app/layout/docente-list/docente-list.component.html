@@ -1,0 +1,74 @@
+<div class="list-container">
+
+  <div class="header">
+    <h1>Gestión de Docentes</h1>
+    
+    <div class="button-container">
+
+      <button mat-flat-button color="primary" (click)="abrirModal()">
+        <mat-icon>add</mat-icon>
+        Nuevo Docente
+      </button>
+      
+      <button mat-stroked-button color="primary" (click)="abrirModalImportar()" class="import-button">
+        <mat-icon>upload_file</mat-icon>
+        Importar desde Excel
+      </button>
+
+    </div>
+    </div>
+
+  <mat-form-field appearance="outline" class="search-bar">
+    <mat-label>Buscar por Nombre o RFC</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Escribe para filtrar...">
+    <mat-icon matSuffix>search</mat-icon>
+  </mat-form-field>
+
+  <div class="table-container mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource">
+
+      <ng-container matColumnDef="NOMBRE">
+        <th mat-header-cell *matHeaderCellDef> Nombre </th>
+        <td mat-cell *matCellDef="let row"> {{row.NOMBRE}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="RFC">
+        <th mat-header-cell *matHeaderCellDef> RFC (Username) </th>
+        <td mat-cell *matCellDef="let row"> {{row.RFC}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="CORREO">
+        <th mat-header-cell *matHeaderCellDef> Correo </th>
+        <td mat-cell *matCellDef="let row"> {{row.CORREO || 'N/A'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="grupo">
+        <th mat-header-cell *matHeaderCellDef> Grupo Asignado </th>
+        <td mat-cell *matCellDef="let row">
+          {{ row.grupo?.NOMBRE || 'Sin Asignar' }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="acciones">
+        <th mat-header-cell *matHeaderCellDef> Acciones </th>
+        <td mat-cell *matCellDef="let row">
+          <button mat-icon-button color="primary" (click)="abrirModal(row)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="eliminarDocente(row.ID_DOCENTE, row.NOMBRE)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" [colSpan]="displayedColumns.length" style="text-align: center; padding: 20px;">
+          No se encontraron docentes.
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,93 @@
+/* --- Contenedor Principal --- */
+.layout-container {
+  height: 100vh; 
+  width: 100%;
+}
+
+/* --- Estilos del Sidenav (Menú Lateral Azul) --- */
+.sidenav {
+  width: 260px; /* Ajustado al que sí funcionaba */
+  background-color: #002244; 
+  color: white;
+  border-right: none;
+  box-shadow: 3px 0 6px rgba(0, 0, 0, 0.1);
+}
+
+.sidenav-header {
+  padding: 20px 15px;
+  text-align: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 10px;
+}
+.sidenav-header img {
+  max-width: 70%;
+  height: auto;
+}
+
+/* --- Estilos de la Lista de Navegación --- */
+:host ::ng-deep .sidenav .mat-mdc-list-item .mdc-list-item__primary-text {
+  color: rgba(255, 255, 255, 0.85) !important;
+  font-size: 0.9rem;
+  text-transform: uppercase; /* ¡Tus mayúsculas! */
+  font-weight: 500;
+}
+:host ::ng-deep .sidenav .mat-mdc-list-item .mat-icon {
+  color: rgba(255, 255, 255, 0.7) !important;
+  margin-right: 16px;
+}
+:host ::ng-deep .sidenav .mat-mdc-list-item {
+  height: 48px;
+  margin: 0 10px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+:host ::ng-deep .sidenav .mat-mdc-list-item.active-link {
+  background-color: #004a99 !important; /* Azul más claro para 'activo' */
+}
+:host ::ng-deep .sidenav .mat-mdc-list-item.active-link .mdc-list-item__primary-text,
+:host ::ng-deep .sidenav .mat-mdc-list-item.active-link .mat-icon {
+  color: white !important;
+  font-weight: 500;
+}
+
+:host ::ng-deep .sidenav .mat-mdc-list-item:hover {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+}
+:host ::ng-deep .sidenav .mat-mdc-list-item:hover .mdc-list-item__primary-text,
+:host ::ng-deep .sidenav .mat-mdc-list-item:hover .mat-icon {
+  color: white !important;
+}
+
+:host ::ng-deep mat-divider {
+  border-top-color: rgba(255, 255, 255, 0.1);
+  margin: 10px 10px;
+}
+
+/* --- Contenido Principal --- */
+.main-content { 
+  display: flex; 
+  flex-direction: column; 
+  background-color: #f4f7fa; /* El fondo gris claro */
+}
+.toolbar {
+  background-color: white; 
+  color: #333;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  height: 64px; 
+  position: sticky; 
+  top: 0; 
+  z-index: 2;
+  padding: 0 24px;
+}
+.toolbar-spacer { flex: 1 1 auto; }
+.profile-button {
+  width: 40px; height: 40px; border-radius: 50%;
+  background-color: #e0e0e0; margin-left: 16px;
+  background-size: cover; background-position: center;
+}
+.content-area { 
+  flex-grow: 1; 
+  padding: 24px; 
+  overflow-y: auto; 
+}

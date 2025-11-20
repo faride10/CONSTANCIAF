@@ -1,0 +1,124 @@
+.home-container {
+  width: 100%;
+  height: 100vh; 
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.home-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #000000; 
+  padding: 15px 40px;
+  z-index: 10;
+  height: 70px; 
+  flex-shrink: 0; 
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  height: 80px;
+  margin-right: 75px;
+}
+
+.header-buttons {
+  display: flex;
+  padding: 50px;
+  height: 40px;
+  font-size: 100px;
+  font-weight: bold;
+}
+
+.hero-section {
+  position: relative; 
+  height: calc(100vh - 0px); 
+}
+
+.hero-background {
+  width: 100%;
+  height: 100%;
+  background-image: url('/assets/images/imgescuela.png'); 
+  background-size: cover;
+  background-position: left center; 
+  position: absolute; 
+  top: 0;
+  left: 0;
+  z-index: 1; 
+}
+
+.hero-angle-border {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 50%;   
+  background-color: #d1d1d1;    
+  clip-path: polygon(98% 0, 100% 0, 100% 100%, 0% 100%);
+  z-index: 3; 
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 50%; 
+  background-color: #0e2a46; 
+  clip-path: polygon(80% 20%, 99.5% 0%, 99.5% 99%, 1.3% 99.5%);
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 4;
+}
+
+.overlay-content {
+  display: flex;
+  align-items: center; 
+  justify-content: flex-end; 
+  padding-right: 12%; 
+  
+  box-sizing: border-box; 
+  width: 100%;
+}
+
+.logo-32 {
+  width: 250px; 
+  margin: 0;
+  padding: 0;
+  margin-top: 160px;
+}
+
+.logo-32 {
+  width: 230px; 
+}
+
+.hero-quote {
+  position: absolute;
+  bottom: 80px;  
+  left: 60px;    
+  font-family: 'Times New Roman', Times, serif; 
+  font-style: italic;
+  font-size: 1.5rem; 
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); 
+  z-index: 2;   
+}
+
+.hero-campus-tag {
+  position: absolute;
+  bottom: 30px; 
+  left: 60px;   
+  background-color: rgba(0, 0, 0, 0.6); 
+  color: white;
+  padding: 8px 12px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  z-index: 2;   
+}

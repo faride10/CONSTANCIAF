@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core'; 
 import { DashboardService } from '../dashboard.service'; 
-
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list'; 
 
 @Component({
   selector: 'app-dashboard-admin',
@@ -11,10 +11,11 @@ import { MatIconModule } from '@angular/material/icon';
   imports: [
     CommonModule,
     MatCardModule,
-    MatIconModule
+    MatIconModule,
+    MatListModule   
   ],
   templateUrl: './dashboard-admin.component.html',
-  styleUrl: './dashboard-admin.component.css'
+  styleUrl: './dashboard-admin.component.css'   
 })
 
 export class DashboardAdminComponent implements OnInit {
@@ -25,11 +26,13 @@ export class DashboardAdminComponent implements OnInit {
   constanciasEmitidas: number = 0;
   isLoading: boolean = true; 
   errorMessage: string | null = null; 
+  actividadesRecientes: any[] = []; 
 
   constructor(private dashboardService: DashboardService) {}
 
   ngOnInit(): void {
     this.loadAdminSummary();
+    this.loadRecentActivities();
   }
 
   loadAdminSummary(): void {
@@ -49,6 +52,18 @@ export class DashboardAdminComponent implements OnInit {
         console.error('Error al cargar el resumen del dashboard:', err);
         this.errorMessage = 'No se pudieron cargar los datos del dashboard. Inténtalo más tarde.';
         this.isLoading = false; 
+      }
+    });
+  }
+
+  loadRecentActivities(): void {
+    this.dashboardService.getRecentActivities().subscribe({
+      next: (data) => {
+        this.actividadesRecientes = data;
+        console.log('Actividades recientes cargadas:', data);
+      },
+      error: (err) => {
+        console.error('Error al cargar actividades recientes:', err);
       }
     });
   }

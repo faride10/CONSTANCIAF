@@ -1,0 +1,81 @@
+.page-container {
+    padding: 20px;
+}
+
+.page-title {
+    font-size: 24px;
+    font-weight: 500;
+    margin-bottom: 25px;
+    color: #1b396a; 
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.summary-card {
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.summary-card .label {
+    font-size: 19px;
+    color: #625f5f;
+    margin: 0;
+    text-transform: uppercase;
+}
+
+.summary-card .value {
+    font-size: 30px;
+    font-weight: 700;
+    color: #1b396a; 
+    margin: 5px 0 0 0;
+}
+
+.list-card {
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.list-card mat-card-title {
+    font-size: 20px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.conference-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.conference-item mat-icon {
+    color: #1b396a;
+    margin-right: 15px;
+    font-size: 24px;
+    line-height: 1.5; 
+}
+
+.conference-item .details {
+    display: flex;
+    flex-direction: column;
+}
+
+.conference-item .title {
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+}
+
+.conference-item .subtitle {
+    font-size: 16px;
+    color: #757575;
+    margin: 0;
+}

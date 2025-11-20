@@ -1,0 +1,43 @@
+<h1 mat-dialog-title>{{ titulo }}</h1>
+
+<div mat-dialog-content>
+  <form [formGroup]="docenteForm" class="docente-form">
+
+    <mat-form-field class="full-width">
+      <mat-label>Nombre Completo</mat-label>
+      <input matInput formControlName="NOMBRE" placeholder="Ej. Juan Pérez García">
+      <mat-error *ngIf="docenteForm.get('NOMBRE')?.hasError('required')">
+        El nombre es requerido
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>RFC (Será su usuario y contraseña temporal)</mat-label>
+      <input matInput formControlName="RFC" placeholder="Ej. PEGJ800101XXX">
+      <mat-error *ngIf="docenteForm.get('RFC')?.hasError('required')">
+        El RFC es requerido
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Correo Electrónico (Opcional)</mat-label>
+      <input matInput formControlName="CORREO" placeholder="Ej. juan.perez@tecnm.mx">
+      <mat-error *ngIf="docenteForm.get('CORREO')?.hasError('email')">
+        Formato de correo inválido
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Teléfono (Opcional)</mat-label>
+      <input matInput formControlName="TELEFONO" placeholder="Ej. 9711234567">
+    </mat-form-field>
+
+  </form>
+</div>
+
+<div mat-dialog-actions align="end">
+  <button mat-stroked-button (click)="cerrarModal()">Cancelar</button>
+  <button mat-flat-button color="primary" (click)="guardarDocente()" [disabled]="docenteForm.invalid">
+    Guardar
+  </button>
+</div>

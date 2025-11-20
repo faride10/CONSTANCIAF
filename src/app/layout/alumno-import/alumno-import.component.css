@@ -1,0 +1,18 @@
+input[type="file"] {
+  margin-top: 20px;
+}
+
+.file-name {
+  margin-top: 10px;
+  font-style: italic;
+}
+
+.progress-bar {
+  margin-top: 20px;
+}
+
+.error-message {
+  margin-top: 15px;
+  color: red;
+  font-weight: bold;
+}

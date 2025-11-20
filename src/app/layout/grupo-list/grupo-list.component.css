@@ -18,3 +18,7 @@
 table {
   width: 100%;
 }
+.search-bar {
+  width: 35%;
+  margin-bottom: 20px; 
+}

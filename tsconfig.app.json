@@ -4,12 +4,28 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./out-tsc/app",
-    "types": []
+    "types": [],
+    
+    // === AÑADIDO PARA LA RESOLUCIÓN DE ALIAS ===
+    "baseUrl": "./", // 1. Establece la base en la raíz del proyecto (donde está 'src')
+    "paths": {
+      // 2. Mapea el alias @services/* a la ruta completa
+      "@services/*": [
+        "src/app/services/*" 
+      ]
+    }
+    // ===========================================
   },
   "files": [
     "src/main.ts"
   ],
   "include": [
     "src/**/*.d.ts"
-  ]
+  ],
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true
+  }
 }

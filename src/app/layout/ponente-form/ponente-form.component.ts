@@ -1,11 +1,12 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
-import { ConferenceService } from '../conference.service';
+
+import { PonenteService } from '../ponente.service'; 
 
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field'; 
-import { MatInputModule } from '@angular/material/input';      
+import { MatInputModule } from '@angular/material/input'; 
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -16,8 +17,8 @@ import { MatIconModule } from '@angular/material/icon';
     CommonModule,
     ReactiveFormsModule,
     MatDialogModule,
-    MatFormFieldModule,   
-    MatInputModule,       
+    MatFormFieldModule, 
+    MatInputModule, 
     MatButtonModule,
     MatIconModule
   ],
@@ -33,7 +34,7 @@ export class PonenteFormComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<PonenteFormComponent>,
-    private conferenceService: ConferenceService,
+    private ponenteService: PonenteService,    
     @Inject(MAT_DIALOG_DATA) public data: { ponenteData: any }
   ) {
     if (data && data.ponenteData) {
@@ -62,15 +63,25 @@ export class PonenteFormComponent implements OnInit {
     this.errorMessage = null;
 
     if (this.isEditMode) {
-      console.log('Actualizando ponente:', this.ponenteForm.value);
-      
+      // 3. CAMBIO: Usamos ponenteService
+      this.ponenteService.updatePonente(this.ponente.ID_PONENTE, this.ponenteForm.value).subscribe({
+        next: (response: any) => { 
+          console.log('Ponente actualizado:', response);
+          this.dialogRef.close('saved');
+        },
+        error: (err: any) => { 
+          console.error('Error al actualizar ponente:', err);
+          this.errorMessage = 'Error al actualizar el ponente.';
+        }
+      });
     } else {
-      this.conferenceService.createPonente(this.ponenteForm.value).subscribe({
-        next: (response) => {
+
+      this.ponenteService.createPonente(this.ponenteForm.value).subscribe({
+        next: (response: any) => {
           console.log('Ponente creado:', response);
           this.dialogRef.close('saved');
         },
-        error: (err) => {
+        error: (err: any) => {
           console.error('Error al crear ponente:', err);
           this.errorMessage = 'Error al guardar el ponente.';
         }

@@ -1,77 +1,69 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConferenceService {
+  
+  // 1. URL BASE: Apunta a la raíz de la API
+  private baseUrl = 'http://127.0.0.1:8000/api';
 
-  private apiUrl = 'http://127.0.0.1:8000/api';
+  constructor(private http: HttpClient) { }
 
-  constructor(private http: HttpClient, private authService: AuthService) { }
-
-  private getAuthHeaders(): HttpHeaders | null {
-    const token = this.authService.getToken();
-    if (!token) {
-      console.error('No se encontró token de autenticación.');
-      return null;
-    }
-    return new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-    });
-  }
-
+  // 2. OBTENER CONFERENCIAS (Asegúrate que diga /conferencias)
   getConferences(): Observable<any> {
-    const headers = this.getAuthHeaders();
-    if (!headers) return new Observable(observer => observer.error('No autenticado'));
-    return this.http.get(`${this.apiUrl}/conferencias`, { headers });
+    return this.http.get(`${this.baseUrl}/conferencias`);
   }
 
-  getPonentes(): Observable<any> {
-    const headers = this.getAuthHeaders();
-    if (!headers) return new Observable(observer => observer.error('No autenticado'));
-    return this.http.get(`${this.apiUrl}/ponentes`, { headers });
+  createConference(data: any): Observable<any> {
+    const formattedData = this.formatData(data);
+    return this.http.post(`${this.baseUrl}/conferencias`, formattedData);
   }
 
-  createConference(conferenceData: any): Observable<any> {
-    const headers = this.getAuthHeaders();
-    if (!headers) return new Observable(observer => observer.error('No autenticado'));
-    return this.http.post(`${this.apiUrl}/conferencias`, conferenceData, { headers });
-  }
-  updateConference(id: number, conferenceData: any): Observable<any> {
-    const headers = this.getAuthHeaders();
-    if (!headers) return new Observable(observer => observer.error('No autenticado'));
-    return this.http.put(`${this.apiUrl}/conferencias/${id}`, conferenceData, { headers });
+  updateConference(id: number, data: any): Observable<any> {
+    const formattedData = this.formatData(data);
+    return this.http.put(`${this.baseUrl}/conferencias/${id}`, formattedData); 
   }
 
   deleteConference(id: number): Observable<any> {
-    const headers = this.getAuthHeaders();
-    if (!headers) return new Observable(observer => observer.error('No autenticado'));
-    return this.http.delete(`${this.apiUrl}/conferencias/${id}`, { headers });
-  }
-  
-  getGrupos(): Observable<any> {
-    const headers = this.getAuthHeaders();
-    if (!headers) return new Observable(observer => observer.error('No autenticado'));
-    return this.http.get(`${this.apiUrl}/grupos`, { headers });
+    return this.http.delete(`${this.baseUrl}/conferencias/${id}`);
   }
 
-  getQrData(conferenceId: number, grupoId: number): Observable<any> {
-    const headers = this.getAuthHeaders();
-    if (!headers) return new Observable(observer => observer.error('No autenticado'));
-    return this.http.get(`${this.apiUrl}/conferencias/${conferenceId}/grupos/${grupoId}/qr-data`, { headers });
+  // --- Métodos Auxiliares ---
+
+  // Obtener ponentes para el formulario (Esto SÍ debe llamar a /ponentes)
+  getPonentes(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/ponentes`); 
   }
-  createPonente(ponenteData: any): Observable<any> {
-    const headers = this.getAuthHeaders();
-    if (!headers) return new Observable(observer => observer.error('No autenticado'));
-    return this.http.post(`${this.apiUrl}/ponentes`, ponenteData, { headers });
+
+  getQrCodeData(conferenceId: number, grupoId: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/conferencias/${conferenceId}/grupos/${grupoId}/qr-data`);
   }
   
-deletePonente(id: number): Observable<any> {
-    const headers = this.getAuthHeaders();
-    if (!headers) return new Observable(observer => observer.error('No autenticado'));
-    return this.http.delete(`${this.apiUrl}/ponentes/${id}`, { headers });
+  private formatData(formData: any): any {
+    const dataToSend = { ...formData };
+
+    if (formData.FECHA && formData.HORA) {
+      const fecha = new Date(formData.FECHA);
+      const [horas, minutos] = formData.HORA.split(':');
+      fecha.setHours(Number(horas));
+      fecha.setMinutes(Number(minutos));
+      
+      const year = fecha.getFullYear();
+      const month = String(fecha.getMonth() + 1).padStart(2, '0');
+      const day = String(fecha.getDate()).padStart(2, '0');
+      const hours = String(fecha.getHours()).padStart(2, '0');
+      const mins = String(fecha.getMinutes()).padStart(2, '0');
+      const secs = '00';
+
+      dataToSend.FECHA_HORA = `${year}-${month}-${day} ${hours}:${mins}:${secs}`;
+    }
+    
+    delete dataToSend.FECHA;
+    delete dataToSend.HORA;
+
+    return dataToSend;
   }
 }

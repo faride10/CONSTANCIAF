@@ -1,0 +1,30 @@
+<h1 mat-dialog-title>Importar Alumnos desde CSV</h1>
+
+<div mat-dialog-content>
+  <p>Selecciona el archivo .csv o .xlsx que contiene la lista de alumnos.</p>
+  <p>
+    <small>Asegúrate de que el archivo tenga las columnas: 
+    <strong>num_control, nombre_completo, correo_institucional, nombre_grupo</strong>.
+    </small>
+  </p>
+
+  <input type="file" (change)="onFileSelected($event)" accept=".csv, .xlsx" #fileInput>
+
+  <div *ngIf="archivoSeleccionado" class="file-name">
+    Archivo: <strong>{{ archivoSeleccionado.name }}</strong>
+  </div>
+
+  <mat-progress-bar mode="indeterminate" *ngIf="cargando" class="progress-bar"></mat-progress-bar>
+
+  <div *ngIf="errorMensaje" class="error-message">
+    {{ errorMensaje }}
+  </div>
+
+</div>
+
+<div mat-dialog-actions align="end">
+  <button mat-stroked-button (click)="cerrarModal()" [disabled]="cargando">Cancelar</button>
+  <button mat-flat-button color="primary" (click)="importar()" [disabled]="!archivoSeleccionado || cargando">
+    Importar
+  </button>
+</div>

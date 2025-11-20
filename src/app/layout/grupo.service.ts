@@ -1,8 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AuthService } from '../auth/auth.service'; // Ajusta la ruta a tu AuthService
-
+import { AuthService } from './auth.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -22,8 +21,6 @@ export class GrupoService {
     });
   }
 
-  // --- Funciones para Grupos ---
-
   getGrupos(): Observable<any> {
     return this.http.get(`${this.apiUrl}/grupos`, { headers: this.getAuthHeaders() });
   }
@@ -40,10 +37,7 @@ export class GrupoService {
     return this.http.delete(`${this.apiUrl}/grupos/${id}`, { headers: this.getAuthHeaders() });
   }
 
-  // --- Función para Docentes (para el formulario) ---
-  
   getDocentes(): Observable<any> {
-    // Asumimos que tienes una ruta 'api/docentes' en Laravel
     return this.http.get(`${this.apiUrl}/docentes`, { headers: this.getAuthHeaders() });
   }
 }

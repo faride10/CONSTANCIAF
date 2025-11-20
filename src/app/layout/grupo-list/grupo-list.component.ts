@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewContainerRef } from '@angular/core'; // Importar ViewContainerRef
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
@@ -6,26 +6,34 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { GrupoFormComponent } from '../grupo-form/grupo-form.component';
 import { GrupoService } from '../grupo.service';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+
+import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-grupo-list',
   standalone: true,
   imports: [
-    CommonModule, MatTableModule, MatIconModule, MatButtonModule
+    CommonModule, 
+    MatTableModule, 
+    MatIconModule, 
+    MatButtonModule,
+    MatFormFieldModule, 
+    MatInputModule
+    
   ],
   templateUrl: './grupo-list.component.html',
   styleUrls: ['./grupo-list.component.css']
 })
 export class GrupoListComponent implements OnInit {
-
-  // --- CAMBIO CLAVE: Columnas que coinciden con el diseño y los datos (MAYÚSCULAS) ---
   displayedColumns: string[] = ['NOMBRE', 'CARRERA', 'docente', 'acciones'];
   dataSource: MatTableDataSource<any>;
 
   constructor(
     private grupoService: GrupoService,
     public dialog: MatDialog,
-    private viewContainerRef: ViewContainerRef // Inyectar para arreglar z-index
+    private viewContainerRef: ViewContainerRef
   ) {
     this.dataSource = new MatTableDataSource<any>([]);
   }
@@ -35,15 +43,9 @@ export class GrupoListComponent implements OnInit {
   }
 
   cargarGrupos(): void {
-    // --- Restauramos la llamada original ---
     this.grupoService.getGrupos().subscribe(
-      (data: any) => {
-        console.log('Datos recibidos de la API (Reseteo):', data);
-        this.dataSource.data = data;
-      },
-      (error: any) => {
-        console.error("Error al cargar grupos (Reseteo):", error);
-      }
+      (data: any) => { this.dataSource.data = data; },
+      (error: any) => { console.error("Error al cargar grupos:", error); }
     );
   }
 
@@ -52,19 +54,41 @@ export class GrupoListComponent implements OnInit {
       width: '500px',
       disableClose: true,
       data: grupo, 
-      viewContainerRef: this.viewContainerRef // <-- Arregla el z-index
+      viewContainerRef: this.viewContainerRef 
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === true) { this.cargarGrupos(); }
+    });
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  eliminarGrupo(id: number, nombre: string): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '450px',
+      data: { 
+        title: 'Confirmar Eliminación', 
+        message: `¿Estás seguro de que deseas eliminar el grupo "${nombre}"? Esta acción no se puede deshacer.` 
+      },
+      viewContainerRef: this.viewContainerRef
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result === true) {
-        this.cargarGrupos(); // Recargamos si se guardó
+        this.grupoService.deleteGrupo(id).subscribe(
+          () => {
+            console.log('Grupo eliminado exitosamente');
+            this.cargarGrupos(); 
+          },
+          (error: any) => {
+            console.error('Error al eliminar el grupo:', error);
+          }
+        );
       }
     });
-  }
-
-  eliminarGrupo(id: number): void {
-    // Aquí puedes añadir tu lógica de confirmación
-    // this.grupoService.deleteGrupo(id).subscribe(() => this.cargarGrupos());
-    console.log("Eliminar ID:", id);
   }
 }

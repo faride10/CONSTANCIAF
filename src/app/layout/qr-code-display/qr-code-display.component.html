@@ -1,0 +1,23 @@
+<div class="qr-modal-header">
+  <h2 mat-dialog-title>{{ conferenciaTitulo }}</h2>
+  <button mat-icon-button (click)="cerrar()" aria-label="Cerrar modal">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<mat-dialog-content class="qr-modal-content">
+  <p>Grupo: <strong>{{ grupoNombre }}</strong></p>
+  
+<div class="qr-container" style="text-align: center; margin: 20px 0;">
+    <img [src]="safeQrData" 
+         alt="QR de Asistencia" 
+         style="width: 300px; height: 300px;">
+</div>  
+  <p class="qr-instructions">
+    Los alumnos deben escanear este código para registrar su asistencia.
+  </p>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-flat-button color="primary" (click)="cerrar()">Cerrar</button>
+</mat-dialog-actions>

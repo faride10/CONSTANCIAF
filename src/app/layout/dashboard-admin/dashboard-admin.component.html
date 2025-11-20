@@ -2,10 +2,11 @@
 
   <h2>BIENVENIDO, ADMINISTRADOR</h2>
 
-  <div *ngIf="isLoading" class="loading-indicator">Cargando datos...</div>
+  <div *ngIf="isLoading && !errorMessage" class="loading-indicator">Cargando datos...</div>
   <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
 
-  <div *ngIf="!isLoading && !errorMessage">
+  <div *ngIf="!isLoading">
+    
     <div class="summary-cards">
       <mat-card class="summary-card">
         <mat-card-header>
@@ -45,33 +46,33 @@
     </div>
 
     <mat-card class="recent-activities">
-       <mat-card-header>
+      <mat-card-header>
         <mat-card-title>ACTIVIDADES RECIENTES</mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        <ul>
-          <li>
-            <mat-icon class="activity-icon success">check_circle</mat-icon>
-            <div>
-              <span>Constancia generada para 211020317</span>
-              <small>Hace 5 minutos</small>
-            </div>
-          </li>
-          <li>
-            <mat-icon class="activity-icon info">info</mat-icon>
-            <div>
-              <span>Nueva conferencia: "Introducción a las TICs"</span>
-              <small>Hace 1 hora</small>
-            </div>
-          </li>
-          <li>
-            <mat-icon class="activity-icon warning">person_add</mat-icon>
-             <div>
-              <span>Docente Jose Juan Perez ha sido Pre-autorizado</span>
-              <small>Hace 1 hora</small>
-            </div>
-          </li>
-        </ul>
+
+        <mat-list>
+          
+          <mat-list-item *ngFor="let actividad of actividadesRecientes">
+            
+            <ng-container [ngSwitch]="actividad.tipo_accion" matListItemIcon>
+              <mat-icon *ngSwitchCase="'CONSTANCIA'" class="activity-icon success">check_circle</mat-icon>
+              <mat-icon *ngSwitchCase="'CONFERENCIA'" class="activity-icon info">info</mat-icon>
+              <mat-icon *ngSwitchCase="'DOCENTE'" class="activity-icon warning">person_add</mat-icon>
+              <mat-icon *ngSwitchDefault class="activity-icon info">notifications</mat-icon>
+            </ng-container>
+            
+            <div matListItemTitle>{{ actividad.descripcion }}</div>
+            
+            <div matListItemLine>{{ actividad.created_at | date:'medium' }}</div>
+
+          </mat-list-item>
+
+          <mat-list-item *ngIf="actividadesRecientes.length === 0 && !isLoading">
+            <div matListItemTitle>No hay actividades recientes.</div>
+          </mat-list-item>
+
+        </mat-list>
       </mat-card-content>
     </mat-card>
-  </div> </div>
+    </div> </div>

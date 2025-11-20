@@ -1,0 +1,102 @@
+<div class="header-container">
+  <button mat-icon-button (click)="volverAtras()">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  <h1>{{ tituloConferencia }}</h1>
+</div>
+
+<mat-card class="qr-card">
+  <mat-card-header>
+    <mat-card-title>Generación de Código QR</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="qr-content-wrapper">
+      <div class="group-info">
+        <span class="group-name">{{ nombreGrupo }}</span>
+        <span class="group-details">{{ carreraGrupo }}</span>
+      </div>
+      <button mat-flat-button color="primary" (click)="abrirModalQR()">
+        Generar/Ver QR
+      </button>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="attendance-card">
+  <mat-card-header class="attendance-header">
+    <div class="header-left">
+      <mat-card-title>Lista de Asistencia</mat-card-title>
+      <div class="attendance-counter">
+        Asistencia: <strong>{{ contadorAsistencia }}</strong> / <strong>{{ totalAlumnos }}</strong>
+      </div>
+    </div>
+    
+    <button mat-flat-button color="accent" (click)="abrirModalRegistroManual()">
+      <mat-icon>add_task</mat-icon>
+      Registrar Manualmente
+    </button>
+    
+  </mat-card-header>
+
+  <mat-card-content>
+    
+    <!-- ¡ESTE ES EL BLOQUE CORREGIDO! -->
+    <mat-form-field appearance="outline" class="search-bar">
+      <mat-label>Buscar por nombre o num. control</mat-label>
+      <input 
+        matInput 
+        (keyup)="applyFilter()" 
+        [(ngModel)]="filterValue" 
+        placeholder="Escribe para filtrar...">
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+
+    <!-- Spinner (si está cargando) -->
+    <div *ngIf="isLoading" class="spinner-container">
+      <mat-progress-spinner mode="indeterminate" diameter="50"></mat-progress-spinner>
+    </div>
+
+    <!-- Tabla de Asistencia -->
+    <div *ngIf="!isLoading" class="table-container mat-elevation-z2">
+      <table mat-table [dataSource]="dataSource" matSort>
+
+        <ng-container matColumnDef="nombre">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+          <td mat-cell *matCellDef="let row"> {{row.alumno?.NOMBRE}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="numControl">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Num. Control </th>
+          <td mat-cell *matCellDef="let row"> {{row.NUM_CONTROL}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="fechaRegistro">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha de Registro </th>
+          <td mat-cell *matCellDef="let row"> {{row.FECHA_ASISTENCIA | date:'dd-MM-yyyy HH:mm'}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="acciones">
+          <th mat-header-cell *matHeaderCellDef> Acciones </th>
+          <td mat-cell *matCellDef="let row">
+            <button mat-icon-button color="warn" (click)="eliminarAsistencia(row)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="4">No hay alumnos registrados o la búsqueda no arrojó resultados.</td>
+        </tr>
+      </table>
+
+      <mat-paginator [pageSizeOptions]="[10, 25, 50]" 
+                     showFirstLastButtons 
+                     aria-label="Selecciona la página de asistencias">
+      </mat-paginator>
+    </div>
+    
+  </mat-card-content>
+</mat-card>

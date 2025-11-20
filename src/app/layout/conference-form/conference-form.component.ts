@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule, MatDialog } from '@angular/material/dialog';
+import { MatListModule } from '@angular/material/list'; 
 import { ConferenceService } from '../conference.service';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -9,9 +10,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule, DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
-import { NativeDateAdapter } from '@angular/material/core';
-
+import { MatNativeDateModule } from '@angular/material/core';
+import { GrupoService } from '../grupo.service';
+import { QrCodeDisplayComponent } from '../qr-code-display/qr-code-display.component';
 
 @Component({
   selector: 'app-conference-form',
@@ -27,6 +28,7 @@ import { NativeDateAdapter } from '@angular/material/core';
     MatIconModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatListModule, 
   ],
   templateUrl: './conference-form.component.html',
   styleUrl: './conference-form.component.css'
@@ -34,6 +36,7 @@ import { NativeDateAdapter } from '@angular/material/core';
 export class ConferenceFormComponent implements OnInit {
   conferenceForm: FormGroup;
   ponentes: any[] = [];
+  grupos: any[] = []; 
   isLoadingPonentes = false;
   errorMessage: string | null = null;
   isEditMode: boolean = false;
@@ -43,22 +46,29 @@ export class ConferenceFormComponent implements OnInit {
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<ConferenceFormComponent>,
     private conferenceService: ConferenceService,
+    private grupoService: GrupoService, 
+    private dialog: MatDialog, 
     @Inject(MAT_DIALOG_DATA) public data: { conferenceData: any }
   ) {
+
     if (data && data.conferenceData) {
       this.isEditMode = true;
       const conference = data.conferenceData;
       this.currentConferenceId = conference.ID_CONFERENCIA;
       
+      const fechaHora = conference.FECHA_HORA ? new Date(conference.FECHA_HORA) : null;
+
       this.conferenceForm = this.fb.group({
-        FECHA: [conference.FECHA_HORA ? new Date(conference.FECHA_HORA) : null, Validators.required],
-        HORA: [conference.FECHA_HORA ? new Date(conference.FECHA_HORA).toTimeString().substring(0, 5) : null, Validators.required],
+        FECHA: [fechaHora, Validators.required],
+        HORA: [fechaHora ? fechaHora.toTimeString().substring(0, 5) : null, Validators.required],
         NOMBRE_CONFERENCIA: [conference.NOMBRE_CONFERENCIA, Validators.required],
         TEMA: [conference.TEMA],
         LUGAR: [conference.LUGAR, Validators.required],
         NUM_PARTICIPANTES: [conference.NUM_PARTICIPANTES, Validators.pattern('^[0-9]*$')],
-        ID_PONENTE: [conference.ID_PONENTE]
+        ID_PONENTE: [conference.ID_PONENTE],
+        grupos: [conference.grupos ? conference.grupos.map((g: any) => g.ID_GRUPO) : []] 
       });
+
     } else {
       this.isEditMode = false;
       this.conferenceForm = this.fb.group({
@@ -68,27 +78,83 @@ export class ConferenceFormComponent implements OnInit {
         HORA: [null, Validators.required],
         LUGAR: ['', Validators.required],
         NUM_PARTICIPANTES: [null, Validators.pattern('^[0-9]*$')],
-        ID_PONENTE: [null]
+        ID_PONENTE: [null],
+        grupos: [[]] 
       });
     }
   }
 
   ngOnInit(): void {
     this.loadPonentes();
+    this.loadGrupos(); 
   }
 
   loadPonentes(): void {
-    this.isLoadingPonentes = true;
     this.conferenceService.getPonentes().subscribe({
-      next: (data: any) => {
-        this.ponentes = data;
-        this.isLoadingPonentes = false;
-      },
-      error: (err: any) => {
-        console.error('Error al cargar ponentes:', err);
-        this.isLoadingPonentes = false;
-      }
+      next: (data: any) => { this.ponentes = data; },
+      error: (err: any) => { console.error('Error al cargar ponentes:', err); }
     });
+  }
+
+  loadGrupos(): void {
+     this.grupoService.getGrupos().subscribe({
+      next: (data: any) => { this.grupos = data; },
+      error: (err: any) => { console.error('Error al cargar grupos', err); }
+    });
+  }
+
+  onGenerateQr(grupoId: number, event: MouseEvent): void {
+    event.stopPropagation(); 
+    event.preventDefault();
+
+    if (!this.currentConferenceId) return;
+
+this.conferenceService.getQrCodeData(this.currentConferenceId, grupoId).subscribe({
+  next: (data: any) => {
+    
+    // 1. IMPRIME ESTO PARA VER QUÉ LLEGA DEL SERVICIO (Opcional pero útil)
+    console.log('Respuesta del Backend:', data);
+
+    this.dialog.open(QrCodeDisplayComponent, {
+      width: '400px',
+      // 2. EL CAMBIO CLAVE:
+      // En lugar de mapear manual (qrCodeBased64: data.qrCodeBased64...)
+      // Pasamos todo el objeto 'data' directamente.
+      data: data 
+    });
+    
+  },
+  error: (err: any) => {
+    console.error('Error al generar QR:', err);
+    // ... tu manejo de errores
+  }
+});
+  }
+  
+  isGrupoSelected(grupoId: number): boolean {
+    const selectedGrupos = this.conferenceForm.get('grupos')?.value || [];
+    return selectedGrupos.includes(grupoId);
+  }
+
+  private prepareSaveData(): any {
+    const formValues = this.conferenceForm.value;
+
+    const fecha = new Date(formValues.FECHA);
+    
+    const [horas, minutos] = formValues.HORA.split(':');
+
+    fecha.setHours(parseInt(horas, 10));
+    fecha.setMinutes(parseInt(minutos, 10));
+    fecha.setSeconds(0); // Reseteamos segundos
+
+    const payload = {
+      ...formValues,  
+      FECHA_HORA: fecha.toISOString().slice(0, 19).replace('T', ' '),   
+      FECHA: undefined,   
+      HORA: undefined     
+    };
+    
+    return payload;
   }
 
   onSave(): void {
@@ -99,10 +165,11 @@ export class ConferenceFormComponent implements OnInit {
     }
     this.errorMessage = null;
 
+    const payload = this.prepareSaveData();
+
     if (this.isEditMode && this.currentConferenceId) {
-      this.conferenceService.updateConference(this.currentConferenceId, this.conferenceForm.value).subscribe({
+      this.conferenceService.updateConference(this.currentConferenceId, payload).subscribe({
         next: (response: any) => {
-          console.log('Conferencia actualizada:', response);
           this.dialogRef.close('saved');
         },
         error: (err: any) => {
@@ -111,9 +178,8 @@ export class ConferenceFormComponent implements OnInit {
         }
       });
     } else {
-      this.conferenceService.createConference(this.conferenceForm.value).subscribe({
+      this.conferenceService.createConference(payload).subscribe({
         next: (response: any) => {
-          console.log('Conferencia creada:', response);
           this.dialogRef.close('saved');
         },
         error: (err: any) => {
@@ -123,7 +189,7 @@ export class ConferenceFormComponent implements OnInit {
       });
     }
   }
-
+  
   onCancel(): void {
     this.dialogRef.close();
   }

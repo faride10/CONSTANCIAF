@@ -1,0 +1,58 @@
+<div class="p-6">
+  <mat-card class="shadow-xl rounded-lg">
+    <mat-card-header class="pb-4">
+      <mat-card-title class="text-2xl font-bold text-gray-800">
+        Reporte de Asistencia (Nivel 3)
+      </mat-card-title>
+      <mat-card-subtitle class="text-gray-500">
+        Conferencia: {{ conferenciaTitulo }} | Grupo: {{ grupoNombre }}
+      </mat-card-subtitle>
+      <a mat-stroked-button [routerLink]="['/panel/admin/reporte-grupos', idConferencia]" class="ml-auto">
+        <mat-icon>arrow_back</mat-icon>
+        Regresar a Grupos
+      </a>
+    </mat-card-header>
+
+    <mat-card-content class="pt-4">
+      
+      <div *ngIf="isLoading" class="flex justify-center items-center py-8">
+        <mat-spinner diameter="40"></mat-spinner>
+      </div>
+
+      <div *ngIf="errorMessage" class="p-4 bg-red-100 text-red-700">
+        {{ errorMessage }}
+      </div>
+
+      <div *ngIf="!isLoading && !errorMessage" class="overflow-x-auto">
+        <table mat-table [dataSource]="reporteAlumnos" class="w-full">
+          
+          <ng-container matColumnDef="num_control">
+            <th mat-header-cell *matHeaderCellDef> No. Control </th>
+            <td mat-cell *matCellDef="let alumno"> {{ alumno.NUM_CONTROL }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="nombre">
+            <th mat-header-cell *matHeaderCellDef> Nombre del Alumno </th>
+            <td mat-cell *matCellDef="let alumno"> {{ alumno.NOMBRE_ALUMNO }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="estatus">
+            <th mat-header-cell *matHeaderCellDef> Estatus </th>
+            <td mat-cell *matCellDef="let alumno">
+              <mat-chip-listbox>
+                <mat-chip [color]="alumno.ASISTIO ? 'primary' : 'warn'" selected>
+                  {{ alumno.ASISTIO ? 'Asistió' : 'Ausente' }}
+                </mat-chip>
+              </mat-chip-listbox>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          
+        </table>
+      </div>
+
+    </mat-card-content>
+  </mat-card>
+</div>
