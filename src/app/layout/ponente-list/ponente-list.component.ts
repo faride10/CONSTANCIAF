@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTooltipModule } from '@angular/material/tooltip'; 
 
 import { PonenteService } from '../ponente.service'; 
 import { PonenteFormComponent } from '../ponente-form/ponente-form.component';
@@ -27,7 +28,8 @@ import { ConfirmationDialogComponent } from '../../shared/confirmation-dialog/co
     MatButtonModule,
     MatIconModule,
     MatDialogModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatTooltipModule
   ],
   templateUrl: './ponente-list.component.html',
   styleUrl: './ponente-list.component.css'
@@ -82,7 +84,9 @@ export class PonenteListComponent implements OnInit, AfterViewInit {
 
   openPonenteForm(ponente?: any): void {
     const dialogRef = this.dialog.open(PonenteFormComponent, {
-      width: '500px',
+      // ACTUALIZACIÓN: Modal más ancho para mejor visualización
+      width: '800px', 
+      maxWidth: '95vw',
       data: { ponenteData: ponente }
     });
 

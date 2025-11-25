@@ -1,0 +1,46 @@
+<div class="page-container">
+  
+  <div class="scan-card animate-up">
+    
+    <div class="card-header">
+      <img src="assets/images/logo_tecblanco.png" alt="Logo" class="tec-logo">
+      <p class="header-subtitle">Registro de Asistencia</p>
+    </div>
+
+    <div class="card-content">
+      
+      <div class="conference-info">
+        <span class="badge">Estás entrando a:</span>
+        <h2 class="conference-title">{{ conferenceName }}</h2>
+      </div>
+
+      <p class="instruction">
+        Ingresa tu número de control para confirmar tu asistencia.
+      </p>
+
+      <div class="input-group">
+        <mat-icon class="input-icon">badge</mat-icon>
+        <input type="tel" 
+               class="big-input" 
+               [(ngModel)]="controlNumber" 
+               placeholder="Ej. 211020327"
+               [disabled]="isLoading">
+      </div>
+
+      <div *ngIf="message" class="alert-box" [ngClass]="messageType">
+        <mat-icon>{{ messageType === 'success' ? 'check_circle' : 'error' }}</mat-icon>
+        <span>{{ message }}</span>
+      </div>
+
+      <button class="btn-submit" (click)="onSubmit()" [disabled]="isLoading || !controlNumber">
+        <span *ngIf="!isLoading">REGISTRARME</span>
+        <mat-progress-spinner *ngIf="isLoading" diameter="24" mode="indeterminate" color="accent"></mat-progress-spinner>
+      </button>
+
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>© 2025 TecNM Salina Cruz</p>
+  </div>
+</div>

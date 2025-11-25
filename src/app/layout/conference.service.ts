@@ -7,12 +7,11 @@ import { Observable } from 'rxjs';
 })
 export class ConferenceService {
   
-  // 1. URL BASE: Apunta a la raíz de la API
-  private baseUrl = 'http://127.0.0.1:8000/api';
+  private baseUrl = 'HTTP_SERVER_ADDRESS/api';
+
 
   constructor(private http: HttpClient) { }
 
-  // 2. OBTENER CONFERENCIAS (Asegúrate que diga /conferencias)
   getConferences(): Observable<any> {
     return this.http.get(`${this.baseUrl}/conferencias`);
   }
@@ -31,9 +30,6 @@ export class ConferenceService {
     return this.http.delete(`${this.baseUrl}/conferencias/${id}`);
   }
 
-  // --- Métodos Auxiliares ---
-
-  // Obtener ponentes para el formulario (Esto SÍ debe llamar a /ponentes)
   getPonentes(): Observable<any> {
     return this.http.get(`${this.baseUrl}/ponentes`); 
   }

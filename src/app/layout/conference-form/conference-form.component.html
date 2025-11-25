@@ -7,37 +7,17 @@
 
 <mat-dialog-content class="mat-typography">
   <form [formGroup]="conferenceForm">
+    
+    <div class="conference-grid">
 
-    <mat-form-field appearance="outline">
-      <mat-label>Nombre de la Conferencia</mat-label>
-      <input matInput formControlName="NOMBRE_CONFERENCIA" required>
-      <mat-error *ngIf="conferenceForm.get('NOMBRE_CONFERENCIA')?.hasError('required')">
-        El nombre es requerido.
-      </mat-error>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Tema</mat-label>
-      <textarea matInput formControlName="TEMA" rows="3"></textarea>
-    </mat-form-field>
-
-    <div class="form-row three-cols">
       <mat-form-field appearance="outline">
-        <mat-label>Fecha</mat-label>
-        <input matInput [matDatepicker]="picker" formControlName="FECHA" required readonly>
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-         <mat-error *ngIf="conferenceForm.get('FECHA')?.hasError('required')">
-           La fecha es requerida.
+        <mat-label>Nombre de la Conferencia</mat-label>
+        <input matInput formControlName="NOMBRE_CONFERENCIA" required>
+        <mat-error *ngIf="conferenceForm.get('NOMBRE_CONFERENCIA')?.hasError('required')">
+          El nombre es requerido.
         </mat-error>
       </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Hora</mat-label>
-        <input matInput type="time" formControlName="HORA" required placeholder="HH:mm">
-         <mat-error *ngIf="conferenceForm.get('HORA')?.hasError('required')">
-           La hora es requerida.
-        </mat-error>
-      </mat-form-field>
+
       <mat-form-field appearance="outline">
         <mat-label>Lugar</mat-label>
         <input matInput formControlName="LUGAR" required>
@@ -45,16 +25,33 @@
           El lugar es requerido.
         </mat-error>
       </mat-form-field>
-    </div>
 
-    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Fecha</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="FECHA" required readonly>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="conferenceForm.get('FECHA')?.hasError('required')">
+          La fecha es requerida.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Hora</mat-label>
+        <input matInput type="time" formControlName="HORA" required placeholder="HH:mm">
+        <mat-error *ngIf="conferenceForm.get('HORA')?.hasError('required')">
+          La hora es requerida.
+        </mat-error>
+      </mat-form-field>
+
       <mat-form-field appearance="outline">
         <mat-label>Num. de Participantes</mat-label>
         <input matInput type="number" formControlName="NUM_PARTICIPANTES">
-         <mat-error *ngIf="conferenceForm.get('NUM_PARTICIPANTES')?.hasError('pattern')">
-           Debe ser un número.
+        <mat-error *ngIf="conferenceForm.get('NUM_PARTICIPANTES')?.hasError('pattern')">
+          Debe ser un número.
         </mat-error>
       </mat-form-field>
+
       <mat-form-field appearance="outline">
         <mat-label>Ponente</mat-label>
         <mat-select formControlName="ID_PONENTE">
@@ -65,32 +62,33 @@
         </mat-select>
         <mat-hint *ngIf="isLoadingPonentes">Cargando ponentes...</mat-hint>
       </mat-form-field>
-    </div>
-    <label id="grupos-label" class="form-label">Grupos Asignados</label>
-    <mat-selection-list formControlName="grupos" aria-labelledby="grupos-label" class="grupo-selection-list">
-      <mat-list-option *ngFor="let grupo of grupos" [value]="grupo.ID_GRUPO" checkboxPosition="before">
-        
-        <div class="grupo-option-container">
-          <span>{{ grupo.NOMBRE }}</span>
-          
-          <button 
-            *ngIf="isEditMode && isGrupoSelected(grupo.ID_GRUPO)" 
-            mat-stroked-button 
-            color="primary" 
-            class="qr-button"
-            (click)="onGenerateQr(grupo.ID_GRUPO, $event)">
-            <mat-icon>qr_code_2</mat-icon>
-            Ver QR
-          </button>
-        </div>
 
-      </mat-list-option>
-    </mat-selection-list>
-    <mat-hint *ngIf="grupos.length === 0">Cargando grupos...</mat-hint>
-    
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Tema</mat-label>
+        <textarea matInput formControlName="TEMA" rows="3"></textarea>
+      </mat-form-field>
+
+    </div>
+    <div class="grupos-section">
+      <label id="grupos-label" class="form-label">Grupos Asignados</label>
+      <mat-selection-list formControlName="grupos" aria-labelledby="grupos-label" class="grupo-selection-list">
+        <mat-list-option *ngFor="let grupo of grupos" [value]="grupo.ID_GRUPO" checkboxPosition="before">
+          <div class="grupo-option-container">
+            <span>{{ grupo.NOMBRE }}</span>
+            <button *ngIf="isEditMode && isGrupoSelected(grupo.ID_GRUPO)" 
+                    mat-stroked-button color="primary" class="qr-button"
+                    (click)="onGenerateQr(grupo.ID_GRUPO, $event)">
+              <mat-icon>qr_code_2</mat-icon> Ver QR
+            </button>
+          </div>
+        </mat-list-option>
+      </mat-selection-list>
+      <mat-hint *ngIf="grupos.length === 0">Cargando grupos...</mat-hint>
+    </div>
+
     <div *ngIf="errorMessage" class="form-error-message">
-        {{ errorMessage }}
-      </div>
+      {{ errorMessage }}
+    </div>
 
   </form>
 </mat-dialog-content>

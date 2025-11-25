@@ -1,58 +1,97 @@
-<div class="p-6">
-  <mat-card class="shadow-xl rounded-lg">
-    <mat-card-header class="pb-4">
-      <mat-card-title class="text-2xl font-bold text-gray-800">
-        Reporte de Asistencia (Nivel 3)
-      </mat-card-title>
-      <mat-card-subtitle class="text-gray-500">
-        Conferencia: {{ conferenciaTitulo }} | Grupo: {{ grupoNombre }}
-      </mat-card-subtitle>
-      <a mat-stroked-button [routerLink]="['/panel/admin/reporte-grupos', idConferencia]" class="ml-auto">
-        <mat-icon>arrow_back</mat-icon>
-        Regresar a Grupos
-      </a>
-    </mat-card-header>
+<div class="reporte-container" style="padding: 20px;">
 
-    <mat-card-content class="pt-4">
+  <div style="display: flex; align-items: flex-start; margin-bottom: 25px;">
+    <button mat-icon-button (click)="volver()" style="margin-right: 10px; margin-top: -5px;">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    
+    <div>
+      <h2 style="margin: 0; color: #1B396A; font-weight: 700;">Reporte de Asistencia</h2>
       
-      <div *ngIf="isLoading" class="flex justify-center items-center py-8">
-        <mat-spinner diameter="40"></mat-spinner>
+      <div style="margin-top: 10px; display: flex; gap: 10px; flex-wrap: wrap;">
+        
+        <div style="background: #e3f2fd; padding: 5px 15px; border-radius: 20px; color: #1565c0; font-size: 0.9rem; font-weight: 500;">
+          <mat-icon style="font-size: 16px; height: 16px; vertical-align: middle; margin-right: 5px;">event</mat-icon>
+          {{ nombreConferencia }}
+        </div>
+        
+        <div style="background: #f3e5f5; padding: 5px 15px; border-radius: 20px; color: #7b1fa2; font-size: 0.9rem; font-weight: 500;">
+          <mat-icon style="font-size: 16px; height: 16px; vertical-align: middle; margin-right: 5px;">groups</mat-icon>
+          {{ nombreGrupo }}
+        </div>
+        
+        <div style="background: #e0f2f1; padding: 5px 15px; border-radius: 20px; color: #00897b; font-size: 0.9rem; font-weight: 500;">
+          <mat-icon style="font-size: 16px; height: 16px; vertical-align: middle; margin-right: 5px;">person</mat-icon>
+          Docente: {{ docenteName }}
+        </div>
+        
       </div>
+    </div>
+  </div>
 
-      <div *ngIf="errorMessage" class="p-4 bg-red-100 text-red-700">
-        {{ errorMessage }}
-      </div>
+  <div *ngIf="isLoading" style="text-align: center; margin-top: 50px;">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p style="color: #666; margin-top: 10px;">Cargando reporte...</p>
+  </div>
 
-      <div *ngIf="!isLoading && !errorMessage" class="overflow-x-auto">
-        <table mat-table [dataSource]="reporteAlumnos" class="w-full">
-          
-          <ng-container matColumnDef="num_control">
-            <th mat-header-cell *matHeaderCellDef> No. Control </th>
-            <td mat-cell *matCellDef="let alumno"> {{ alumno.NUM_CONTROL }} </td>
-          </ng-container>
+  <div *ngIf="errorMessage" style="color: red; text-align: center; margin-top: 30px;">
+    <mat-icon style="font-size: 40px; height: 40px;">error_outline</mat-icon>
+    <p>{{ errorMessage }}</p>
+  </div>
 
-          <ng-container matColumnDef="nombre">
-            <th mat-header-cell *matHeaderCellDef> Nombre del Alumno </th>
-            <td mat-cell *matCellDef="let alumno"> {{ alumno.NOMBRE_ALUMNO }} </td>
-          </ng-container>
+  <div *ngIf="!isLoading && !errorMessage" class="table-container mat-elevation-z2" style="border-radius: 12px; overflow: hidden;">
+    
+    <table mat-table [dataSource]="asistencias" style="width: 100%;">
 
-          <ng-container matColumnDef="estatus">
-            <th mat-header-cell *matHeaderCellDef> Estatus </th>
-            <td mat-cell *matCellDef="let alumno">
-              <mat-chip-listbox>
-                <mat-chip [color]="alumno.ASISTIO ? 'primary' : 'warn'" selected>
-                  {{ alumno.ASISTIO ? 'Asistió' : 'Ausente' }}
-                </mat-chip>
-              </mat-chip-listbox>
-            </td>
-          </ng-container>
+      <ng-container matColumnDef="foto">
+        <th mat-header-cell *matHeaderCellDef> Alumno </th>
+        <td mat-cell *matCellDef="let row">
+          <div style="background: #eee; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+            <mat-icon style="color: #999;">person</mat-icon>
+          </div>
+        </td>
+      </ng-container>
 
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-          
-        </table>
-      </div>
+      <ng-container matColumnDef="nombre">
+        <th mat-header-cell *matHeaderCellDef> Nombre Completo </th>
+        <td mat-cell *matCellDef="let row" style="font-weight: 500; color: #333;"> 
+          {{ row.alumno?.NOMBRE || 'Desconocido' }} 
+        </td>
+      </ng-container>
 
-    </mat-card-content>
-  </mat-card>
+      <ng-container matColumnDef="control">
+        <th mat-header-cell *matHeaderCellDef> No. Control </th>
+        <td mat-cell *matCellDef="let row" style="color: #666;"> 
+          {{ row.NUM_CONTROL }} 
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef> Estado </th>
+        <td mat-cell *matCellDef="let row"> 
+          <span style="background: #e8f5e9; color: #2e7d32; padding: 4px 12px; border-radius: 12px; font-size: 0.85rem; font-weight: 600;">
+            Asistió
+          </span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="fecha">
+        <th mat-header-cell *matHeaderCellDef> Hora de Registro </th>
+        <td mat-cell *matCellDef="let row" style="color: #666;"> 
+          {{ row.FECHA_REGISTRO | date:'shortTime' }} 
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="5" style="text-align: center; padding: 40px;">
+          <p style="font-size: 1.1rem; color: #888;">Ningún alumno de este grupo ha registrado asistencia aún.</p>
+        </td>
+      </tr>
+
+    </table>
+  </div>
+
 </div>

@@ -8,7 +8,7 @@ import { AuthService } from './auth.service';
 
 export class AlumnoService {
 
-  private apiUrl = 'http://127.0.0.1:8000/api'; 
+    private apiUrl = 'HTTP_SERVER_ADDRESS/api';
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 

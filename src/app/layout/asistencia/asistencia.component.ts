@@ -1,13 +1,11 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router'; 
 import { Location, CommonModule } from '@angular/common'; 
-import { FormsModule } from '@angular/forms'; // <-- ¡LA PIEZA QUE FALTABA!
+import { FormsModule } from '@angular/forms'; 
 
-// Servicios
 import { DocenteService } from '../docente.service'; 
-import { ConferenceService } from '../conference.service'; 
 
-// Módulos de Material
+// Módulos de Material Design
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -18,17 +16,20 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar'; // <--- NUEVO: Para notificaciones bonitas
 
-// Modales
+// Componentes Compartidos y Modales
 import { QrCodeDisplayComponent } from '../qr-code-display/qr-code-display.component'; 
 import { RegistroManualComponent } from '../registro-manual/registro-manual.component'; 
+// Importamos el diálogo de confirmación bonito que ya tienes en el proyecto
+import { ConfirmationDialogComponent } from '../../shared/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-asistencia', 
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule,          // <-- ¡AÑADIDO!
+    FormsModule,          
     MatCardModule,
     MatIconModule,
     MatButtonModule,
@@ -38,7 +39,8 @@ import { RegistroManualComponent } from '../registro-manual/registro-manual.comp
     MatPaginatorModule,
     MatSortModule,
     MatDialogModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatSnackBarModule // <--- Agregado a imports
   ],
   templateUrl: './asistencia.component.html',
   styleUrls: ['./asistencia.component.css']
@@ -55,7 +57,7 @@ export class AsistenciaComponent implements OnInit, AfterViewInit {
   isLoading = true;
   alumnosDelGrupo: any[] = []; 
   
-  filterValue: string = ''; // <-- ¡AÑADIDO PARA EL FILTRO!
+  filterValue: string = '';
 
   displayedColumns: string[] = ['nombre', 'numControl', 'fechaRegistro', 'acciones'];
   dataSource = new MatTableDataSource<any>(); 
@@ -67,7 +69,8 @@ export class AsistenciaComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute, 
     private docenteService: DocenteService, 
     private location: Location, 
-    public dialog: MatDialog 
+    public dialog: MatDialog,
+    private snackBar: MatSnackBar // <--- Inyectamos el servicio de notificaciones
   ) { }
 
   ngOnInit(): void {
@@ -90,6 +93,7 @@ export class AsistenciaComponent implements OnInit, AfterViewInit {
       },
       error: (err) => {
         console.error("Error al cargar datos del grupo:", err);
+        this.mostrarNotificacion('Error al cargar datos del grupo', 'error');
         this.isLoading = false;
       }
     });
@@ -110,12 +114,13 @@ export class AsistenciaComponent implements OnInit, AfterViewInit {
       },
       error: (err) => {
         console.error("Error al cargar asistencias:", err);
+        this.mostrarNotificacion('No se pudieron cargar las asistencias', 'error');
         this.isLoading = false;
       }
     });
   }
 
-  applyFilter() { // <-- ¡LA FUNCIÓN CORRECTA (SIN $event)!
+  applyFilter() {   
     const filterValue = this.filterValue; 
     this.dataSource.filter = filterValue.trim().toLowerCase();
 
@@ -140,19 +145,34 @@ export class AsistenciaComponent implements OnInit, AfterViewInit {
     this.location.back();
   }
   
+  // --- AQUÍ ESTÁ LA MAGIA DEL DISEÑO BONITO ---
   eliminarAsistencia(asistencia: any): void {
     const nombreAlumno = asistencia.alumno?.NOMBRE || 'este alumno';
-    if (!confirm(`¿Estás seguro de que deseas eliminar la asistencia de "${nombreAlumno}"? Esta acción no se puede deshacer.`)) {
-      return;
-    }
-    this.docenteService.deleteAsistencia(asistencia.ID_ASISTENCIA).subscribe({
-      next: () => {
-        console.log('Asistencia eliminada');
-        this.cargarAsistencias(); 
-      },
-      error: (err) => {
-        console.error('Error al eliminar asistencia:', err);
-        alert('No se pudo eliminar la asistencia.');
+
+    // 1. Usamos el Dialog de Material en lugar de confirm() feo
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '350px',
+      data: {
+        title: 'Confirmar Eliminación',
+        message: `¿Estás seguro de que deseas eliminar la asistencia de "${nombreAlumno}"?`
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === true) {
+        // Si el usuario dijo "Sí", procedemos
+        this.docenteService.deleteAsistencia(asistencia.ID_ASISTENCIA).subscribe({
+          next: () => {
+            // 2. Usamos SnackBar en lugar de alert()
+            this.mostrarNotificacion('Asistencia eliminada correctamente', 'success');
+            this.cargarAsistencias(); 
+          },
+          error: (err) => {
+            console.error('Error al eliminar:', err);
+            const mensaje = err.error?.message || 'Error desconocido al eliminar.';
+            this.mostrarNotificacion(mensaje, 'error');
+          }
+        });
       }
     });
   }
@@ -169,8 +189,19 @@ export class AsistenciaComponent implements OnInit, AfterViewInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result === 'saved') {
+        this.mostrarNotificacion('Asistencia registrada manualmente', 'success');
         this.cargarAsistencias(); 
       }
+    });
+  }
+
+  // Función auxiliar para mostrar mensajes bonitos abajo
+  private mostrarNotificacion(mensaje: string, tipo: 'success' | 'error') {
+    this.snackBar.open(mensaje, 'Cerrar', {
+      duration: 4000,
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom',
+      panelClass: tipo === 'error' ? ['snack-error'] : ['snack-success']
     });
   }
 }

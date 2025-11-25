@@ -1,19 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterModule } from '@angular/router'; 
-import { DashboardService } from '../dashboard.service';  
-import { MatCardModule } from '@angular/material/card';
+import { ActivatedRoute, RouterModule } from '@angular/router';
+import { CommonModule, Location } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonModule } from '@angular/material/button';
-import { MatChipsModule } from '@angular/material/chips';   
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatCardModule } from '@angular/material/card';
+import { MatChipsModule } from '@angular/material/chips';
+import { Observable } from 'rxjs'; 
 
-interface AlumnoReporte {
-  NUM_CONTROL: string;
-  NOMBRE_ALUMNO: string;
-  ASISTIO: boolean;   
-}
+import { DocenteService } from '../docente.service';
+import { ConferenceService } from '../conference.service';
+import { GrupoService } from '../grupo.service';
 
 @Component({
   selector: 'app-reporte-alumnos',
@@ -21,60 +19,99 @@ interface AlumnoReporte {
   imports: [
     CommonModule,
     RouterModule,
-    MatCardModule,
     MatTableModule,
     MatIconModule,
-    MatProgressSpinnerModule,
     MatButtonModule,
-    MatChipsModule  
+    MatProgressSpinnerModule,
+    MatCardModule,
+    MatChipsModule
   ],
   templateUrl: './reporte-alumnos.component.html',
   styleUrls: ['./reporte-alumnos.component.css']
 })
 export class ReporteAlumnosComponent implements OnInit {
 
-  displayedColumns: string[] = ['num_control', 'nombre', 'estatus'];
-  reporteAlumnos: AlumnoReporte[] = [];
-
-  isLoading = true;
-  errorMessage: string | null = null;
-  conferenciaTitulo: string = 'Cargando...';
-  grupoNombre: string = 'Cargando...';
   idConferencia: number | null = null;
+  idGrupo: number | null = null;
+
+  nombreConferencia: string = 'Cargando...';
+  nombreGrupo: string = 'Cargando...';
+  docenteName: string = 'Cargando...';
+  
+  asistencias: any[] = [];
+  displayedColumns: string[] = ['foto', 'nombre', 'control', 'status', 'fecha'];
+  
+  isLoading = true;
+  errorMessage: string = '';
 
   constructor(
     private route: ActivatedRoute,
-    private dashboardService: DashboardService
-  ) { }
+    private location: Location,
+    private docenteService: DocenteService, 
+    private conferenceService: ConferenceService,
+    private grupoService: GrupoService
+  ) {}
 
   ngOnInit(): void {
-    const idConf = this.route.snapshot.paramMap.get('idConf');
-    const idGrupo = this.route.snapshot.paramMap.get('idGrupo');
-    
-    if (idConf && idGrupo) {
-      this.idConferencia = +idConf;
-      this.cargarReporte(+idConf, +idGrupo);
+    const idConfParam = this.route.snapshot.paramMap.get('idConferencia');
+    const idGrupoParam = this.route.snapshot.paramMap.get('idGrupo');
+
+    if (idConfParam && idGrupoParam) {
+      this.idConferencia = +idConfParam;
+      this.idGrupo = +idGrupoParam;
+      
+      this.cargarDatosCompletos();
     } else {
-      this.errorMessage = 'No se proporcionaron los IDs necesarios.';
+      this.errorMessage = 'Faltan parámetros en la URL.';
       this.isLoading = false;
     }
   }
 
-  cargarReporte(idConferencia: number, idGrupo: number): void {
+  cargarDatosCompletos() {
     this.isLoading = true;
-    this.errorMessage = null;
 
-    this.dashboardService.getReportePorAlumnos(idConferencia, idGrupo).subscribe({
-      next: (data: any) => {
-        this.conferenciaTitulo = data.conferencia.TITULO;
-        this.grupoNombre = data.grupo.NOMBRE_GRUPO;
-        this.reporteAlumnos = data.reporte_alumnos;
+    this.conferenceService.getConferences().subscribe({
+      next: (data: any[]) => {
+        const conf = data.find(c => c.ID_CONFERENCIA === this.idConferencia || c.id === this.idConferencia);
+        if (conf) this.nombreConferencia = conf.NOMBRE_CONFERENCIA;
+      }
+    });
+
+    this.grupoService.getGrupos().subscribe({
+      next: (data: any[]) => {
+        const grupo = data.find(g => g.ID_GRUPO === this.idGrupo);
+        if (grupo) this.nombreGrupo = grupo.NOMBRE;
+      }
+    });
+    
+    this.cargarDocente();
+   
+    this.docenteService.getAsistencias(this.idConferencia!, this.idGrupo!).subscribe({
+      next: (data) => {
+        this.asistencias = data;
         this.isLoading = false;
       },
-      error: (err: any) => {
-        this.errorMessage = 'No se pudo cargar el reporte de alumnos.';
+      error: (err) => {
+        console.error('Error cargando asistencias', err);
+        this.errorMessage = 'Error al cargar la lista de alumnos.';
         this.isLoading = false;
       }
     });
+  }
+
+  cargarDocente() {
+      this.grupoService.getDocenteByGroupId(this.idGrupo!).subscribe({
+          next: (data) => {
+              this.docenteName = data.docenteNombre;
+          },
+          error: (err) => {
+              console.error('Error cargando docente', err);
+              this.docenteName = 'No asignado / Error';
+          }
+      });
+  }
+
+  volver() {
+    this.location.back();
   }
 }

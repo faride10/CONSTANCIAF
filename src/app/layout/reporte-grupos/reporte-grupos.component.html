@@ -1,67 +1,52 @@
-<div class="p-6">
-  <mat-card class="shadow-xl rounded-lg">
-    <mat-card-header class="pb-4">
-      <mat-card-title class="text-2xl font-bold text-gray-800">
-        Reporte de Asistencia (Nivel 2)
-      </mat-card-title>
-      <mat-card-subtitle class="text-gray-500">
-        Conferencia: {{ conferenciaTitulo }}
-      </mat-card-subtitle>
-      <a mat-stroked-button routerLink="/panel/admin/reporte-asistencia" class="ml-auto">
-        <mat-icon>arrow_back</mat-icon>
-        Regresar a Conferencias
-      </a>
-    </mat-card-header>
+<div class="reporte-container" style="padding: 20px;">
 
-    <mat-card-content class="pt-4">
+  <div style="display: flex; align-items: center; margin-bottom: 20px;">
+    <button mat-icon-button (click)="volver()" style="margin-right: 10px;">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <div>
+      <h2 style="margin: 0; color: #1B396A;">Grupos Asignados</h2>
+      <p *ngIf="conferencia" style="margin: 0; color: #666;">
+        {{ conferencia.NOMBRE_CONFERENCIA }}
+      </p>
+    </div>
+  </div>
+
+  <div *ngIf="isLoading" style="text-align: center; margin-top: 40px;">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Cargando grupos...</p>
+  </div>
+
+  <div *ngIf="errorMessage" style="color: red; text-align: center; margin-top: 20px;">
+    <mat-icon style="font-size: 40px; height: 40px;">error_outline</mat-icon>
+    <p>{{ errorMessage }}</p>
+  </div>
+
+  <div *ngIf="!isLoading && !errorMessage" class="grupos-grid">
+    
+    <div *ngIf="grupos.length === 0" style="text-align: center; width: 100%; color: #888;">
+      <p>Esta conferencia no tiene grupos asignados.</p>
+    </div>
+
+    <mat-card *ngFor="let grupo of grupos" 
+              class="grupo-card"
+              style="margin-bottom: 15px; cursor: pointer; transition: transform 0.2s;"
+              [routerLink]="['/panel/admin/reporte-asistencia', idConferencia, 'grupo', grupo.ID_GRUPO]">
       
-      <div *ngIf="isLoading" class="flex justify-center items-center py-8">
-        <mat-spinner diameter="40"></mat-spinner>
-      </div>
+      <mat-card-content style="display: flex; align-items: center; padding: 16px;">
+        <div style="background-color: #e3f2fd; padding: 10px; border-radius: 50%; margin-right: 15px;">
+          <mat-icon style="color: #1565c0;">groups</mat-icon>
+        </div>
+        
+        <div style="flex: 1;">
+          <h3 style="margin: 0; font-weight: 600;">{{ grupo.NOMBRE }}</h3>
+          <p style="margin: 0; font-size: 0.9rem; color: #666;">{{ grupo.CARRERA }}</p>
+        </div>
 
-      <div *ngIf="errorMessage" class="p-4 bg-red-100 text-red-700">
-        {{ errorMessage }}
-      </div>
+        <mat-icon style="color: #ccc;">chevron_right</mat-icon>
+      </mat-card-content>
 
-      <div *ngIf="!isLoading && !errorMessage" class="overflow-x-auto">
-        <table mat-table [dataSource]="reporteGrupos" class="w-full">
-          
-          <ng-container matColumnDef="grupo">
-            <th mat-header-cell *matHeaderCellDef> Grupo </th>
-            <td mat-cell *matCellDef="let grupo"> {{ grupo.NOMBRE_GRUPO }} </td>
-          </ng-container>
+    </mat-card>
 
-          <ng-container matColumnDef="docente">
-            <th mat-header-cell *matHeaderCellDef> Docente a Cargo </th>
-            <td mat-cell *matCellDef="let grupo"> {{ grupo.DOCENTE_NOMBRE }} </td>
-          </ng-container>
-
-          <ng-container matColumnDef="resumen">
-            <th mat-header-cell *matHeaderCellDef> Asistencia </th>
-            <td mat-cell *matCellDef="let grupo" [ngClass]="{
-              'text-green-600 font-semibold': grupo.TOTAL_ASISTENCIAS === grupo.TOTAL_ALUMNOS,
-              'text-red-600': grupo.TOTAL_ASISTENCIAS === 0
-            }">
-              {{ grupo.TOTAL_ASISTENCIAS }} de {{ grupo.TOTAL_ALUMNOS }}
-            </td>
-          </ng-container>
-
-          <ng-container matColumnDef="acciones">
-            <th mat-header-cell *matHeaderCellDef> Acciones </th>
-            <td mat-cell *matCellDef="let grupo">
-              <a mat-icon-button color="primary" 
-                 [routerLink]="['/panel/admin/reporte-alumnos', idConferencia, grupo.ID_GRUPO]"
-                 aria-label="Ver detalle de alumnos">
-                <mat-icon>visibility</mat-icon>
-              </a>
-            </td>
-          </ng-container>
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-          
-        </table>
-      </div>
-
-    </mat-card-content>
-  </mat-card>
+  </div>
 </div>

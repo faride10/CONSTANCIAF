@@ -1,100 +1,109 @@
 .conference-list-container {
-  padding: 20px;
+  padding: 24px;
+  background-color: #f8f9fa;  
+  min-height: 100vh;
 }
 
-.header {
+.header-section {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
 }
 
-h2 {
+.page-title {
   margin: 0;
-  font-size: 1.7rem;
-  font-weight: 600;
+  font-size: 1.5rem;
+  font-weight: 500;
   color: #2c3e50;
 }
 
-.header button mat-icon {
+.header-section button mat-icon {
   margin-right: 8px;
 }
 
-.search-field {
-  width: 100%;
-  max-width: 380px;
-  margin-bottom: 20px;
-  font-size: 0.9rem;
-}
-::ng-deep .search-field .mat-mdc-text-field-wrapper {
-  height: 48px !important;
-  border-radius: 6px !important;
-}
-::ng-deep .search-field .mat-mdc-form-field-infix {
-  padding-top: 12px !important;
-  padding-bottom: 12px !important;
+.search-container {
+  margin-bottom: 16px;
 }
 
-.table-container {
-  overflow-x: auto;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+.search-field {
+  width: 40%;
   background-color: white;
+  border-radius: 4px;
+}
+
+::ng-deep .search-field .mat-mdc-text-field-wrapper {
+  background-color: white !important;
+}
+
+/* TABLA - CONTENEDOR */
+.table-container {
+  background-color: white;
+  border-radius: 4px; /* Bordes más sutiles como en Grupos */
+  box-shadow: 0 2px 1px -1px rgba(0,0,0,0.2), 0 1px 1px 0 rgba(0,0,0,0.14), 0 1px 3px 0 rgba(0,0,0,0.12); /* Sombra estándar de Material */
+  overflow: hidden;
 }
 
 table.mat-mdc-table {
   width: 100%;
 }
 
+/* ENCABEZADOS DE TABLA (HEADER) */
 th.mat-mdc-header-cell {
-  padding: 12px 16px;
+  padding: 0 16px; /* Sin padding vertical extra */
+  height: 56px; /* Altura estándar de Material */
   font-weight: 600;
-  color: #34495e;
-  background-color: #f8f9fa;
-  border-bottom: 2px solid #dee2e6;
-  text-align: left;
+  color: #424242; /* Color gris oscuro estándar */
+  background-color: white;
+  border-bottom: 1px solid #e0e0e0;
   font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
 }
 
+/* CELDAS DE DATOS (BODY) */
 td.mat-mdc-cell {
-  padding: 14px 16px;
-  border-bottom: 1px solid #e9ecef;
-  color: #495057;
+  padding: 0 16px; /* Quitamos el padding de 14px que la hacía gorda */
+  height: 48px; /* Altura compacta estándar */
+  border-bottom: 1px solid #e0e0e0;
+  color: #333;
   font-size: 0.875rem;
-  vertical-align: middle;
 }
 
-tr.mat-mdc-row:last-child td.mat-mdc-cell {
-  border-bottom: none;
+/* Filas - Efecto Hover opcional para mejor visualización */
+tr.mat-mdc-row:hover {
+  background-color: #f5f5f5;
 }
 
 .mat-column-acciones {
-  width: 140px;
-  text-align: center;
+  width: 140px;   
+  white-space: nowrap;  
+  text-align: center; 
+  padding-right: 8px !important;
 }
 
 td.mat-mdc-cell button.mat-mdc-icon-button {
-  width: 32px;
-  height: 32px;
-  line-height: 32px;
-}
-td.mat-mdc-cell button.mat-mdc-icon-button mat-icon {
-  font-size: 1.15rem;
-  line-height: 1;
-}
-td.mat-mdc-cell button:not(:last-child) {
-  margin-right: 6px;
+  display: inline-flex;   
+  align-items: center;
+  justify-content: center;
+  width: 45px;
+  height: 40px;
+  margin: 0 2px;  
 }
 
-.loading-indicator, .error-message {
-  text-align: center; padding: 2rem; font-style: italic; color: #6c757d;
+.loading-container {
+  display: flex;
+  justify-content: center;
+  padding: 40px;
 }
+
 .error-message {
-  background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;
-  border-radius: 4px; margin: 1rem 0;
+  padding: 16px;
+  background-color: #ffebee;
+  color: #c62828;
+  border: 1px solid #ffcdd2;
+  border-radius: 4px;
+  margin-bottom: 20px;
 }
-tr.mat-mdc-no-data-row td.mat-mdc-cell {
-  text-align: center; padding: 2rem; color: #6c757d; font-style: italic;
+
+.text-center {
+  text-align: center;
 }

@@ -1,79 +1,80 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterModule } from '@angular/router'; 
-import { DashboardService } from '../dashboard.service'; 
-import { AuthService } from '../auth.service';
-import { MatCardModule } from '@angular/material/card';
-import { MatTableModule } from '@angular/material/table'; 
+import { ActivatedRoute, RouterModule } from '@angular/router';
+import { CommonModule, Location } from '@angular/common';
+import { ConferenceService } from '../conference.service';
+import { GrupoService } from '../grupo.service'; 
 import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatButtonModule } from '@angular/material/button'; 
-
-interface GrupoReporte {
-  ID_GRUPO: number;
-  NOMBRE_GRUPO: string;
-  DOCENTE_NOMBRE: string;
-  TOTAL_ALUMNOS: number;
-  TOTAL_ASISTENCIAS: number;
-}
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-reporte-grupos',
   standalone: true,
   imports: [
-    CommonModule,
-    RouterModule,
-    MatCardModule,
-    MatTableModule,
-    MatIconModule,
+    CommonModule, 
+    RouterModule, 
+    MatIconModule, 
+    MatButtonModule, 
     MatProgressSpinnerModule,
-    MatButtonModule
+    MatCardModule
   ],
   templateUrl: './reporte-grupos.component.html',
   styleUrls: ['./reporte-grupos.component.css']
 })
 export class ReporteGruposComponent implements OnInit {
 
-  displayedColumns: string[] = ['grupo', 'docente', 'resumen', 'acciones'];
-  reporteGrupos: GrupoReporte[] = [];
-
-  isLoading = true;
-  errorMessage: string | null = null;
-  conferenciaTitulo: string = 'Cargando...';
   idConferencia: number | null = null;
+  conferencia: any = null;
+  grupos: any[] = []; 
+  
+  isLoading = true;
+  errorMessage: string = '';
 
   constructor(
-    private route: ActivatedRoute, 
-    private dashboardService: DashboardService,
-    private authService: AuthService  
-  ) { }
+    private route: ActivatedRoute,
+    private conferenceService: ConferenceService,
+    private location: Location
+  ) {}
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    
-    if (id) {
-      this.idConferencia = +id; 
-      this.cargarReporte(this.idConferencia);
+  
+    const idParam = this.route.snapshot.paramMap.get('idConferencia');
+
+    if (idParam) {
+      this.idConferencia = +idParam;
+      this.cargarDatos();
     } else {
-      this.errorMessage = 'No se proporcionó un ID de conferencia.';
+      this.errorMessage = 'No se proporcionó un ID de conferencia válido.';
       this.isLoading = false;
     }
   }
 
-  cargarReporte(idConferencia: number): void {
+  cargarDatos() {
     this.isLoading = true;
-    this.errorMessage = null;
-
-    this.dashboardService.getReportePorConferencia(idConferencia).subscribe({
-      next: (data: any) => {
-        this.conferenciaTitulo = data.conferencia.TITULO;
-        this.reporteGrupos = data.reporte_grupos;
+    
+    this.conferenceService.getConferences().subscribe({
+      next: (data: any[]) => {
+        const found = data.find(c => c.ID_CONFERENCIA === this.idConferencia || c.id === this.idConferencia);
+        
+        if (found) {
+          this.conferencia = found;
+   
+          this.grupos = found.grupos || []; 
+        } else {
+          this.errorMessage = 'Conferencia no encontrada.';
+        }
         this.isLoading = false;
       },
-      error: (err: any) => {
-        this.errorMessage = 'No se pudo cargar el reporte de grupos.';
+      error: (err) => {
+        console.error('Error cargando conferencia', err);
+        this.errorMessage = 'Error al conectar con el servidor.';
         this.isLoading = false;
       }
     });
+  }
+
+  volver() {
+    this.location.back();
   }
 }

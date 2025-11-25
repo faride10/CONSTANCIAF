@@ -9,7 +9,7 @@ import { GrupoService } from '../grupo.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
-import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
+import { ConfirmationDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-grupo-list',
@@ -68,7 +68,7 @@ export class GrupoListComponent implements OnInit {
   }
 
   eliminarGrupo(id: number, nombre: string): void {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '450px',
       data: { 
         title: 'Confirmar Eliminación', 

@@ -7,8 +7,9 @@ import { Observable } from 'rxjs';
 })
 export class PonenteService {
   
-  private apiUrl = 'http://127.0.0.1:8000/api/ponentes';
+  private apiUrl = 'HTTP_SERVER_ADDRESS/api';
 
+  
   constructor(private http: HttpClient) { }
 
   getPonentes(): Observable<any> {

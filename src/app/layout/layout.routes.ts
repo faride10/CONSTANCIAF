@@ -12,25 +12,26 @@ import { ReporteSeleccionComponent } from './reporte-seleccion/reporte-seleccion
 import { ReporteGruposComponent } from './reporte-grupos/reporte-grupos.component';
 import { ReporteAlumnosComponent } from './reporte-alumnos/reporte-alumnos.component';
 
+import { authGuard } from '../auth/auth.guard'; 
+
 export const LAYOUT_ROUTES: Routes = [
   {
     path: '',
-    component: MainLayoutComponent, 
-    children: [
+    component: MainLayoutComponent,
+    canActivate: [authGuard], 
+    children: [  
+      
       { path: 'admin', component: DashboardAdminComponent },
       { path: 'conferencias', component: ConferenceListComponent },
       { path: 'ponentes', component: PonenteListComponent },
       { path: 'grupos', component: GrupoListComponent },
-            { path: 'docentes', component: DocenteListComponent }, 
+      { path: 'docentes', component: DocenteListComponent }, 
   
-      { 
-        path: 'alumnos', 
-        loadComponent: () => import('./alumno-list/alumno-list.component').then(m => m.AlumnoListComponent) 
-      },
-      {
-        path: 'reporte-asistencia', 
-        component: ReporteSeleccionComponent
-      },
+      {  path: 'alumnos', loadComponent: () => import('./alumno-list/alumno-list.component').then(m => m.AlumnoListComponent) },
+
+      { path: 'reporte-asistencia', component: ReporteSeleccionComponent },
+      { path: 'reporte-asistencia/:idConferencia', component: ReporteGruposComponent },
+      { path: 'reporte-asistencia/:idConferencia/grupo/:idGrupo', component: ReporteAlumnosComponent },
 
       { path: '', redirectTo: 'admin', pathMatch: 'full' }
     ]

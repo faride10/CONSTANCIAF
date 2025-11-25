@@ -7,8 +7,9 @@ import { AuthService } from './auth.service';
 })
 export class GrupoService {
   
-  private apiUrl = 'http://127.0.0.1:8000/api'; 
+  private apiUrl = 'HTTP_SERVER_ADDRESS/api';
 
+  
   constructor(private http: HttpClient, private authService: AuthService) { }
 
   private getAuthHeaders(): HttpHeaders {
@@ -40,4 +41,9 @@ export class GrupoService {
   getDocentes(): Observable<any> {
     return this.http.get(`${this.apiUrl}/docentes`, { headers: this.getAuthHeaders() });
   }
+
+  getDocenteByGroupId(grupoId: number): Observable<any> {
+    const url = `${this.apiUrl}/grupo/${grupoId}/docente`;
+    return this.http.get(url, { headers: this.getAuthHeaders() });
+}
 }

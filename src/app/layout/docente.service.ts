@@ -7,8 +7,9 @@ import { AuthService } from './auth.service';
 })
 export class DocenteService {
 
-  private apiUrl = 'http://127.0.0.1:8000/api'; 
+  private apiUrl = 'HTTP_SERVER_ADDRESS/api';
 
+  
   constructor(private http: HttpClient, private authService: AuthService) { }
 
   private getAuthHeaders(): HttpHeaders {
@@ -48,6 +49,10 @@ export class DocenteService {
 
   getMiGrupo(): Observable<any> {
     return this.http.get(`${this.apiUrl}/docente/mi-grupo`, { headers: this.getAuthHeaders() });
+  }
+
+  getQrCode(idConferencia: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/conferencia/${idConferencia}/qr`, { headers: this.getAuthHeaders() });
   }
   
   getAsistencias(idConferencia: number, idGrupo: number): Observable<any[]> {

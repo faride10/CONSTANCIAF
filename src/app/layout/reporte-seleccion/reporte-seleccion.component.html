@@ -1,38 +1,38 @@
-<div class="p-6">
-  <mat-card class="shadow-xl rounded-lg">
-    <mat-card-header class="pb-4">
-      <mat-card-title class="text-2xl font-bold text-gray-800">
-        Reportes de Asistencia (Nivel 1)
-      </mat-card-title>
-      <mat-card-subtitle class="text-gray-500">
-        Selecciona una conferencia para auditar la asistencia por grupo.
-      </mat-card-subtitle>
-    </mat-card-header>
+<div class="reporte-container" style="padding: 20px;">
+  
+  <div class="header-section" style="margin-bottom: 20px;">
+    <h2>Reportes de Asistencia (Nivel 1)</h2>
+    <p style="color: #666;">Selecciona una conferencia para auditar la asistencia por grupo.</p>
+  </div>
 
-    <mat-card-content class="pt-4">
+  <div *ngIf="isLoading" style="text-align: center; margin-top: 30px;">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Cargando conferencias...</p>
+  </div>
+
+  <div *ngIf="!isLoading && conferencias.length === 0" style="text-align: center; margin-top: 30px; color: #888;">
+    <p>No hay conferencias registradas aún.</p>
+  </div>
+
+  <div *ngIf="!isLoading" class="conference-list">
+    
+    <div *ngFor="let conf of conferencias" 
+         class="conference-item"
+         style="background: white; padding: 15px; margin-bottom: 10px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); transition: all 0.2s;"
+         [routerLink]="['/panel/admin/reporte-asistencia', conf.ID_CONFERENCIA]">
+         
+      <mat-icon style="color: #1B396A; margin-right: 15px;">event_note</mat-icon>
       
-      <div *ngIf="isLoading" class="flex justify-center items-center py-8">
-        <mat-spinner diameter="40"></mat-spinner>
+      <div style="flex: 1;">
+        <h3 style="margin: 0; font-weight: 600; font-size: 1.1rem;">{{ conf.NOMBRE_CONFERENCIA }}</h3>
+        
+        <p *ngIf="conf.FECHA_HORA" style="margin: 0; color: #888; font-size: 0.9rem;">
+          {{ conf.FECHA_HORA | date:'mediumDate' }} - {{ conf.FECHA_HORA | date:'shortTime' }}
+        </p>
       </div>
 
-      <div *ngIf="errorMessage" class="p-4 bg-red-100 text-red-700">
-        {{ errorMessage }}
-      </div>
+      <mat-icon style="color: #ccc;">chevron_right</mat-icon>
+    </div>
 
-      <div *ngIf="!isLoading && !errorMessage">
-        <mat-list role="list">
-          <mat-list-item *ngFor="let conf of conferencias" 
-                         class="hover:bg-gray-100 rounded-md mb-2 shadow-sm border"
-                         role="listitem"
-                         [routerLink]="['../reporte-grupos', conf.ID_CONFERENCIA]">
-            
-            <mat-icon matListItemIcon class="text-blue-500">event_note</mat-icon>
-            <div matListItemTitle class="font-semibold">{{ conf.NOMBRE_CONFERENCIA }}</div>
-          
-          </mat-list-item>
-        </mat-list>
-      </div>
-
-    </mat-card-content>
-  </mat-card>
+  </div>
 </div>

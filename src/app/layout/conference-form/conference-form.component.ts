@@ -11,6 +11,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+
 import { GrupoService } from '../grupo.service';
 import { QrCodeDisplayComponent } from '../qr-code-display/qr-code-display.component';
 
@@ -109,26 +110,18 @@ export class ConferenceFormComponent implements OnInit {
 
     if (!this.currentConferenceId) return;
 
-this.conferenceService.getQrCodeData(this.currentConferenceId, grupoId).subscribe({
-  next: (data: any) => {
-    
-    // 1. IMPRIME ESTO PARA VER QUÉ LLEGA DEL SERVICIO (Opcional pero útil)
-    console.log('Respuesta del Backend:', data);
+    const grupoEncontrado = this.grupos.find(g => g.ID_GRUPO === grupoId);
+    const nombreGrupo = grupoEncontrado ? grupoEncontrado.NOMBRE : 'Grupo';
+    const nombreConferencia = this.conferenceForm.get('NOMBRE_CONFERENCIA')?.value;
 
     this.dialog.open(QrCodeDisplayComponent, {
       width: '400px',
-      // 2. EL CAMBIO CLAVE:
-      // En lugar de mapear manual (qrCodeBased64: data.qrCodeBased64...)
-      // Pasamos todo el objeto 'data' directamente.
-      data: data 
+      data: { 
+        idConferencia: this.currentConferenceId,  
+        nombreConferencia: nombreConferencia,     
+        nombreGrupo: nombreGrupo                
+      }
     });
-    
-  },
-  error: (err: any) => {
-    console.error('Error al generar QR:', err);
-    // ... tu manejo de errores
-  }
-});
   }
   
   isGrupoSelected(grupoId: number): boolean {
@@ -145,7 +138,7 @@ this.conferenceService.getQrCodeData(this.currentConferenceId, grupoId).subscrib
 
     fecha.setHours(parseInt(horas, 10));
     fecha.setMinutes(parseInt(minutos, 10));
-    fecha.setSeconds(0); // Reseteamos segundos
+    fecha.setSeconds(0);
 
     const payload = {
       ...formValues,  

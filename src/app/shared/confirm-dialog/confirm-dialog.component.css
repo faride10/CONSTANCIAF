@@ -1,3 +1,67 @@
-p {
-  margin-bottom: 0; 
+.dialog-container {
+  padding: 20px;
+  text-align: center;
+  background: #fff;
+  border-radius: 16px;
+}
+
+/* Icono Rojo */
+.icon-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.icon-bg {
+  background-color: #ffebee;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: bounceIn 0.5s;
+}
+
+.warning-icon {
+  color: #d32f2f;
+  font-size: 32px;
+  width: 32px;
+  height: 32px;
+}
+
+.dialog-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.dialog-content p {
+  font-size: 1rem;
+  color: #666;
+  margin: 0;
+}
+
+.dialog-actions {
+  margin-top: 20px;
+  gap: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+.btn-cancel {
+  border-radius: 50px;
+  color: #666;
+}
+
+.btn-confirm {
+  border-radius: 50px;
+  background-color: #d32f2f;
+  color: white;
+}
+
+@keyframes bounceIn {
+  0% { transform: scale(0.5); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
 }

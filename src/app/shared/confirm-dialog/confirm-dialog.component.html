@@ -1,13 +1,29 @@
-<h1 mat-dialog-title>{{ data.title }}</h1>
+<div class="dialog-container">
+  <!-- Icono animado -->
+  <div class="icon-wrapper">
+    <div class="icon-bg">
+      <mat-icon class="warning-icon">priority_high</mat-icon>
+    </div>
+  </div>
 
-<div mat-dialog-content>
-  <p>{{ data.message }}</p>
-</div>
+  <!-- Título -->
+  <h2 mat-dialog-title class="dialog-title">
+    {{ data.title || 'Confirmar' }}
+  </h2>
 
-<div mat-dialog-actions align="end">
-  <button mat-stroked-button (click)="onNoClick()">Cancelar</button>
-  
-  <button mat-flat-button color="warn" (click)="onYesClick()">
-    Eliminar
-  </button>
+  <!-- Mensaje -->
+  <mat-dialog-content class="dialog-content">
+    <p>{{ data.message }}</p>
+  </mat-dialog-content>
+
+  <!-- Botones -->
+  <mat-dialog-actions align="center" class="dialog-actions">
+    <button mat-stroked-button (click)="onNoClick()" class="btn-cancel">
+      Cancelar
+    </button>
+    
+    <button mat-flat-button color="warn" [mat-dialog-close]="true" class="btn-confirm">
+      Sí, eliminar
+    </button>
+  </mat-dialog-actions>
 </div>

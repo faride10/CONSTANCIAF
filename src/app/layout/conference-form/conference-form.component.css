@@ -1,4 +1,41 @@
-/* ... (Tus estilos existentes si tienes) ... */
+/* --- ESTRUCTURA DE REJILLA (GRID) --- */
+
+.conference-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  /* CAMBIO CLAVE: Aumentamos el margen superior a 20px o 24px */
+  /* Esto baja los campos para que las etiquetas de arriba no se corten */
+  margin-top: 24px; 
+  margin-bottom: 16px;
+}
+
+/* Asegura que los campos ocupen todo el ancho de su columna */
+mat-form-field {
+  width: 100%;
+  display: block; /* Importante para que tome el ancho completo */
+}
+
+/* Clase para el TEMA a ancho completo */
+.full-width {
+  grid-column: 1 / -1; 
+}
+
+/* Botón de cerrar (X) */
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+/* Ajuste para celulares */
+@media (max-width: 600px) {
+  .conference-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- TUS ESTILOS ORIGINALES --- */
 
 .form-label {
   font-weight: 500;
@@ -31,4 +68,10 @@
 
 .qr-button mat-icon {
   margin-right: 6px;
+}
+
+.form-error-message {
+  color: #f44336;
+  margin-top: 10px;
+  font-size: 14px;
 }

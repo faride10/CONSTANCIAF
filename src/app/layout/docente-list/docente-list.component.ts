@@ -8,7 +8,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { DocenteFormComponent } from '../docente-form/docente-form.component';
 import { DocenteService } from '../docente.service';
-import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
+import { ConfirmationDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
+
 import { DocenteImportComponent } from '../docente-import/docente-import.component';  
 
 @Component({
@@ -70,7 +71,7 @@ export class DocenteListComponent implements OnInit {
   }
 
   eliminarDocente(id: number, nombre: string): void {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '450px',
       data: { 
         title: 'Confirmar Eliminación', 
