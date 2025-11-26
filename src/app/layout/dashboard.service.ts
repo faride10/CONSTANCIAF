@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -9,9 +10,8 @@ import { AuthService } from './auth.service';
 
 export class DashboardService {
 
-private apiUrl = (process.env['HTTP_SERVER_ADDRESS']
-    ? `https://${process.env['HTTP_SERVER_ADDRESS']}/api`
-    : '/api');
+  private apiUrl = environment.apiUrl;   
+
   
   constructor(private http: HttpClient, private authService: AuthService) { }
 
