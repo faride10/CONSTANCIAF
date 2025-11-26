@@ -7,35 +7,36 @@ import { Observable } from 'rxjs';
 })
 export class ConferenceService {
   
-  private baseUrl = 'HTTP_SERVER_ADDRESS/api';
-
+private apiUrl = (process.env['HTTP_SERVER_ADDRESS']
+    ? `https://${process.env['HTTP_SERVER_ADDRESS']}/api`
+    : '/api');
 
   constructor(private http: HttpClient) { }
 
   getConferences(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/conferencias`);
+    return this.http.get(`${this.apiUrl}/conferencias`);
   }
 
   createConference(data: any): Observable<any> {
     const formattedData = this.formatData(data);
-    return this.http.post(`${this.baseUrl}/conferencias`, formattedData);
+    return this.http.post(`${this.apiUrl}/conferencias`, formattedData);
   }
 
   updateConference(id: number, data: any): Observable<any> {
     const formattedData = this.formatData(data);
-    return this.http.put(`${this.baseUrl}/conferencias/${id}`, formattedData); 
+    return this.http.put(`${this.apiUrl}/conferencias/${id}`, formattedData); 
   }
 
   deleteConference(id: number): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/conferencias/${id}`);
+    return this.http.delete(`${this.apiUrl}/conferencias/${id}`);
   }
 
   getPonentes(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/ponentes`); 
+    return this.http.get(`${this.apiUrl}/ponentes`); 
   }
 
   getQrCodeData(conferenceId: number, grupoId: number): Observable<any> {
-    return this.http.get(`${this.baseUrl}/conferencias/${conferenceId}/grupos/${grupoId}/qr-data`);
+    return this.http.get(`${this.apiUrl}/conferencias/${conferenceId}/grupos/${grupoId}/qr-data`);
   }
   
   private formatData(formData: any): any {

@@ -11,7 +11,9 @@ export class AuthService {
     private tokenKey = 'access_token'; 
     private userKey = 'usuario';       
 
-  private apiUrl = 'HTTP_SERVER_ADDRESS/api';
+  private apiUrl = (process.env['HTTP_SERVER_ADDRESS'] // Usa corchetes
+    ? `https://${process.env['HTTP_SERVER_ADDRESS']}/api` // Usa corchetes aquí también
+    : '/api');
 
   private _isAuthenticated = new BehaviorSubject<boolean>(this.isLoggedIn());
   public isAuthenticated = this._isAuthenticated.asObservable();

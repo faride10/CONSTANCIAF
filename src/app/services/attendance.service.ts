@@ -7,8 +7,9 @@ import { Observable } from 'rxjs';
 })
 export class AttendanceService {
 
-  private apiUrl = 'HTTP_SERVER_ADDRESS/api';
-
+private apiUrl = (process.env['HTTP_SERVER_ADDRESS']
+    ? `https://${process.env['HTTP_SERVER_ADDRESS']}/api`
+    : '/api');
 
   constructor(private http: HttpClient) { }
 
