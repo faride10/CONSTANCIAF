@@ -1,38 +1,39 @@
 <div class="reporte-container" style="padding: 20px;">
-  
-  <div class="header-section" style="margin-bottom: 20px;">
-    <h2>Reportes de Asistencia (Nivel 1)</h2>
-    <p style="color: #666;">Selecciona una conferencia para auditar la asistencia por grupo.</p>
-  </div>
+  
+  <div class="header-section" style="margin-bottom: 20px;">
+    <h2>Reportes de Asistencia (Nivel 1)</h2>
+    <p style="color: #666;">Selecciona una conferencia para auditar la asistencia por grupo.</p>
+  </div>
 
-  <div *ngIf="isLoading" style="text-align: center; margin-top: 30px;">
-    <mat-spinner diameter="40"></mat-spinner>
-    <p>Cargando conferencias...</p>
-  </div>
+  <div *ngIf="isLoading" style="text-align: center; margin-top: 30px;">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Cargando conferencias...</p>
+  </div>
 
-  <div *ngIf="!isLoading && conferencias.length === 0" style="text-align: center; margin-top: 30px; color: #888;">
-    <p>No hay conferencias registradas aún.</p>
-  </div>
+  <div *ngIf="!isLoading && conferencias.length === 0" style="text-align: center; margin-top: 30px; color: #888;">
+    <p>No hay conferencias registradas aún.</p>
+    
+  </div>
 
-  <div *ngIf="!isLoading" class="conference-list">
-    
-    <div *ngFor="let conf of conferencias" 
-         class="conference-item"
-         style="background: white; padding: 15px; margin-bottom: 10px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); transition: all 0.2s;"
-         [routerLink]="['/panel/admin/reporte-asistencia', conf.ID_CONFERENCIA]">
-         
-      <mat-icon style="color: #1B396A; margin-right: 15px;">event_note</mat-icon>
-      
-      <div style="flex: 1;">
-        <h3 style="margin: 0; font-weight: 600; font-size: 1.1rem;">{{ conf.NOMBRE_CONFERENCIA }}</h3>
-        
-        <p *ngIf="conf.FECHA_HORA" style="margin: 0; color: #888; font-size: 0.9rem;">
-          {{ conf.FECHA_HORA | date:'mediumDate' }} - {{ conf.FECHA_HORA | date:'shortTime' }}
-        </p>
-      </div>
+  <div *ngIf="!isLoading" class="conference-list">
+    
+    <div *ngFor="let conf of conferencias" 
+         class="conference-item"
+         style="background: white; padding: 15px; margin-bottom: 10px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); transition: all 0.2s;"
+                  [routerLink]="['/panel/admin/reporte-asistencia', conf.id_conferencia]">
+         
+      <mat-icon style="color: #1B396A; margin-right: 15px;">event_note</mat-icon>
+      
+      <div style="flex: 1;">
+                <h3 style="margin: 0; font-weight: 600; font-size: 1.1rem;">{{ conf.nombre_conferencia }}</h3>
+        
+        <p *ngIf="conf.fecha_hora" style="margin: 0; color: #888; font-size: 0.9rem;">
+                    {{ conf.fecha_hora | date:'mediumDate' }} - {{ conf.fecha_hora | date:'shortTime' }}
+        </p>
+      </div>
 
-      <mat-icon style="color: #ccc;">chevron_right</mat-icon>
-    </div>
+      <mat-icon style="color: #ccc;">chevron_right</mat-icon>
+    </div>
 
-  </div>
+  </div>
 </div>

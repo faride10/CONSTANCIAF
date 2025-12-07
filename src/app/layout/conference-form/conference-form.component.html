@@ -1,101 +1,101 @@
 <h2 mat-dialog-title>
-  {{ isEditMode ? 'Editar Conferencia' : 'Nueva Conferencia' }}
-  <button mat-icon-button class="close-button" (click)="onCancel()" aria-label="Cerrar">
-    <mat-icon>close</mat-icon>
-  </button>
+  {{ isEditMode ? 'Editar Conferencia' : 'Nueva Conferencia' }}
+  <button mat-icon-button class="close-button" (click)="onCancel()" aria-label="Cerrar">
+    <mat-icon>close</mat-icon>
+  </button>
 </h2>
 
 <mat-dialog-content class="mat-typography">
-  <form [formGroup]="conferenceForm">
-    
-    <div class="conference-grid">
+  <form [formGroup]="conferenceForm">
+    
+    <div class="conference-grid">
 
-      <mat-form-field appearance="outline">
-        <mat-label>Nombre de la Conferencia</mat-label>
-        <input matInput formControlName="NOMBRE_CONFERENCIA" required>
-        <mat-error *ngIf="conferenceForm.get('NOMBRE_CONFERENCIA')?.hasError('required')">
-          El nombre es requerido.
-        </mat-error>
-      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Nombre de la Conferencia</mat-label>
+                <input matInput formControlName="nombre_conferencia" required>
+                <mat-error *ngIf="conferenceForm.get('nombre_conferencia')?.hasError('required')">
+          El nombre es requerido.
+        </mat-error>
+      </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Lugar</mat-label>
-        <input matInput formControlName="LUGAR" required>
-        <mat-error *ngIf="conferenceForm.get('LUGAR')?.hasError('required')">
-          El lugar es requerido.
-        </mat-error>
-      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Lugar</mat-label>
+                <input matInput formControlName="lugar" required>
+                <mat-error *ngIf="conferenceForm.get('lugar')?.hasError('required')">
+          El lugar es requerido.
+        </mat-error>
+      </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Fecha</mat-label>
-        <input matInput [matDatepicker]="picker" formControlName="FECHA" required readonly>
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-        <mat-error *ngIf="conferenceForm.get('FECHA')?.hasError('required')">
-          La fecha es requerida.
-        </mat-error>
-      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Fecha</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="fecha" required readonly>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+                <mat-error *ngIf="conferenceForm.get('fecha')?.hasError('required')">
+          La fecha es requerida.
+        </mat-error>
+      </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Hora</mat-label>
-        <input matInput type="time" formControlName="HORA" required placeholder="HH:mm">
-        <mat-error *ngIf="conferenceForm.get('HORA')?.hasError('required')">
-          La hora es requerida.
-        </mat-error>
-      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Hora</mat-label>
+                <input matInput type="time" formControlName="hora" required placeholder="HH:mm">
+                <mat-error *ngIf="conferenceForm.get('hora')?.hasError('required')">
+          La hora es requerida.
+        </mat-error>
+      </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Num. de Participantes</mat-label>
-        <input matInput type="number" formControlName="NUM_PARTICIPANTES">
-        <mat-error *ngIf="conferenceForm.get('NUM_PARTICIPANTES')?.hasError('pattern')">
-          Debe ser un número.
-        </mat-error>
-      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Num. de Participantes</mat-label>
+                <input matInput type="number" formControlName="num_participantes">
+                <mat-error *ngIf="conferenceForm.get('num_participantes')?.hasError('pattern')">
+          Debe ser un número.
+        </mat-error>
+      </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Ponente</mat-label>
-        <mat-select formControlName="ID_PONENTE">
-          <mat-option [value]="null">-- Selecciona un ponente --</mat-option>
-          <mat-option *ngFor="let ponente of ponentes" [value]="ponente.ID_PONENTE">
-            {{ ponente.NOMBRE }}
-          </mat-option>
-        </mat-select>
-        <mat-hint *ngIf="isLoadingPonentes">Cargando ponentes...</mat-hint>
-      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Ponente</mat-label>
+                <mat-select formControlName="id_ponente">
+          <mat-option [value]="null">-- Selecciona un ponente --</mat-option>
+                              <mat-option *ngFor="let ponente of ponentes" [value]="ponente.id_ponente">
+            {{ ponente.nombre }}
+          </mat-option>
+        </mat-select>
+        <mat-hint *ngIf="isLoadingPonentes">Cargando ponentes...</mat-hint>
+      </mat-form-field>
 
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Tema</mat-label>
-        <textarea matInput formControlName="TEMA" rows="3"></textarea>
-      </mat-form-field>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Tema</mat-label>
+                <textarea matInput formControlName="tema" rows="3"></textarea>
+      </mat-form-field>
 
-    </div>
-    <div class="grupos-section">
-      <label id="grupos-label" class="form-label">Grupos Asignados</label>
-      <mat-selection-list formControlName="grupos" aria-labelledby="grupos-label" class="grupo-selection-list">
-        <mat-list-option *ngFor="let grupo of grupos" [value]="grupo.ID_GRUPO" checkboxPosition="before">
-          <div class="grupo-option-container">
-            <span>{{ grupo.NOMBRE }}</span>
-            <button *ngIf="isEditMode && isGrupoSelected(grupo.ID_GRUPO)" 
-                    mat-stroked-button color="primary" class="qr-button"
-                    (click)="onGenerateQr(grupo.ID_GRUPO, $event)">
-              <mat-icon>qr_code_2</mat-icon> Ver QR
-            </button>
-          </div>
-        </mat-list-option>
-      </mat-selection-list>
-      <mat-hint *ngIf="grupos.length === 0">Cargando grupos...</mat-hint>
-    </div>
+    </div>
+    <div class="grupos-section">
+      <label id="grupos-label" class="form-label">Grupos Asignados</label>
+            <mat-selection-list formControlName="grupos" aria-labelledby="grupos-label" class="grupo-selection-list">
+        <mat-list-option *ngFor="let grupo of grupos" [value]="grupo.id_grupo" checkboxPosition="before">
+          <div class="grupo-option-container">
+                        <span>{{ grupo.nombre }}</span>
+                        <button *ngIf="isEditMode && isGrupoSelected(grupo.id_grupo)" 
+                    mat-stroked-button color="primary" class="qr-button"
+                                        (click)="onGenerateQr(grupo.id_grupo, $event)">
+              <mat-icon>qr_code_2</mat-icon> Ver QR
+            </button>
+          </div>
+        </mat-list-option>
+      </mat-selection-list>
+      <mat-hint *ngIf="grupos.length === 0">Cargando grupos...</mat-hint>
+    </div>
 
-    <div *ngIf="errorMessage" class="form-error-message">
-      {{ errorMessage }}
-    </div>
+    <div *ngIf="errorMessage" class="form-error-message">
+      {{ errorMessage }}
+    </div>
 
-  </form>
+  </form>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-  <button mat-button (click)="onCancel()">Cancelar</button>
-  <button mat-flat-button color="primary" (click)="onSave()" [disabled]="conferenceForm.invalid || isLoadingPonentes">
-    Guardar
-  </button>
+  <button mat-button (click)="onCancel()">Cancelar</button>
+  <button mat-flat-button color="primary" (click)="onSave()" [disabled]="conferenceForm.invalid || isLoadingPonentes">
+    Guardar
+  </button>
 </mat-dialog-actions>

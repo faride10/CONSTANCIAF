@@ -55,31 +55,31 @@ export class ConferenceFormComponent implements OnInit {
     if (data && data.conferenceData) {
       this.isEditMode = true;
       const conference = data.conferenceData;
-      this.currentConferenceId = conference.ID_CONFERENCIA;
+      this.currentConferenceId = conference.id_conferencia;
       
-      const fechaHora = conference.FECHA_HORA ? new Date(conference.FECHA_HORA) : null;
+      const fechaHora = conference.fecha_hora ? new Date(conference.fecha_hora) : null;
 
       this.conferenceForm = this.fb.group({
-        FECHA: [fechaHora, Validators.required],
-        HORA: [fechaHora ? fechaHora.toTimeString().substring(0, 5) : null, Validators.required],
-        NOMBRE_CONFERENCIA: [conference.NOMBRE_CONFERENCIA, Validators.required],
-        TEMA: [conference.TEMA],
-        LUGAR: [conference.LUGAR, Validators.required],
-        NUM_PARTICIPANTES: [conference.NUM_PARTICIPANTES, Validators.pattern('^[0-9]*$')],
-        ID_PONENTE: [conference.ID_PONENTE],
-        grupos: [conference.grupos ? conference.grupos.map((g: any) => g.ID_GRUPO) : []] 
+        fecha: [fechaHora, Validators.required],
+        hora: [fechaHora ? fechaHora.toTimeString().substring(0, 5) : null, Validators.required],
+        nombre_conferencia: [conference.nombre_conferencia, Validators.required],
+        tema: [conference.TEMA],
+        lugar: [conference.lugar, Validators.required],
+        num_participantes: [conference.num_participantes, Validators.pattern('^[0-9]*$')],
+        id_ponente: [conference.id_ponente],
+        grupos: [conference.grupos ? conference.grupos.map((g: any) => g.id_grupo) : []] 
       });
 
     } else {
       this.isEditMode = false;
       this.conferenceForm = this.fb.group({
-        NOMBRE_CONFERENCIA: ['', Validators.required],
-        TEMA: [''],
-        FECHA: [null, Validators.required],
-        HORA: [null, Validators.required],
-        LUGAR: ['', Validators.required],
-        NUM_PARTICIPANTES: [null, Validators.pattern('^[0-9]*$')],
-        ID_PONENTE: [null],
+        nombre_conferencia: ['', Validators.required],
+        tea: [''],
+        fecha: [null, Validators.required],
+        hora: [null, Validators.required],
+        lugar: ['', Validators.required],
+        num_participantes: [null, Validators.pattern('^[0-9]*$')],
+        id_ponente: [null],
         grupos: [[]] 
       });
     }
@@ -110,9 +110,9 @@ export class ConferenceFormComponent implements OnInit {
 
     if (!this.currentConferenceId) return;
 
-    const grupoEncontrado = this.grupos.find(g => g.ID_GRUPO === grupoId);
+    const grupoEncontrado = this.grupos.find(g => g.id_grupo === grupoId);
     const nombreGrupo = grupoEncontrado ? grupoEncontrado.NOMBRE : 'Grupo';
-    const nombreConferencia = this.conferenceForm.get('NOMBRE_CONFERENCIA')?.value;
+    const nombreConferencia = this.conferenceForm.get('nombre_conferencia')?.value;
 
     this.dialog.open(QrCodeDisplayComponent, {
       width: '400px',
@@ -132,9 +132,9 @@ export class ConferenceFormComponent implements OnInit {
   private prepareSaveData(): any {
     const formValues = this.conferenceForm.value;
 
-    const fecha = new Date(formValues.FECHA);
+    const fecha = new Date(formValues.fecha);
     
-    const [horas, minutos] = formValues.HORA.split(':');
+    const [horas, minutos] = formValues.hora.split(':');
 
     fecha.setHours(parseInt(horas, 10));
     fecha.setMinutes(parseInt(minutos, 10));
@@ -142,9 +142,9 @@ export class ConferenceFormComponent implements OnInit {
 
     const payload = {
       ...formValues,  
-      FECHA_HORA: fecha.toISOString().slice(0, 19).replace('T', ' '),   
-      FECHA: undefined,   
-      HORA: undefined     
+      fecha_hora: fecha.toISOString().slice(0, 19).replace('T', ' '),   
+      fecha: undefined,   
+      hora: undefined     
     };
     
     return payload;

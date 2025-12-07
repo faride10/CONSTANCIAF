@@ -45,10 +45,10 @@ export class DocentePerfilComponent implements OnInit {
     private docenteService: DocenteService
   ) {
     this.infoForm = this.fb.group({
-      NOMBRE: [{value: '', disabled: true}],  
-      RFC: [{value: '', disabled: true}],     
-      CORREO: ['', [Validators.required, Validators.email]],
-      TELEFONO: ['', [Validators.pattern('^[0-9]{10}$')]]
+      nombre: [{value: '', disabled: true}],  
+      rfc: [{value: '', disabled: true}],     
+      correo: ['', [Validators.required, Validators.email]],
+      telefono: ['', [Validators.pattern('^[0-9]{10}$')]]
     });
 
     this.passwordForm = this.fb.group({
@@ -69,10 +69,10 @@ export class DocentePerfilComponent implements OnInit {
       next: (data: any) => {
         this.docenteData = data;
         this.infoForm.patchValue({
-          NOMBRE: data.NOMBRE,
-          RFC: data.RFC,
-          CORREO: data.CORREO,
-          TELEFONO: data.TELEFONO
+          nombre: data.nombre,
+          rfc: data.rfc,
+          correo: data.correo,
+          telefono: data.telefono
         });
         this.isLoading = false;
       },
@@ -137,7 +137,6 @@ export class DocentePerfilComponent implements OnInit {
     });
   }
 
-  // 3. CAMBIO: Usamos SweetAlert en lugar de snackBar
   mostrarNotificacion(mensaje: string, tipo: 'success' | 'error' = 'success') {
     
     if (tipo === 'success') {

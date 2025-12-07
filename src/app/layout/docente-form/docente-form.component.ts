@@ -31,11 +31,11 @@ export class DocenteFormComponent implements OnInit {
   ) {
 
     this.docenteForm = this.fb.group({
-      ID_DOCENTE: [null],
-      NOMBRE: ['', [Validators.required, Validators.maxLength(200)]],
-      RFC: ['', [Validators.required, Validators.maxLength(13)]],
-      CORREO: [null, [Validators.email, Validators.maxLength(200)]],
-      TELEFONO: [null, [Validators.maxLength(30)]]
+      id_docente: [null],
+      nombre: ['', [Validators.required, Validators.maxLength(200)]],
+      rfc: ['', [Validators.required, Validators.maxLength(13)]],
+      correo: [null, [Validators.email, Validators.maxLength(200)]],
+      telefono: [null, [Validators.maxLength(30)]]
     });
 
     if (this.data) {
@@ -54,7 +54,7 @@ export class DocenteFormComponent implements OnInit {
     const docenteData = this.docenteForm.value;
 
     if (this.isEditMode) {
-      this.docenteService.updateDocente(docenteData.ID_DOCENTE, docenteData).subscribe(() => {
+      this.docenteService.updateDocente(docenteData.id_docente, docenteData).subscribe(() => {
         this.dialogRef.close(true); 
       });
     } else {

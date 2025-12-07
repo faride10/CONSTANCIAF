@@ -88,7 +88,7 @@ export class AuthService {
 
   public getRole(): string | null {
     const usuario = this.getUsuario();
-    return usuario && usuario.rol ? usuario.rol.NOMBRE_ROL : null;
+    return usuario && usuario.rol ? usuario.rol.nombre_rol : null;
   }
 
   public needsPasswordChange(): boolean {

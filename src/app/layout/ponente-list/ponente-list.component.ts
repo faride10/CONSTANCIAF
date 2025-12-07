@@ -84,7 +84,6 @@ export class PonenteListComponent implements OnInit, AfterViewInit {
 
   openPonenteForm(ponente?: any): void {
     const dialogRef = this.dialog.open(PonenteFormComponent, {
-      // ACTUALIZACIÓN: Modal más ancho para mejor visualización
       width: '800px', 
       maxWidth: '95vw',
       data: { ponenteData: ponente }
@@ -102,14 +101,14 @@ export class PonenteListComponent implements OnInit, AfterViewInit {
       width: '350px',
       data: {
         title: 'Confirmar Eliminación',
-        message: `¿Estás seguro de eliminar al ponente "${ponente.NOMBRE}"?`
+        message: `¿Estás seguro de eliminar al ponente "${ponente.nombre}"?`
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.isLoading = true;
-        this.ponenteService.deletePonente(ponente.ID_PONENTE).subscribe({
+        this.ponenteService.deletePonente(ponente.id_ponente).subscribe({
           next: () => {
             console.log('Ponente eliminado');
             this.loadPonentes();

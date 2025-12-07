@@ -68,9 +68,9 @@ export class DocenteService {
   }
 
   createAsistenciaManual(asistenciaData: { 
-    ID_CONFERENCIA: number, 
-    ID_GRUPO: number, 
-    NUM_CONTROL: string 
+    id_conferencia: number, 
+    id_grupo: number, 
+    num_control: string 
   }): Observable<any> {
     
     const url = `${this.apiUrl}/asistencias`;

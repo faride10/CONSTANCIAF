@@ -27,7 +27,7 @@ import { ConfirmationDialogComponent } from '../../shared/confirm-dialog/confirm
   styleUrls: ['./grupo-list.component.css']
 })
 export class GrupoListComponent implements OnInit {
-  displayedColumns: string[] = ['NOMBRE', 'CARRERA', 'docente', 'acciones'];
+  displayedColumns: string[] = ['nombre', 'carrera', 'docente', 'acciones'];
   dataSource: MatTableDataSource<any>;
 
   constructor(

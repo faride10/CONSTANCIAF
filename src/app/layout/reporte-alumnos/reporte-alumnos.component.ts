@@ -72,15 +72,15 @@ export class ReporteAlumnosComponent implements OnInit {
 
     this.conferenceService.getConferences().subscribe({
       next: (data: any[]) => {
-        const conf = data.find(c => c.ID_CONFERENCIA === this.idConferencia || c.id === this.idConferencia);
-        if (conf) this.nombreConferencia = conf.NOMBRE_CONFERENCIA;
+        const conf = data.find(c => c.id_conferencia === this.idConferencia || c.id === this.idConferencia);
+        if (conf) this.nombreConferencia = conf.nombre_conferencia;
       }
     });
 
     this.grupoService.getGrupos().subscribe({
       next: (data: any[]) => {
-        const grupo = data.find(g => g.ID_GRUPO === this.idGrupo);
-        if (grupo) this.nombreGrupo = grupo.NOMBRE;
+        const grupo = data.find(g => g.id_grupo === this.idGrupo);
+        if (grupo) this.nombreGrupo = grupo.nombre;
       }
     });
     

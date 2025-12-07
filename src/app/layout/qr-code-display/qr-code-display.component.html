@@ -3,7 +3,6 @@
 <mat-dialog-content>
   <div style="display: flex; flex-direction: column; align-items: center; padding-bottom: 20px;">
     
-    <!-- Títulos Informativos -->
     <p style="font-size: 1.2rem; font-weight: bold; margin: 0; color: #1B396A; text-align: center;">
       {{ conferenciaTitulo }}
     </p>
@@ -11,31 +10,24 @@
       Grupo: {{ grupoNombre }}
     </p>
 
-    <!-- 1. SPINNER DE CARGA -->
     <div *ngIf="isLoading" style="margin: 30px 0;">
       <mat-progress-spinner mode="indeterminate" diameter="50"></mat-progress-spinner>
     </div>
 
-    <!-- 2. MENSAJE DE ERROR -->
     <p *ngIf="errorMessage" style="color: red; font-weight: bold; text-align: center;">
       {{ errorMessage }}
     </p>
 
-    <!-- 3. CASO ADMIN: Imagen Base64 (Lo que ya traía el modal) -->
-    <!-- Se muestra si NO está cargando Y existe la variable qrImage -->
     <img *ngIf="!isLoading && qrImage" 
          [src]="qrImage" 
          alt="QR Asistencia"
          style="width: 250px; height: 250px; margin: 10px 0; object-fit: contain;" />
 
-    <!-- 4. CASO DOCENTE: SVG HTML (Lo que descargamos del servidor) -->
-    <!-- Se muestra si NO está cargando Y existe la variable qrHtml -->
     <div *ngIf="!isLoading && qrHtml" 
          [innerHTML]="qrHtml" 
          style="margin: 10px 0; display: flex; justify-content: center;">
     </div>
 
-    <!-- Instrucciones -->
     <p style="text-align: center; color: #555; font-size: 0.9rem; margin-top: 10px;">
       Los alumnos deben escanear este código<br>para registrar su asistencia.
     </p>

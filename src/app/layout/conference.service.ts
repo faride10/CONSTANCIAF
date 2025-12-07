@@ -43,9 +43,9 @@ export class ConferenceService {
   private formatData(formData: any): any {
     const dataToSend = { ...formData };
 
-    if (formData.FECHA && formData.HORA) {
-      const fecha = new Date(formData.FECHA);
-      const [horas, minutos] = formData.HORA.split(':');
+    if (formData.fecha && formData.hora) {
+      const fecha = new Date(formData.fecha);
+      const [horas, minutos] = formData.hora.split(':');
       fecha.setHours(Number(horas));
       fecha.setMinutes(Number(minutos));
       
@@ -56,11 +56,11 @@ export class ConferenceService {
       const mins = String(fecha.getMinutes()).padStart(2, '0');
       const secs = '00';
 
-      dataToSend.FECHA_HORA = `${year}-${month}-${day} ${hours}:${mins}:${secs}`;
+      dataToSend.fecha_hora = `${year}-${month}-${day} ${hours}:${mins}:${secs}`;
     }
     
-    delete dataToSend.FECHA;
-    delete dataToSend.HORA;
+    delete dataToSend.fecha;
+    delete dataToSend.hora;
 
     return dataToSend;
   }

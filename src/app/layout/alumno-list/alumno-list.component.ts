@@ -26,7 +26,7 @@ import { AlumnoImportComponent } from '../alumno-import/alumno-import.component'
 })
 export class AlumnoListComponent implements OnInit {
 
-  displayedColumns: string[] = ['NOMBRE', 'NUM_CONTROL', 'CORREO_INSTITUCIONAL', 'grupo', 'acciones'];
+  displayedColumns: string[] = ['nombre', 'num_control', 'correo_institucional', 'grupo', 'acciones'];
   dataSource: MatTableDataSource<any>;
 
   constructor(

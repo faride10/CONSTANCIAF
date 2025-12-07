@@ -65,30 +65,23 @@ export class ChangePasswordComponent {
       password_confirmation: this.changePasswordForm.value.password_confirmation
     };
 
-    // LLAMADA AL SERVICIO Y MANEJO DE LA RESPUESTA
     this.authService.changePassword(newPasswordData).subscribe({
-      next: (response: any) => { // ⬅️ Tipado añadido
-        // ÉXITO: El servidor respondió 200 OK
+      next: (response: any) => { 
         console.log('Cambio de contraseña exitoso:', response);
         this.successMessage = response.message || 'Contraseña actualizada correctamente.';
         
-        // Cierra la sesión y redirige al login.
         this.authService.logout(); 
         setTimeout(() => {
           this.router.navigate(['/auth/login']);
         }, 2000); 
       },
-      error: (err: any) => { // ⬅️ Tipado añadido
-        // FALLA: Captura el error (401 o 422) que devuelve Laravel
+      error: (err: any) => { 
         console.error('Error al cambiar la contraseña:', err);
 
-        // Si es 422 (validación), muestra los errores específicos
         if (err.status === 422 && err.error && err.error.errors) {
           this.errorMessage = 'Error de validación: ' + Object.values(err.error.errors).flat().join(' ');
         } else {
-          // Si es 401 u otro error, muestra un mensaje genérico.
           this.errorMessage = 'Error de conexión o autenticación. Por favor, vuelve a iniciar sesión.';
-          // Se recomienda forzar el logout aquí si es 401
           this.authService.logout(); 
         }
       }

@@ -1,67 +1,67 @@
 <mat-sidenav-container class="layout-container">
 
-  <mat-sidenav mode="side" opened class="sidenav">
-    <div class="sidenav-header">
-      <img src="assets/images/logo_tecblanco.png" alt="Logo TecNM">
-    </div>
-    <mat-nav-list>
-      <a mat-list-item routerLink="admin" routerLinkActive="active-link">
-        <mat-icon matListItemIcon>dashboard</mat-icon>
-        <span matListItemTitle>PANEL</span>
-      </a>
-      <a mat-list-item routerLink="conferencias" routerLinkActive="active-link">
-        <mat-icon matListItemIcon>event</mat-icon>
-        <span matListItemTitle>CONFERENCIAS</span>
-      </a>
-      <a mat-list-item routerLink="ponentes" routerLinkActive="active-link">
-        <mat-icon matListItemIcon>person</mat-icon>
-        <span matListItemTitle>PONENTES</span>
-      </a>
-      <a mat-list-item routerLink="grupos" routerLinkActive="active-link">
-        <mat-icon matListItemIcon>group</mat-icon>
-        <span matListItemTitle>GRUPOS</span>
-      </a>
-      <a mat-list-item routerLink="alumnos" routerLinkActive="active-link">
-        <mat-icon matListItemIcon>school</mat-icon>
-        <span matListItemTitle>ALUMNOS</span>
-      </a>
-      <a mat-list-item routerLink="reporte-asistencia" routerLinkActive="active-link">
-        <mat-icon matListItemIcon>analytics</mat-icon>
-        <span matListItemTitle>REPORTE ASISTENCIA</span>
-      </a>
+  <mat-sidenav mode="side" opened class="sidenav">
+    <div class="sidenav-header">
+      <img src="assets/images/logo_tecblanco.png" alt="Logo TecNM">
+    </div>
+    <mat-nav-list>
+      <a mat-list-item routerLink="admin" routerLinkActive="active-link">
+        <mat-icon matListItemIcon>dashboard</mat-icon>
+        <span matListItemTitle>PANEL</span>
+      </a>
+      <a mat-list-item routerLink="conferencias" routerLinkActive="active-link">
+        <mat-icon matListItemIcon>event</mat-icon>
+        <span matListItemTitle>CONFERENCIAS</span>
+      </a>
+      <a mat-list-item routerLink="ponentes" routerLinkActive="active-link">
+        <mat-icon matListItemIcon>person</mat-icon>
+        <span matListItemTitle>PONENTES</span>
+      </a>
+      <a mat-list-item routerLink="grupos" routerLinkActive="active-link">
+        <mat-icon matListItemIcon>group</mat-icon>
+        <span matListItemTitle>GRUPOS</span>
+      </a>
+      <a mat-list-item routerLink="alumnos" routerLinkActive="active-link">
+        <mat-icon matListItemIcon>school</mat-icon>
+        <span matListItemTitle>ALUMNOS</span>
+      </a>
+      <a mat-list-item routerLink="reporte-asistencia" routerLinkActive="active-link">
+        <mat-icon matListItemIcon>analytics</mat-icon>
+        <span matListItemTitle>REPORTE ASISTENCIA</span>
+      </a>
 
-      <mat-divider></mat-divider>
+      <mat-divider></mat-divider>
 
-      <mat-divider></mat-divider>
-      <a mat-list-item routerLink="docentes" routerLinkActive="active-link">
-        <mat-icon matListItemIcon>supervisor_account</mat-icon>
-        <span matListItemTitle>DOCENTES</span>
-      </a>
-      <a mat-list-item routerLink="/ruta-roles" routerLinkActive="active-link">
-        <mat-icon matListItemIcon>admin_panel_settings</mat-icon>
-        <span matListItemTitle>ROLES</span>
-      </a>
-      <mat-divider></mat-divider>
-      <a mat-list-item (click)="logout()">
-        <mat-icon matListItemIcon>exit_to_app</mat-icon>
-        <span matListItemTitle>CERRAR SESIÓN</span>
-      </a>
-    </mat-nav-list>
-  </mat-sidenav>
+      <mat-divider></mat-divider>
+      <a mat-list-item routerLink="docentes" routerLinkActive="active-link">
+        <mat-icon matListItemIcon>supervisor_account</mat-icon>
+        <span matListItemTitle>DOCENTES</span>
+      </a>
+      <a mat-list-item routerLink="/ruta-roles" routerLinkActive="active-link">
+        <mat-icon matListItemIcon>admin_panel_settings</mat-icon>
+        <span matListItemTitle>ROLES</span>
+      </a>
+      <mat-divider></mat-divider>
+      <a mat-list-item (click)="logout()">
+        <mat-icon matListItemIcon>exit_to_app</mat-icon>
+        <span matListItemTitle>CERRAR SESIÓN</span>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
 
-  <mat-sidenav-content class="main-content">
-    <mat-toolbar class="toolbar">
-      <span class="toolbar-spacer"></span>
-      <button mat-icon-button aria-label="Notificaciones">
-        <mat-icon>notifications</mat-icon>
-      </button>
-      <button mat-icon-button class="profile-button" aria-label="Perfil de usuario">
-      </button>
-    </mat-toolbar>
+  <mat-sidenav-content class="main-content">
+    <mat-toolbar class="toolbar">
+      <span class="toolbar-spacer"></span>
+      <button mat-icon-button aria-label="Notificaciones">
+        <mat-icon>notifications</mat-icon>
+      </button>
+      <button mat-icon-button class="profile-button" aria-label="Perfil de usuario">
+      </button>
+    </mat-toolbar>
 
-    <div class="content-area">
-      <router-outlet></router-outlet>
-    </div>
-  </mat-sidenav-content>
+    <div class="content-area">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
 
 </mat-sidenav-container>

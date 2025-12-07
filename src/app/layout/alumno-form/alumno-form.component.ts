@@ -35,17 +35,17 @@ export class AlumnoFormComponent implements OnInit {
     private grupoService: GrupoService 
   ) {
     this.alumnoForm = this.fb.group({
-      NUM_CONTROL: ['', [Validators.required, Validators.maxLength(30)]],
-      NOMBRE: ['', [Validators.required, Validators.maxLength(250)]],
-      CORREO_INSTITUCIONAL: ['', [Validators.required, Validators.email, Validators.maxLength(200)]],
-      ID_GRUPO: [null]
+      num_control: ['', [Validators.required, Validators.maxLength(30)]],
+      nombre: ['', [Validators.required, Validators.maxLength(250)]],
+      correo_institucional: ['', [Validators.required, Validators.email, Validators.maxLength(200)]],
+      id_grupo: [null]
     });
 
     if (this.data) {
       this.isEditMode = true;
       this.titulo = "Editar Alumno";
       this.alumnoForm.patchValue(this.data);
-      this.alumnoForm.get('NUM_CONTROL')?.disable();
+      this.alumnoForm.get('num_control')?.disable();
     }
   }
 

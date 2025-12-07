@@ -40,7 +40,7 @@ import { ConfirmationDialogComponent } from '../../shared/confirmation-dialog/co
     MatSortModule,
     MatDialogModule,
     MatProgressSpinnerModule,
-    MatSnackBarModule // <--- Agregado a imports
+    MatSnackBarModule 
   ],
   templateUrl: './asistencia.component.html',
   styleUrls: ['./asistencia.component.css']
@@ -70,7 +70,7 @@ export class AsistenciaComponent implements OnInit, AfterViewInit {
     private docenteService: DocenteService, 
     private location: Location, 
     public dialog: MatDialog,
-    private snackBar: MatSnackBar // <--- Inyectamos el servicio de notificaciones
+    private snackBar: MatSnackBar 
   ) { }
 
   ngOnInit(): void {
@@ -80,14 +80,14 @@ export class AsistenciaComponent implements OnInit, AfterViewInit {
       next: (data) => {
         if (!data || !data.grupo) throw new Error('No se pudo obtener el grupo.');
         
-        this.idGrupo = data.grupo.ID_GRUPO;
-        this.nombreGrupo = data.grupo.NOMBRE;
-        this.carreraGrupo = data.grupo.CARRERA;
+        this.idGrupo = data.grupo.id_grupo;
+        this.nombreGrupo = data.grupo.nombre;
+        this.carreraGrupo = data.grupo.carrera;
         this.totalAlumnos = data.grupo.alumnos?.length || 0;
         this.alumnosDelGrupo = data.grupo.alumnos || [];
 
-        const miConferencia = data.grupo.conferencias?.find((c: any) => c.ID_CONFERENCIA == this.idConferencia); 
-        this.tituloConferencia = miConferencia?.NOMBRE_CONFERENCIA || 'Detalle de Conferencia';
+        const miConferencia = data.grupo.conferencias?.find((c: any) => c.id_conferencia == this.idConferencia); 
+        this.tituloConferencia = miConferencia?.nombre_conferencia || 'Detalle de Conferencia';
 
         this.cargarAsistencias();
       },
@@ -145,11 +145,9 @@ export class AsistenciaComponent implements OnInit, AfterViewInit {
     this.location.back();
   }
   
-  // --- AQUÍ ESTÁ LA MAGIA DEL DISEÑO BONITO ---
   eliminarAsistencia(asistencia: any): void {
     const nombreAlumno = asistencia.alumno?.NOMBRE || 'este alumno';
 
-    // 1. Usamos el Dialog de Material en lugar de confirm() feo
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '350px',
       data: {
@@ -160,10 +158,10 @@ export class AsistenciaComponent implements OnInit, AfterViewInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result === true) {
-        // Si el usuario dijo "Sí", procedemos
+
         this.docenteService.deleteAsistencia(asistencia.ID_ASISTENCIA).subscribe({
           next: () => {
-            // 2. Usamos SnackBar en lugar de alert()
+
             this.mostrarNotificacion('Asistencia eliminada correctamente', 'success');
             this.cargarAsistencias(); 
           },
@@ -195,7 +193,6 @@ export class AsistenciaComponent implements OnInit, AfterViewInit {
     });
   }
 
-  // Función auxiliar para mostrar mensajes bonitos abajo
   private mostrarNotificacion(mensaje: string, tipo: 'success' | 'error') {
     this.snackBar.open(mensaje, 'Cerrar', {
       duration: 4000,

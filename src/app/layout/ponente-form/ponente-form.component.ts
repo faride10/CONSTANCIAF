@@ -43,11 +43,11 @@ export class PonenteFormComponent implements OnInit {
     }
 
     this.ponenteForm = this.fb.group({
-      NOMBRE: [this.ponente?.NOMBRE || '', Validators.required],
-      TITULO: [this.ponente?.TITULO || ''],
-      CARGO: [this.ponente?.CARGO || ''],
-      EMPRESA: [this.ponente?.EMPRESA || ''],
-      CORREO: [this.ponente?.CORREO || '', Validators.email]
+      nombre: [this.ponente?.nombre || '', Validators.required],
+      titulo: [this.ponente?.titulo || ''],
+      cargo: [this.ponente?.cargo || ''],
+      empresa: [this.ponente?.empresa || ''],
+      correo: [this.ponente?.correo || '', Validators.email]
     });
   }
 
@@ -63,8 +63,7 @@ export class PonenteFormComponent implements OnInit {
     this.errorMessage = null;
 
     if (this.isEditMode) {
-      // 3. CAMBIO: Usamos ponenteService
-      this.ponenteService.updatePonente(this.ponente.ID_PONENTE, this.ponenteForm.value).subscribe({
+      this.ponenteService.updatePonente(this.ponente.id_ponente, this.ponenteForm.value).subscribe({
         next: (response: any) => { 
           console.log('Ponente actualizado:', response);
           this.dialogRef.close('saved');

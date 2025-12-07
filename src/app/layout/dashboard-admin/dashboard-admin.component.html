@@ -1,78 +1,78 @@
 <div class="dashboard-admin-container">
 
-  <h2>BIENVENIDO, ADMINISTRADOR</h2>
+  <h2>BIENVENIDO, ADMINISTRADOR</h2>
 
-  <div *ngIf="isLoading && !errorMessage" class="loading-indicator">Cargando datos...</div>
-  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+  <div *ngIf="isLoading && !errorMessage" class="loading-indicator">Cargando datos...</div>
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
 
-  <div *ngIf="!isLoading">
-    
-    <div class="summary-cards">
-      <mat-card class="summary-card">
-        <mat-card-header>
-          <mat-card-title>CONFERENCIAS ACTIVAS</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <span class="count">{{ conferenciasActivas }}</span>
-        </mat-card-content>
-      </mat-card>
+  <div *ngIf="!isLoading">
+    
+    <div class="summary-cards">
+      <mat-card class="summary-card">
+        <mat-card-header>
+          <mat-card-title>CONFERENCIAS ACTIVAS</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <span class="count">{{ conferenciasActivas }}</span>
+        </mat-card-content>
+      </mat-card>
 
-      <mat-card class="summary-card">
-        <mat-card-header>
-          <mat-card-title>ALUMNOS REGISTRADOS</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <span class="count">{{ alumnosRegistrados }}</span>
-        </mat-card-content>
-      </mat-card>
+      <mat-card class="summary-card">
+        <mat-card-header>
+          <mat-card-title>ALUMNOS REGISTRADOS</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <span class="count">{{ alumnosRegistrados }}</span>
+        </mat-card-content>
+      </mat-card>
 
-      <mat-card class="summary-card">
-        <mat-card-header>
-          <mat-card-title>DOCENTES ACTIVOS</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <span class="count">{{ docentesActivos }}</span>
-        </mat-card-content>
-      </mat-card>
+      <mat-card class="summary-card">
+        <mat-card-header>
+          <mat-card-title>DOCENTES ACTIVOS</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <span class="count">{{ docentesActivos }}</span>
+        </mat-card-content>
+      </mat-card>
 
-      <mat-card class="summary-card">
-        <mat-card-header>
-          <mat-card-title>CONSTANCIAS EMITIDAS</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <span class="count">{{ constanciasEmitidas }}</span>
-        </mat-card-content>
-      </mat-card>
-    </div>
+      <mat-card class="summary-card">
+        <mat-card-header>
+          <mat-card-title>CONSTANCIAS EMITIDAS</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <span class="count">{{ constanciasEmitidas }}</span>
+        </mat-card-content>
+      </mat-card>
+    </div>
 
-    <mat-card class="recent-activities">
-      <mat-card-header>
-        <mat-card-title>ACTIVIDADES RECIENTES</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
+    <mat-card class="recent-activities">
+      <mat-card-header>
+        <mat-card-title>ACTIVIDADES RECIENTES</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
 
-        <mat-list>
-          
-          <mat-list-item *ngFor="let actividad of actividadesRecientes">
-            
-            <ng-container [ngSwitch]="actividad.tipo_accion" matListItemIcon>
-              <mat-icon *ngSwitchCase="'CONSTANCIA'" class="activity-icon success">check_circle</mat-icon>
-              <mat-icon *ngSwitchCase="'CONFERENCIA'" class="activity-icon info">info</mat-icon>
-              <mat-icon *ngSwitchCase="'DOCENTE'" class="activity-icon warning">person_add</mat-icon>
-              <mat-icon *ngSwitchDefault class="activity-icon info">notifications</mat-icon>
-            </ng-container>
-            
-            <div matListItemTitle>{{ actividad.descripcion }}</div>
-            
-            <div matListItemLine>{{ actividad.created_at | date:'medium' }}</div>
+        <mat-list>
+          
+          <mat-list-item *ngFor="let actividad of actividadesRecientes">
+            
+                        <ng-container [ngSwitch]="actividad.tipo_accion" matListItemIcon>
+              <mat-icon *ngSwitchCase="'CONSTANCIA'" class="activity-icon success">check_circle</mat-icon>
+              <mat-icon *ngSwitchCase="'CONFERENCIA'" class="activity-icon info">info</mat-icon>
+              <mat-icon *ngSwitchCase="'DOCENTE'" class="activity-icon warning">person_add</mat-icon>
+              <mat-icon *ngSwitchDefault class="activity-icon info">notifications</mat-icon>
+            </ng-container>
+            
+                        <div matListItemTitle>{{ actividad.descripcion }}</div>
+            
+                        <div matListItemLine>{{ actividad.created_at | date:'medium' }}</div>
 
-          </mat-list-item>
+          </mat-list-item>
 
-          <mat-list-item *ngIf="actividadesRecientes.length === 0 && !isLoading">
-            <div matListItemTitle>No hay actividades recientes.</div>
-          </mat-list-item>
+          <mat-list-item *ngIf="actividadesRecientes.length === 0 && !isLoading">
+            <div matListItemTitle>No hay actividades recientes.</div>
+          </mat-list-item>
 
-        </mat-list>
-      </mat-card-content>
-    </mat-card>
-    </div> </div>
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+    </div> </div>

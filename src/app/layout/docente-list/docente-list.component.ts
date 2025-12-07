@@ -24,7 +24,7 @@ import { DocenteImportComponent } from '../docente-import/docente-import.compone
 })
 export class DocenteListComponent implements OnInit {   
 
-  displayedColumns: string[] = ['NOMBRE', 'RFC', 'CORREO', 'grupo', 'acciones'];
+  displayedColumns: string[] = ['nombre', 'rfc', 'correo', 'grupo', 'acciones'];
   dataSource: MatTableDataSource<any>;
 
   constructor(

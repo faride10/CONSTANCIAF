@@ -1,51 +1,51 @@
 <h1 mat-dialog-title>{{ titulo }}</h1>
 
 <div mat-dialog-content>
-  <form [formGroup]="alumnoForm" class="alumno-form">
+ <form [formGroup]="alumnoForm" class="alumno-form">
 
-    <mat-form-field class="full-width">
-      <mat-label>Num. de Control</mat-label>
-      <input matInput formControlName="NUM_CONTROL" placeholder="Ej. 211020339">
-      <mat-error *ngIf="alumnoForm.get('NUM_CONTROL')?.hasError('required')">
-        El Núm. de Control es requerido
-      </mat-error>
-    </mat-form-field>
+<mat-form-field class="full-width">
+ <mat-label>Num. de Control</mat-label>
+   <input matInput formControlName="num_control" placeholder="Ej. 211020339">
+  <mat-error *ngIf="alumnoForm.get('num_control')?.hasError('required')">
+   El Núm. de Control es requerido
+   </mat-error>
+     </mat-form-field>
 
-    <mat-form-field class="full-width">
-      <mat-label>Nombre Completo</mat-label>
-      <input matInput formControlName="NOMBRE" placeholder="Ej. Flor Itzel Mejia Noyola">
-      <mat-error *ngIf="alumnoForm.get('NOMBRE')?.hasError('required')">
-        El nombre es requerido
-      </mat-error>
-    </mat-form-field>
+  <mat-form-field class="full-width">
+  <mat-label>Nombre Completo</mat-label>
+   <input matInput formControlName="nombre" placeholder="Ej. Flor Itzel Mejia Noyola">
+   <mat-error *ngIf="alumnoForm.get('nombre')?.hasError('required')">
+   El nombre es requerido
+   </mat-error>
+   </mat-form-field>
 
-    <mat-form-field class="full-width">
-      <mat-label>Correo Institucional</mat-label>
-      <input matInput formControlName="CORREO_INSTITUCIONAL" placeholder="Ej. l211020339@salinacruz.tecnm.mx">
-      <mat-error *ngIf="alumnoForm.get('CORREO_INSTITUCIONAL')?.hasError('required')">
-        El correo es requerido
-      </mat-error>
-      <mat-error *ngIf="alumnoForm.get('CORREO_INSTITUCIONAL')?.hasError('email')">
-        Formato de correo inválido
-      </mat-error>
-    </mat-form-field>
+  <mat-form-field class="full-width">
+  <mat-label>Correo Institucional</mat-label>
+  <input matInput formControlName="correo_institucional" placeholder="Ej. l211020339@salinacruz.tecnm.mx">
+  <mat-error *ngIf="alumnoForm.get('correo_institucional')?.hasError('required')">
+   El correo es requerido
+  </mat-error>
+  <mat-error *ngIf="alumnoForm.get('correo_institucional')?.hasError('email')">
+  Formato de correo inválido
+  </mat-error>
+   </mat-form-field>
 
-    <mat-form-field class="full-width">
-      <mat-label>Grupo</mat-label>
-      <mat-select formControlName="ID_GRUPO">
-        <mat-option [value]="null">Selecciona un Grupo</mat-option>
-        <mat-option *ngFor="let grupo of grupos" [value]="grupo.ID_GRUPO">
-          {{ grupo.NOMBRE }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+   <mat-form-field class="full-width">
+   <mat-label>Grupo</mat-label>
+  <mat-select formControlName="id_grupo">
+   <mat-option [value]="null">Selecciona un Grupo</mat-option>
+   <mat-option *ngFor="let grupo of grupos" [value]="grupo.id_grupo">
+  {{ grupo.nombre }}
+  </mat-option>
+   </mat-select>
+  </mat-form-field>
 
-  </form>
+   </form>
 </div>
 
 <div mat-dialog-actions align="end">
-  <button mat-stroked-button (click)="cerrarModal()">Cancelar</button>
+   <button mat-stroked-button (click)="cerrarModal()">Cancelar</button>
   <button mat-flat-button color="primary" (click)="guardarAlumno()" [disabled]="alumnoForm.invalid">
-    Guardar
-  </button>
+   Guardar
+   </button>
 </div>

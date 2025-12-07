@@ -55,7 +55,7 @@ export class ReporteGruposComponent implements OnInit {
     
     this.conferenceService.getConferences().subscribe({
       next: (data: any[]) => {
-        const found = data.find(c => c.ID_CONFERENCIA === this.idConferencia || c.id === this.idConferencia);
+        const found = data.find(c => c.id_conferencia === this.idConferencia || c.id === this.idConferencia);
         
         if (found) {
           this.conferencia = found;

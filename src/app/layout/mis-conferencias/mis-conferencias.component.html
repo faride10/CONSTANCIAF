@@ -1,35 +1,35 @@
 <div class="conferences-grid">
 
-  <mat-card *ngFor="let conf of conferenciasAsignadas" class="conference-card mat-elevation-z2">
-    <mat-card-header>
-      <div mat-card-avatar class="conference-icon">
-        <mat-icon>calendar_today</mat-icon>
-      </div>
-      
-      <mat-card-title>{{ conf.NOMBRE_CONFERENCIA }}</mat-card-title>
-      
-      <mat-card-subtitle>
-        <mat-icon class="icon-small">person</mat-icon>
-        Ponente: {{ conf.ponente?.NOMBRE || 'No asignado' }}
-      </mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      
-      <p *ngIf="conf.TEMA" class="conference-theme">
-        {{ conf.TEMA }}
-      </p>
+  <mat-card *ngFor="let conf of conferenciasAsignadas" class="conference-card mat-elevation-z2">
+    <mat-card-header>
+      <div mat-card-avatar class="conference-icon">
+        <mat-icon>calendar_today</mat-icon>
+      </div>
+      
+            <mat-card-title>{{ conf.nombre_conferencia }}</mat-card-title>
+      
+      <mat-card-subtitle>
+        <mat-icon class="icon-small">person</mat-icon>
+                Ponente: {{ conf.ponente?.nombre || 'No asignado' }}
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      
+            <p *ngIf="conf.tema" class="conference-theme">
+        {{ conf.tema }}
+      </p>
 
-      <div class="conference-details">
-        <p><mat-icon class="icon-small">event</mat-icon> Fecha: {{ conf.FECHA_HORA | date:'dd MMM yyyy' }}</p>
-        <p><mat-icon class="icon-small">schedule</mat-icon> Hora: {{ conf.FECHA_HORA | date:'hh:mm a' }}</p>
-        <p><mat-icon class="icon-small">location_on</mat-icon> Lugar: {{ conf.LUGAR }}</p>
-      </div>
-    </mat-card-content>
-    <mat-card-actions align="end">
-      <button mat-flat-button color="primary" [routerLink]="['/panel/docente/conferencia', conf.ID_CONFERENCIA, 'asistencia']">
-        <mat-icon>assignment</mat-icon> Gestionar Asistencia
-      </button>
-    </mat-card-actions>
-  </mat-card>
+      <div class="conference-details">
+                <p><mat-icon class="icon-small">event</mat-icon> Fecha: {{ conf.fecha_hora | date:'dd MMM yyyy' }}</p>
+                <p><mat-icon class="icon-small">schedule</mat-icon> Hora: {{ conf.fecha_hora | date:'hh:mm a' }}</p>
+                <p><mat-icon class="icon-small">location_on</mat-icon> Lugar: {{ conf.lugar }}</p>
+      </div>
+    </mat-card-content>
+    <mat-card-actions align="end">
+            <button mat-flat-button color="primary" [routerLink]="['/panel/docente/conferencia', conf.id_conferencia, 'asistencia']">
+        <mat-icon>assignment</mat-icon> Gestionar Asistencia
+      </button>
+    </mat-card-actions>
+  </mat-card>
 
 </div>

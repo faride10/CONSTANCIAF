@@ -30,17 +30,16 @@ export class GrupoFormComponent implements OnInit {
     private fb: FormBuilder,
     private grupoService: GrupoService
   ) {
-    // --- CAMBIO CLAVE: Usamos MAYÚSCULAS para coincidir con el backend ---
     this.grupoForm = this.fb.group({
-      ID_GRUPO: [null], // El ID de la BD
-      NOMBRE: ['', Validators.required],
-      CARRERA: ['', Validators.required], // El campo que faltaba
-      ID_DOCENTE: [null] // Puede ser nulo
+      id_grupo: [null], 
+      nombre: ['', Validators.required],
+      carrera: ['', Validators.required], 
+      id_docente: [null] 
     });
 
     if (this.data) {
       this.titulo = "Editar Grupo";
-      this.grupoForm.patchValue(this.data); // Rellena el form con {NOMBRE: ..., etc}
+      this.grupoForm.patchValue(this.data); 
     }
   }
 
@@ -49,7 +48,6 @@ export class GrupoFormComponent implements OnInit {
   }
 
   cargarDocentes(): void {
-    // Asumimos que getDocentes() también devuelve objetos con MAYÚSCULAS
     this.grupoService.getDocentes().subscribe((docentes: any) => {
       this.docentes = docentes;
     });
@@ -60,8 +58,8 @@ export class GrupoFormComponent implements OnInit {
     
     const grupoData = this.grupoForm.value;
 
-    if (grupoData.ID_GRUPO) {
-      this.grupoService.updateGrupo(grupoData.ID_GRUPO, grupoData).subscribe((response: any) => {
+    if (grupoData.id_grupo) {
+      this.grupoService.updateGrupo(grupoData.id_grupo, grupoData).subscribe((response: any) => {
         this.dialogRef.close(true); 
       });
     } else {

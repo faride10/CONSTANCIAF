@@ -73,14 +73,14 @@ export class QrCodeGeneratorComponent implements OnInit, AfterViewInit {
       next: (data) => {
         if (!data || !data.grupo) throw new Error('No se pudo obtener el grupo.');
         
-        this.idGrupo = data.grupo.ID_GRUPO;
-        this.nombreGrupo = data.grupo.NOMBRE;
-        this.carreraGrupo = data.grupo.CARRERA;
+        this.idGrupo = data.grupo.id_grupo;
+        this.nombreGrupo = data.grupo.nombre;
+        this.carreraGrupo = data.grupo.carrera;
         this.totalAlumnos = data.grupo.alumnos?.length || 0;
         this.alumnosDelGrupo = data.grupo.alumnos || [];
 
-        const miConferencia = data.grupo.conferencias?.find((c: any) => c.ID_CONFERENCIA == this.idConferencia); 
-        this.tituloConferencia = miConferencia?.NOMBRE_CONFERENCIA || 'Detalle de Conferencia';
+        const miConferencia = data.grupo.conferencias?.find((c: any) => c.id_conferencia == this.idConferencia); 
+        this.tituloConferencia = miConferencia?.nombre_conferencia || 'Detalle de Conferencia';
 
         this.cargarAsistencias();
       },
@@ -137,11 +137,11 @@ export class QrCodeGeneratorComponent implements OnInit, AfterViewInit {
   }
   
   eliminarAsistencia(asistencia: any): void {
-    const nombreAlumno = asistencia.alumno?.NOMBRE || 'este alumno';
+    const nombreAlumno = asistencia.alumno?.nombre || 'este alumno';
     if (!confirm(`¿Estás seguro de que deseas eliminar la asistencia de "${nombreAlumno}"? Esta acción no se puede deshacer.`)) {
       return;
     }
-    this.docenteService.deleteAsistencia(asistencia.ID_ASISTENCIA).subscribe({
+    this.docenteService.deleteAsistencia(asistencia.id_asistencia).subscribe({
       next: () => {
         console.log('Asistencia eliminada');
         this.cargarAsistencias(); 

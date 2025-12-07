@@ -4,7 +4,6 @@ import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/materia
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-// Importamos SafeUrl para imágenes Base64 (Admin) y SafeHtml para SVG (Docente)
 import { DomSanitizer, SafeHtml, SafeUrl } from '@angular/platform-browser';
 import { DocenteService } from '../docente.service';
 
@@ -26,9 +25,7 @@ export class QrCodeDisplayComponent implements OnInit {
   public conferenciaTitulo: string = '';
   public grupoNombre: string = '';
   
-  // OPCIÓN A: Para el Docente (SVG Raw)
   public qrHtml: SafeHtml | null = null;
-  // OPCIÓN B: Para el Admin (Imagen Base64)
   public qrImage: SafeUrl | null = null;
   
   public isLoading: boolean = true;
@@ -42,7 +39,6 @@ export class QrCodeDisplayComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // 1. Títulos (Compatible con ambos)
     this.conferenciaTitulo = this.data.nombreConferencia || 
                              this.data.displayInfo?.conference_name || 
                              'Conferencia';
@@ -51,8 +47,6 @@ export class QrCodeDisplayComponent implements OnInit {
                        this.data.displayInfo?.group_name || 
                        'Grupo';
 
-    // 2. DECISIÓN INTELIGENTE
-    // ¿El Admin ya nos pasó la imagen lista?
     const qrDirecto = this.data.qrCodeBase64 || this.data.qrBase64;
 
     if (qrDirecto) {
@@ -60,7 +54,6 @@ export class QrCodeDisplayComponent implements OnInit {
       this.qrImage = this.sanitizer.bypassSecurityTrustUrl(qrDirecto);
       this.isLoading = false;
     } else {
-      // Si no hay imagen, intentamos buscarla con el ID (Modo Docente)
       console.log('Modo Docente: Buscando QR en el servidor...');
       this.cargarQR();
     }
@@ -70,8 +63,7 @@ export class QrCodeDisplayComponent implements OnInit {
     this.isLoading = true;
     this.errorMessage = '';
 
-    // Buscamos el ID (Compatible con ambos formatos por si acaso)
-    const idConf = this.data.idConferencia || this.data.id || this.data.ID_CONFERENCIA;
+    const idConf = this.data.idConferencia || this.data.id || this.data.id_conferencia;
 
     if (!idConf) {
       this.errorMessage = 'Error: No se recibió el ID ni la imagen del QR.';
@@ -82,7 +74,6 @@ export class QrCodeDisplayComponent implements OnInit {
     this.docenteService.getQrCode(idConf).subscribe({
       next: (response) => {
         if (response && response.qr_code) {
-          // Sanitizamos el SVG
           this.qrHtml = this.sanitizer.bypassSecurityTrustHtml(response.qr_code);
         } else {
           this.errorMessage = 'El servidor no envió el código QR.';

@@ -49,8 +49,8 @@ export class DocenteMiGrupoComponent implements OnInit, AfterViewInit {
     this.docenteService.getMiGrupo().subscribe({
       next: (data) => {
         if (data && data.grupo) {
-          this.nombreGrupo = data.grupo.NOMBRE;
-          this.carreraGrupo = data.grupo.CARRERA;
+          this.nombreGrupo = data.grupo.nombre;
+          this.carreraGrupo = data.grupo.carrera;
           
           this.dataSource.data = data.grupo.alumnos || [];
           

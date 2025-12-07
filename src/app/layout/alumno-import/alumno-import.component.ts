@@ -3,7 +3,7 @@ import { MatDialogRef, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { AlumnoService } from '../alumno.service';
-import { MatProgressBarModule } from '@angular/material/progress-bar'; // Para la barra de carga
+import { MatProgressBarModule } from '@angular/material/progress-bar'; 
 
 @Component({
   selector: 'app-alumno-import',

@@ -12,14 +12,14 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { DocenteService } from '../docente.service';
 
 interface Alumno {
-  NUM_CONTROL: string;
-  NOMBRE: string;
+  num_control: string;
+  nombre: string;
 }
 interface Asistencia {
-  NUM_CONTROL: string;
+  num_control: string;
   alumno?: { 
-    NUM_CONTROL: string;
-    NOMBRE: string;
+    num_control: string;
+    nombre: string;
   };
 }
 
@@ -60,9 +60,9 @@ export class RegistroManualComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    const alumnosAsistidos = new Set(this.data.asistenciasActuales.map(a => a.NUM_CONTROL));
+    const alumnosAsistidos = new Set(this.data.asistenciasActuales.map(a => a.num_control));
     this.alumnosFaltantes = this.data.alumnosDelGrupo.filter(alumno => {
-      return !alumnosAsistidos.has(alumno.NUM_CONTROL);
+      return !alumnosAsistidos.has(alumno.num_control);
     });
     this.alumnosFiltrados = this.alumnosFaltantes;
   }
@@ -74,8 +74,8 @@ export class RegistroManualComponent implements OnInit {
     }
     const filtro = this.terminoBusqueda.toLowerCase();
     this.alumnosFiltrados = this.alumnosFaltantes.filter(alumno =>
-      alumno.NOMBRE.toLowerCase().includes(filtro) ||
-      alumno.NUM_CONTROL.toLowerCase().includes(filtro)
+      alumno.nombre.toLowerCase().includes(filtro) ||
+      alumno.num_control.toLowerCase().includes(filtro)
     );
   }
 
@@ -88,9 +88,9 @@ export class RegistroManualComponent implements OnInit {
     this.isLoading = true;
 
     const datosAsistencia = {
-      ID_CONFERENCIA: this.data.idConferencia,
-      ID_GRUPO: this.data.idGrupo,
-      NUM_CONTROL: this.alumnoSeleccionado.NUM_CONTROL
+      id_conferencia: this.data.idConferencia,
+      id_grupo: this.data.idGrupo,
+      num_control: this.alumnoSeleccionado.num_control
     };
 
     this.docenteService.createAsistenciaManual(datosAsistencia).subscribe({
