@@ -1,169 +1,157 @@
 .login-page-container {
   display: flex;
-  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  background-color: #0c1e3d; 
   align-items: center;
-  min-height: 100vh;
-  background-color: #002347;
-  padding: 2rem;
-  box-sizing: border-box;
+  justify-content: center;
+  overflow: hidden;
 }
 
 .login-wrapper {
   display: flex;
-  width: 600px; 
-  background-color: white;
-  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
-  border-radius: 10px;
-  overflow: hidden;
-  min-height: 590px; 
-  margin-right: 5rem;
+  width: 100%;
+  max-width: 1300px;
+  justify-content: center;
+  align-items: center;
+  gap: 120px; 
 }
 
 .form-section {
-  flex: 2;
-  display: flex;
-  flex-direction: column;
-  padding: 0;
-}
-
-.top-bar {
-  height: 60px;
-  background-color: #004a99;
-  display: flex;
-  align-items: center;
-  padding: 0 2rem; 
-  box-sizing: border-box;
+  background-color: white;
+  width: 520px; 
+  border-radius: 12px;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+  overflow: hidden;
   flex-shrink: 0;
 }
 
-.back-arrow {
+.top-bar {
+  background-color: #0056b3;
+  padding: 15px 20px;
   color: white;
+}
+
+.back-arrow {
+  font-size: 24px;
   cursor: pointer;
-  transform: scale(1.1);
+  transition: opacity 0.2s;
+}
+
+.back-arrow:hover {
+  opacity: 0.7; 
 }
 
 .form-content {
-  padding: 2rem 3rem 3rem 3rem; 
-  flex-grow: 5;
-  display: flex;
-  flex-direction: column;
-}
-
-.form-header {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin-bottom: 2.5rem;
-  width: 100%;
+  padding: 50px 70px;
+  text-align: center;
 }
 
 .form-header img {
-  height: 85px; 
-  margin-bottom: 2.5rem; 
-  align-self: flex-start;
-}
-
-.title-group {
-  text-align: center;
-  width: 100%;
+  width: 200px;
+  margin-bottom: 30px;
 }
 
 .title-group h1 {
-  font-size: 2rem;
-  font-weight: 800;
-  margin: 0 0 4px 0;
-  color: #1a1a1a;
+  font-size: 32px; 
+  font-weight: 600;
+  color: #222;
+  margin: 0;
 }
 
 .title-group p {
-  font-size: 1rem;
-  font-weight: 700;
-  color: #005A9C;
-  margin: 0;
-  letter-spacing: 0.5px;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  margin-top: auto;
+  color: #007bff;
+  font-weight: bold;
+  font-size: 16px;
+  margin-top: 5px;
 }
 
 .custom-form-group {
-  position: relative;
-  margin-bottom: 2.5rem;
+  margin-top: 35px;
+  text-align: left;
 }
 
 .custom-form-group label {
-  font-size: 1rem;
-  font-weight: 700;
-  color: #444;
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
-  margin-bottom: 0.3rem;
-  display: block;
+  font-size: 13px;
+  font-weight: bold;
+  color: #666;
+  margin-bottom: 8px;
 }
 
 .custom-form-group input {
   width: 100%;
   border: none;
-  border-bottom: 1px solid #b0b0b0;
-  padding: 0.5rem 0;
-  font-size: 0.9rem;
+  border-bottom: 2px solid #ddd;
+  padding: 12px 0;
   outline: none;
-  background-color: transparent;
-  transition: border-color 0.2s ease;
+  font-size: 18px;
 }
 
-.custom-form-group input:focus {
-  border-bottom-color: #003366;
-  border-bottom-width: 2px;
-}
-
-.password-group {
+.input-wrapper {
   position: relative;
 }
+
 .password-icon {
   position: absolute;
   right: 0;
-  bottom: 8px;
+  bottom: 12px;
+  font-size: 22px;
+  color: #aaa;
   cursor: pointer;
-  color: #666;
 }
 
 .login-button {
-  background-color: #003366;
-  color: white;
-  padding: 1rem 0;
-  font-size: 0.8rem;
-  font-weight: 700;
-  margin-top: 1.2rem;
-  border-radius: 4px;
   width: 100%;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  height: 55px !important;
+  margin-top: 45px;
+  font-weight: bold !important;
+  font-size: 18px !important;
+  transition: all 0.4s ease;
+  background-color: #e0e0e0 !important;
+  color: #999 !important;
 }
 
-.login-button:disabled {
-  background-color: rgba(0, 0, 0, 0.12);
-  color: rgba(0, 0, 0, 0.26);
+.login-button:not(:disabled) {
+  background-color: #0056b3 !important;
+  color: white !important;
+  box-shadow: 0 8px 20px rgba(0, 86, 179, 0.4);
+}
+
+.right-side-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.project-title-container-right {
+  margin-bottom: 40px; 
+  color: white;
+}
+
+.project-name-right {
+  font-size: 500px;
+  font-weight: 900;
+  letter-spacing: 5px;
+  display: block;
+}
+
+.project-desc-right {
+  font-size: 25px;
+  color: #c6e2ff;
+  margin-top: 10px;
+  line-height: 1.5;
+  max-width: 400px;
+}
+
+.itsal-logo-container img {
+  max-width: 400px; 
+  height: auto;
+  filter: drop-shadow(0 20px 40px rgba(0,0,0,0.4));
 }
 
 .error-message {
   color: #d32f2f;
-  font-size: 0.75rem;
-  text-align: center;
-  margin-top: 1rem;
-}
-
-.itsal-logo-container {
-  width: 400px; 
-}
-
-.itsal-logo-container img {
-  width: 100%;
-  height: auto;
-  display: block;
-  opacity: 0.9;
+  font-size: 14px;
+  margin-top: 15px;
 }

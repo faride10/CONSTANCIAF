@@ -1,0 +1,92 @@
+<div class="profile-container">
+
+  <div class="header-section">
+    <div class="icon-circle">
+      <mat-icon>account_circle</mat-icon>
+    </div>
+    <div>
+      <h2>Mi Perfil</h2>
+      <p>Administra tu información personal y seguridad</p>
+    </div>
+  </div>
+
+  <div class="profile-grid">
+    
+    <mat-card class="profile-card">
+      <mat-card-header class="card-header">
+        <mat-card-title>Información de Cuenta</mat-card-title>
+      </mat-card-header>
+      
+      <mat-card-content>
+        <form (ngSubmit)="guardarDatos()">
+          
+          <div class="avatar-container">
+            <div class="avatar-circle">
+              {{ usuario.username ? usuario.username.charAt(0).toUpperCase() : 'A' }}
+            </div>
+            <p class="role-badge">Administrador</p>
+          </div>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Nombre de Usuario</mat-label>
+            <input matInput [(ngModel)]="usuario.username" name="username" required>
+            <mat-icon matSuffix>person</mat-icon>
+          </mat-form-field>
+
+          <button mat-flat-button color="primary" type="submit" [disabled]="loadingInfo" class="save-btn">
+            <span *ngIf="!loadingInfo">GUARDAR CAMBIOS</span>
+            <mat-spinner *ngIf="loadingInfo" diameter="20" class="spinner-white"></mat-spinner>
+          </button>
+
+        </form>
+      </mat-card-content>
+    </mat-card>
+
+
+    <mat-card class="profile-card">
+      <mat-card-header class="card-header">
+        <mat-card-title style="color: #d32f2f;">Seguridad</mat-card-title>
+      </mat-card-header>
+      
+      <mat-card-content>
+        <form (ngSubmit)="cambiarPassword()">
+          
+          <p class="security-hint">
+            Asegúrate de usar una contraseña segura y no compartirla.
+          </p>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Contraseña Actual</mat-label>
+            <input matInput [type]="hideCurrent ? 'password' : 'text'" [(ngModel)]="pass.current_password" name="current_password" required>
+            <button mat-icon-button matSuffix (click)="hideCurrent = !hideCurrent" type="button">
+              <mat-icon>{{hideCurrent ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Nueva Contraseña</mat-label>
+            <input matInput [type]="hideNew ? 'password' : 'text'" [(ngModel)]="pass.new_password" name="new_password" required minlength="8">
+            <button mat-icon-button matSuffix (click)="hideNew = !hideNew" type="button">
+              <mat-icon>{{hideNew ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Confirmar Nueva Contraseña</mat-label>
+            <input matInput [type]="hideConfirm ? 'password' : 'text'" [(ngModel)]="pass.new_password_confirmation" name="new_password_confirmation" required>
+            <button mat-icon-button matSuffix (click)="hideConfirm = !hideConfirm" type="button">
+              <mat-icon>{{hideConfirm ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+          </mat-form-field>
+
+          <button mat-stroked-button color="warn" type="submit" [disabled]="loadingPass" class="password-btn">
+            <span *ngIf="!loadingPass">ACTUALIZAR CONTRASEÑA</span>
+            <mat-spinner *ngIf="loadingPass" diameter="20" class="spinner-red"></mat-spinner>
+          </button>
+
+        </form>
+      </mat-card-content>
+    </mat-card>
+
+  </div>
+</div>

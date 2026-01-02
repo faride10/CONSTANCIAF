@@ -1,57 +1,106 @@
 <div class="page-container">
-    <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
     
-<h1 class="page-title">BIENVENIDO, {{ dashboardData?.docente_nombre | uppercase }}</h1>
+    <mat-progress-bar mode="indeterminate" *ngIf="isLoading" class="custom-loader"></mat-progress-bar>
+    
+    <div class="header-section" *ngIf="dashboardData">
+        <div class="header-text">
+            <h1 class="page-title">Hola, {{ dashboardData?.docente_nombre | titlecase }}</h1>
+            <p class="page-subtitle">Aquí tienes el resumen de tu actividad académica.</p>
+        </div>
+        <div class="header-icon">
+            <mat-icon>school</mat-icon>
+        </div>
+    </div>
 
-    <div class="card-grid" *ngIf="dashboardData">
+    <div class="dashboard-content" *ngIf="dashboardData">
         
-        <mat-card class="summary-card">
-            <div class="card-content">
-                <p class="label">MI GRUPO ASIGNADO</p>
-                <h2 class="value">{{ dashboardData.grupo_asignado }}</h2>
-            </div>
-        </mat-card>
-
-        <mat-card class="summary-card">
-            <div class="card-content">
-                <p class="label">ALUMNOS EN MI GRUPO</p>
-                <h2 class="value">{{ dashboardData.alumnos_en_grupo }}</h2> 
-            </div>
-        </mat-card>
-
-        <mat-card class="summary-card">
-            <div class="card-content">
-                <p class="label">PRÓXIMAS CONFERENCIAS</p>
-                <h2 class="value">{{ dashboardData.proximas_conferencias_count }}</h2>
-            </div>
-        </mat-card>
-
-        <mat-card class="summary-card">
-            <div class="card-content">
-                <p class="label">CONSTANCIAS PENDIENTES</p>
-                <h2 class="value">{{ dashboardData.constancias_pendientes }}</h2>
-            </div>
-        </mat-card>
-    </div>
-
-    <mat-card class="list-card" *ngIf="dashboardData && dashboardData.lista_proximas_conferencias.length > 0">
-        <mat-card-title>PRÓXIMAS CONFERENCIAS DE MI GRUPO</mat-card-title>
-        <mat-card-content>
-            <div *ngFor="let conf of dashboardData.lista_proximas_conferencias" class="conference-item">
-                <mat-icon color="primary">calendar_today</mat-icon>
-                <div class="details">
-                    <p class="title">{{ conf.nombre }}</p>
-                    <p class="subtitle">Ponente: {{ conf.ponente }} - {{ conf.fecha_hora | date:'dd/MM/yyyy h:mm a' }}</p>
+        <div class="card-grid">
+            
+            <mat-card class="summary-card border-left-blue">
+                <div class="card-body">
+                    <div class="text-content">
+                        <p class="label">Mi Grupo</p>
+                        <h2 class="value">{{ dashboardData.grupo_asignado }}</h2>
+                    </div>
+                    <div class="icon-content bg-blue-light">
+                        <mat-icon class="text-blue">group_work</mat-icon>
+                    </div>
                 </div>
-            </div>
-        </mat-card-content>
-    </mat-card>
+            </mat-card>
 
-    <div *ngIf="!isLoading && dashboardData && dashboardData.lista_proximas_conferencias.length === 0">
-        <p class="empty-state">No hay próximas conferencias asignadas a tu grupo.</p>
-    </div>
-    
-    <div *ngIf="!isLoading && dashboardData && dashboardData.grupo_asignado === 'Sin Grupo'">
-        <p class="empty-state">No se ha encontrado un grupo asignado a tu perfil.</p>
+            <mat-card class="summary-card border-left-green">
+                <div class="card-body">
+                    <div class="text-content">
+                        <p class="label">Total Alumnos</p>
+                        <h2 class="value">{{ dashboardData.alumnos_en_grupo }}</h2> 
+                    </div>
+                    <div class="icon-content bg-green-light">
+                        <mat-icon class="text-green">groups</mat-icon>
+                    </div>
+                </div>
+            </mat-card>
+
+            <mat-card class="summary-card border-left-orange">
+                <div class="card-body">
+                    <div class="text-content">
+                        <p class="label">Próx. Eventos</p>
+                        <h2 class="value">{{ dashboardData.proximas_conferencias_count }}</h2>
+                    </div>
+                    <div class="icon-content bg-orange-light">
+                        <mat-icon class="text-orange">event_note</mat-icon>
+                    </div>
+                </div>
+            </mat-card>
+            
+            </div>
+
+        <div class="content-row">
+            <mat-card class="list-card">
+                <div class="card-header">
+                    <mat-card-title>Agenda de Conferencias</mat-card-title>
+                    <span class="badge-count" *ngIf="dashboardData.lista_proximas_conferencias.length > 0">
+                        {{ dashboardData.lista_proximas_conferencias.length }} Nuevas
+                    </span>
+                </div>
+
+                <mat-card-content class="list-content">
+                    
+                    <div *ngFor="let conf of dashboardData.lista_proximas_conferencias" class="conference-item">
+                        <div class="item-icon-circle">
+                            <mat-icon>calendar_today</mat-icon>
+                        </div>
+                        
+                        <div class="details">
+                            <p class="title">{{ conf.nombre }}</p>
+                            <div class="meta-info">
+                                <span class="meta-item">
+                                    <mat-icon>person</mat-icon> {{ conf.ponente }}
+                                </span>
+                                <span class="separator">•</span>
+                                <span class="meta-item highlight">
+                                    <mat-icon>access_time</mat-icon> {{ conf.fecha_hora | date:'dd MMM, h:mm a' }}
+                                </span>
+                            </div>
+                        </div>
+
+                        <button mat-icon-button color="primary">
+                            <mat-icon>chevron_right</mat-icon>
+                        </button>
+                    </div>
+
+                    <div class="empty-state" *ngIf="dashboardData.lista_proximas_conferencias.length === 0">
+                        <mat-icon>event_busy</mat-icon>
+                        <p>No hay conferencias programadas para tu grupo próximamente.</p>
+                    </div>
+
+                    <div class="empty-state warning" *ngIf="dashboardData.grupo_asignado === 'Sin Grupo'">
+                        <mat-icon>warning</mat-icon>
+                        <p>Aún no tienes un grupo asignado. Contacta al administrador.</p>
+                    </div>
+
+                </mat-card-content>
+            </mat-card>
+        </div>
+
     </div>
 </div>

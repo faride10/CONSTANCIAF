@@ -1,78 +1,154 @@
 <div class="dashboard-admin-container">
 
-  <h2>BIENVENIDO, ADMINISTRADOR</h2>
+  <div style="margin-bottom: 25px; display: flex; align-items: center; gap: 15px;">
+    <div style="background: white; padding: 10px; border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+      <mat-icon style="color: #1a237e; width: 32px; height: 32px; font-size: 32px;">analytics</mat-icon>
+    </div>
+    <div>
+      <h2 style="color: #1a237e; font-weight: 700; margin: 0; font-size: 1.6rem;">Panel de Control</h2>
+      <p style="margin: 4px 0 0; color: #666; font-size: 0.95rem;">Resumen general del sistema escolar</p>
+    </div>
+  </div>
 
-  <div *ngIf="isLoading && !errorMessage" class="loading-indicator">Cargando datos...</div>
-  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+  <div *ngIf="isLoading && !errorMessage" style="text-align: center; padding: 60px; color: #666;">
+    <mat-spinner diameter="50" style="margin: 0 auto;"></mat-spinner>
+    <p style="margin-top: 15px;">Cargando métricas...</p>
+  </div>
 
-  <div *ngIf="!isLoading">
-    
-    <div class="summary-cards">
-      <mat-card class="summary-card">
-        <mat-card-header>
-          <mat-card-title>CONFERENCIAS ACTIVAS</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <span class="count">{{ conferenciasActivas }}</span>
-        </mat-card-content>
-      </mat-card>
+  <div *ngIf="errorMessage" style="background-color: #ffebee; color: #c62828; padding: 15px; border-radius: 8px; text-align: center; margin-bottom: 20px;">
+    <mat-icon style="vertical-align: bottom; margin-right: 5px;">error</mat-icon>
+    {{ errorMessage }}
+  </div>
 
-      <mat-card class="summary-card">
-        <mat-card-header>
-          <mat-card-title>ALUMNOS REGISTRADOS</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <span class="count">{{ alumnosRegistrados }}</span>
-        </mat-card-content>
-      </mat-card>
+  <div *ngIf="!isLoading" class="dashboard-grid">
 
-      <mat-card class="summary-card">
-        <mat-card-header>
-          <mat-card-title>DOCENTES ACTIVOS</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <span class="count">{{ docentesActivos }}</span>
-        </mat-card-content>
-      </mat-card>
+    <div class="left-panel">
+      
+      <div class="stats-grid">
+        
+        <mat-card class="summary-card card-blue">
+          <div class="card-content-wrapper">
+            <div>
+              <p class="stat-label">Conferencias</p>
+              <h1 class="stat-number" style="color: #1565c0;">{{ conferenciasActivas }}</h1>
+            </div>
+            <mat-icon class="stat-icon-bg" style="color: #1565c0;">event</mat-icon>
+          </div>
+        </mat-card>
 
-      <mat-card class="summary-card">
-        <mat-card-header>
-          <mat-card-title>CONSTANCIAS EMITIDAS</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <span class="count">{{ constanciasEmitidas }}</span>
-        </mat-card-content>
-      </mat-card>
-    </div>
+        <mat-card class="summary-card card-teal">
+          <div class="card-content-wrapper">
+            <div>
+              <p class="stat-label">Alumnos</p>
+              <h1 class="stat-number" style="color: #00897b;">{{ alumnosRegistrados }}</h1>
+            </div>
+            <mat-icon class="stat-icon-bg" style="color: #00897b;">school</mat-icon>
+          </div>
+        </mat-card>
 
-    <mat-card class="recent-activities">
-      <mat-card-header>
-        <mat-card-title>ACTIVIDADES RECIENTES</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
+        <mat-card class="summary-card card-orange">
+          <div class="card-content-wrapper">
+            <div>
+              <p class="stat-label">Docentes</p>
+              <h1 class="stat-number" style="color: #ef6c00;">{{ docentesActivos }}</h1>
+            </div>
+            <mat-icon class="stat-icon-bg" style="color: #ef6c00;">person</mat-icon>
+          </div>
+        </mat-card>
 
-        <mat-list>
-          
-          <mat-list-item *ngFor="let actividad of actividadesRecientes">
-            
-                        <ng-container [ngSwitch]="actividad.tipo_accion" matListItemIcon>
-              <mat-icon *ngSwitchCase="'CONSTANCIA'" class="activity-icon success">check_circle</mat-icon>
-              <mat-icon *ngSwitchCase="'CONFERENCIA'" class="activity-icon info">info</mat-icon>
-              <mat-icon *ngSwitchCase="'DOCENTE'" class="activity-icon warning">person_add</mat-icon>
-              <mat-icon *ngSwitchDefault class="activity-icon info">notifications</mat-icon>
-            </ng-container>
-            
-                        <div matListItemTitle>{{ actividad.descripcion }}</div>
-            
-                        <div matListItemLine>{{ actividad.created_at | date:'medium' }}</div>
+      </div>
 
-          </mat-list-item>
+      <mat-card class="quick-actions-card">
+        <mat-card-header style="border-bottom: 1px solid #f0f0f0; padding-bottom: 10px;">
+          <mat-card-title style="font-size: 1.1rem; color: #333; font-weight: 600;">Accesos Rápidos</mat-card-title>
+        </mat-card-header>
+        <mat-card-content style="padding-top: 20px;">
+          
+          <div class="quick-actions-grid">
+            
+            <button mat-stroked-button class="quick-btn" (click)="nuevaConferencia()">
+              <mat-icon style="color: #1565c0;">add_circle</mat-icon>
+              Nueva Conferencia
+            </button>
+            
+            <button mat-stroked-button class="quick-btn" (click)="nuevoAlumno()">
+              <mat-icon style="color: #00897b;">person_add</mat-icon>
+              Registrar Alumno
+            </button>
+            
+            <button mat-stroked-button class="quick-btn" (click)="nuevoGrupo()">
+              <mat-icon style="color: #ef6c00;">group_add</mat-icon>
+              Crear Grupo
+            </button>
+            
+            </div>
 
-          <mat-list-item *ngIf="actividadesRecientes.length === 0 && !isLoading">
-            <div matListItemTitle>No hay actividades recientes.</div>
-          </mat-list-item>
+        </mat-card-content>
+      </mat-card>
 
-        </mat-list>
-      </mat-card-content>
-    </mat-card>
-    </div> </div>
+    </div>
+
+    <div class="right-panel">
+      
+      <mat-card class="activities-card">
+        <div class="activity-header">
+          <h3 style="margin: 0; font-size: 1rem; color: #444; font-weight: 600; display: flex; align-items: center; gap: 8px;">
+            <mat-icon style="color: #1a237e;">notifications_active</mat-icon>
+            Actividad Reciente
+          </h3>
+        </div>
+        
+        <mat-card-content style="padding: 0;">
+          
+          <div class="activity-scroll-area">
+            <mat-list>
+              <mat-list-item *ngFor="let actividad of actividadesRecientes" style="height: auto; padding: 12px 16px; border-bottom: 1px solid #f9f9f9;">
+                
+                <div matListItemIcon style="background: #f5f5f5; padding: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px;"
+                     [ngStyle]="{'background-color': 
+                        actividad.tipo_accion === 'conferencia' ? '#e3f2fd' : 
+                        actividad.tipo_accion === 'alumno' ? '#e0f2f1' : 
+                        actividad.tipo_accion === 'docente' ? '#fff3e0' : 
+                        actividad.tipo_accion === 'grupo' ? '#f3e5f5' : '#f5f5f5'}">
+                  
+                  <mat-icon [ngStyle]="{'color': 
+                      actividad.tipo_accion === 'conferencia' ? '#1565c0' : 
+                      actividad.tipo_accion === 'alumno' ? '#00897b' : 
+                      actividad.tipo_accion === 'docente' ? '#ef6c00' : 
+                      actividad.tipo_accion === 'grupo' ? '#7b1fa2' : '#757575'}" 
+                      style="font-size: 20px; height: 20px; width: 20px;">
+                      
+                      <ng-container [ngSwitch]="actividad.tipo_accion">
+                        <span *ngSwitchCase="'constancia'">verified</span>
+                        <span *ngSwitchCase="'conferencia'">event</span>
+                        <span *ngSwitchCase="'docente'">person</span>
+                        <span *ngSwitchCase="'grupo'">groups</span>
+                        <span *ngSwitchCase="'alumno'">school</span>
+                        <span *ngSwitchDefault>notifications</span>
+                      </ng-container>
+
+                  </mat-icon>
+                </div>
+                
+                <div matListItemTitle style="font-size: 0.85rem; font-weight: 500; color: #333; margin-bottom: 4px; white-space: normal; line-height: 1.4;">
+                  {{ actividad.descripcion }}
+                </div>
+                <div matListItemLine style="font-size: 0.75rem; color: #999;">
+                  {{ actividad.created_at | date:'MMM d, h:mm a' }}
+                </div>
+              </mat-list-item>
+
+              <div *ngIf="actividadesRecientes.length === 0" style="padding: 40px 20px; text-align: center;">
+                <mat-icon style="color: #e0e0e0; font-size: 40px; height: 40px; width: 40px;">notifications_off</mat-icon>
+                <p style="color: #999; margin-top: 10px; font-size: 0.9rem;">No hay actividad reciente.</p>
+              </div>
+
+            </mat-list>
+          </div>
+          </mat-card-content>
+      </mat-card>
+
+    </div>
+
+  </div>
+</div>

@@ -1,35 +1,48 @@
-<div class="conferences-grid">
+<div class="main-container">
+  <h2 class="section-title">Mis Conferencias</h2>
+  
+  <div class="conferences-grid">
+    <mat-card *ngFor="let conf of conferenciasAsignadas" class="conference-card">
+      
+      <mat-card-header>
+        <div mat-card-avatar class="conference-avatar">
+          <mat-icon>event_note</mat-icon> </div>
+        <mat-card-title class="card-title" title="{{ conf.nombre_conferencia }}">
+          {{ conf.nombre_conferencia }}
+        </mat-card-title>
+        <mat-card-subtitle>
+          <span class="ponente-label">Ponente:</span> 
+          {{ conf.ponente?.nombre || 'Por asignar' }}
+        </mat-card-subtitle>
+      </mat-card-header>
 
-  <mat-card *ngFor="let conf of conferenciasAsignadas" class="conference-card mat-elevation-z2">
-    <mat-card-header>
-      <div mat-card-avatar class="conference-icon">
-        <mat-icon>calendar_today</mat-icon>
-      </div>
-      
-            <mat-card-title>{{ conf.nombre_conferencia }}</mat-card-title>
-      
-      <mat-card-subtitle>
-        <mat-icon class="icon-small">person</mat-icon>
-                Ponente: {{ conf.ponente?.nombre || 'No asignado' }}
-      </mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      
-            <p *ngIf="conf.tema" class="conference-theme">
-        {{ conf.tema }}
-      </p>
+      <mat-card-content>
+        <div class="theme-chip" *ngIf="conf.tema">
+          {{ conf.tema }}
+        </div>
 
-      <div class="conference-details">
-                <p><mat-icon class="icon-small">event</mat-icon> Fecha: {{ conf.fecha_hora | date:'dd MMM yyyy' }}</p>
-                <p><mat-icon class="icon-small">schedule</mat-icon> Hora: {{ conf.fecha_hora | date:'hh:mm a' }}</p>
-                <p><mat-icon class="icon-small">location_on</mat-icon> Lugar: {{ conf.lugar }}</p>
-      </div>
-    </mat-card-content>
-    <mat-card-actions align="end">
-            <button mat-flat-button color="primary" [routerLink]="['/panel/docente/conferencia', conf.id_conferencia, 'asistencia']">
-        <mat-icon>assignment</mat-icon> Gestionar Asistencia
-      </button>
-    </mat-card-actions>
-  </mat-card>
+        <div class="conference-details">
+          <div class="detail-row">
+            <mat-icon class="icon-small">calendar_today</mat-icon> 
+            <span>{{ conf.fecha_hora | date:'dd MMM yyyy' }}</span>
+          </div>
+          <div class="detail-row">
+            <mat-icon class="icon-small">access_time</mat-icon> 
+            <span>{{ conf.fecha_hora | date:'hh:mm a' }}</span>
+          </div>
+          <div class="detail-row">
+            <mat-icon class="icon-small">place</mat-icon> 
+            <span>{{ conf.lugar }}</span>
+          </div>
+        </div>
+      </mat-card-content>
 
+      <mat-card-actions align="end" class="card-footer">
+        <button mat-flat-button color="primary" [routerLink]="['/panel/docente/conferencia', conf.id_conferencia, 'asistencia']">
+          <mat-icon>assignment_turned_in</mat-icon> Asistencia
+        </button>
+      </mat-card-actions>
+      
+    </mat-card>
+  </div>
 </div>

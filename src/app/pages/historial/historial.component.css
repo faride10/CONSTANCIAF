@@ -1,0 +1,251 @@
+.main-container { 
+  padding: 30px; 
+  background-color: #f4f7fe; 
+  min-height: 100vh; 
+}
+
+.page-header { 
+  display: flex; 
+  align-items: center; 
+  gap: 15px; 
+  margin-bottom: 30px; 
+}
+
+.header-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.page-title { 
+  margin: 0; 
+  color: #1a237e; 
+  font-weight: 600; 
+  font-size: 1.5rem;
+}
+
+.subtitle { 
+  margin: 0; 
+  color: #718096; 
+  font-size: 0.9rem; 
+  font-weight: 500;
+}
+
+.folder-grid { 
+  display: grid; 
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+  gap: 25px; 
+}
+
+.folder-card { 
+  cursor: pointer; 
+  transition: all 0.3s ease; 
+  border: 1px solid #e0e6ed !important; 
+  text-align: center; 
+}
+
+.folder-card:hover { 
+  transform: translateY(-8px); 
+  border-color: #1a237e !important; 
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+}
+
+.folder-content {
+  padding: 30px !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.folder-icon { 
+  font-size: 70px; 
+  width: 70px; 
+  height: 70px; 
+  color: #3949ab; 
+  margin-bottom: 15px; 
+}
+
+.period-name {
+  margin: 0;
+  color: #2d3748;
+  font-weight: bold;
+}
+
+.count-tag {
+  color: #718096;
+  font-size: 0.85rem;
+  margin-top: 5px;
+}
+
+.history-card {
+  border-radius: 12px !important;
+  overflow: hidden;
+}
+
+.custom-table {
+  background: white;
+}
+
+.bold-text { 
+  font-weight: 600; 
+  color: #1a237e; 
+}
+
+.badge-asistencia { 
+  background: #e8f5e9; 
+  color: #2e7d32; 
+  padding: 6px 14px; 
+  border-radius: 20px; 
+  font-weight: bold; 
+  font-size: 0.8rem;
+}
+
+.row-hover { 
+  cursor: pointer; 
+  transition: 0.2s; 
+}
+
+.row-hover:hover { 
+  background-color: #f0f4ff !important; 
+}
+
+.archive-banner { 
+  background: #fff3e0; 
+  color: #e65100; 
+  padding: 14px; 
+  border-radius: 8px; 
+  display: flex; 
+  align-items: center; 
+  gap: 12px; 
+  margin-bottom: 25px; 
+  border: 1px solid #ffe0b2; 
+  font-weight: 500;
+}
+
+.groups-grid { 
+  display: flex; 
+  flex-wrap: wrap; 
+  gap: 20px; 
+}
+
+.group-card { 
+  width: 290px; 
+  cursor: pointer; 
+  border-left: 5px solid #1a237e !important; 
+  transition: transform 0.2s ease;
+}
+
+.group-card:hover {
+  transform: scale(1.02);
+}
+
+.group-card-layout { 
+  display: flex; 
+  align-items: center; 
+  gap: 15px; 
+  padding: 15px !important; 
+}
+
+.icon-circle { 
+  background: #e8eaf6; 
+  color: #3f51b5; 
+  width: 50px; 
+  height: 50px; 
+  border-radius: 50%; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+}
+
+.group-data {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.g-name { 
+  font-weight: bold; 
+  font-size: 1.1rem;
+  color: #2d3748;
+}
+
+.g-career { 
+  font-size: 0.8rem; 
+  color: #718096; 
+}
+
+.chevron { 
+  color: #cbd5e0; 
+}
+
+.group-header-pill { 
+  background: #1a237e; 
+  color: white; 
+  padding: 10px 20px; 
+  border-radius: 30px; 
+  display: inline-flex; 
+  align-items: center; 
+  gap: 10px; 
+  margin: 20px; 
+  font-weight: 500;
+  box-shadow: 0 4px 6px rgba(26, 35, 126, 0.2);
+}
+
+.table-attendance { 
+  width: 100%; 
+  border-collapse: collapse; 
+  margin-top: 15px; 
+}
+
+.table-attendance th { 
+  text-align: left; 
+  padding: 12px; 
+  color: #7f8c8d; 
+  border-bottom: 2px solid #edf2f7; 
+  font-size: 0.8rem; 
+  text-transform: uppercase;
+}
+
+.table-attendance td { 
+  padding: 15px 12px; 
+  border-bottom: 1px solid #f7fafc; 
+  color: #2d3748;
+}
+
+.bold-text { 
+  font-weight: 600; 
+  color: #1a237e; 
+}
+
+.status-badge { 
+  background: #e8f5e9; 
+  color: #2e7d32; 
+  padding: 5px 10px; 
+  border-radius: 6px; 
+  font-weight: bold; 
+  font-size: 0.7rem; 
+}
+
+.group-header-pill { 
+  background: #1a237e; 
+  color: white; 
+  padding: 10px 20px; 
+  border-radius: 25px; 
+  display: inline-flex; 
+  align-items: center; 
+  gap: 10px; 
+  margin: 15px; 
+  font-weight: 500;
+}
+
+.empty-list {
+  text-align: center;
+  padding: 40px;
+  color: #a0aec0;
+}
+
+.empty-list mat-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 10px;
+}

@@ -1,0 +1,125 @@
+<div class="main-container">
+  <div class="page-header">
+    <button mat-icon-button (click)="volver()" 
+            [routerLink]="(!periodoSeleccionado && !conferenciaSeleccionada) ? '/panel/admin/admin' : null"
+            class="back-button">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <div class="header-text">
+      <h2 class="page-title">
+        <span *ngIf="!periodoSeleccionado">Bóveda de Archivos Académicos</span>
+        <span *ngIf="periodoSeleccionado && !conferenciaSeleccionada">Periodo: {{periodoSeleccionado.nombre}}</span>
+        <span *ngIf="conferenciaSeleccionada && !grupoSeleccionado">Grupos que asistieron</span>
+        <span *ngIf="grupoSeleccionado">Lista de Asistencia Histórica</span>
+      </h2>
+      <p class="subtitle" *ngIf="conferenciaSeleccionada">
+        {{conferenciaSeleccionada.nombre_conferencia}} | {{conferenciaSeleccionada.fecha_hora | date:'dd/MM/yyyy'}}
+      </p>
+    </div>
+  </div>
+
+  <div *ngIf="!periodoSeleccionado" class="folder-grid">
+    <mat-card *ngFor="let p of periodosAgrupados" class="folder-card shadow-sm" (click)="verPeriodo(p)">
+      <mat-card-content class="folder-content">
+        <mat-icon class="folder-icon">inventory_2</mat-icon>
+        <h3 class="period-name">{{ p.nombre }}</h3>
+        <span class="count-tag">{{ p.conferencias.length }} Conferencias archivadas</span>
+      </mat-card-content>
+    </mat-card>
+    
+    <div *ngIf="periodosAgrupados.length === 0" class="empty-state-simple">
+      <mat-icon>cloud_off</mat-icon>
+      <p>No se encontraron registros en la copia de seguridad.</p>
+    </div>
+  </div>
+
+  <mat-card *ngIf="periodoSeleccionado && !conferenciaSeleccionada" class="history-card shadow-sm">
+    <mat-card-content class="mt-4">
+      <table mat-table [dataSource]="conferenciasArchivadas" class="w-100 custom-table">
+        <ng-container matColumnDef="titulo">
+          <th mat-header-cell *matHeaderCellDef> Conferencia </th>
+          <td mat-cell *matCellDef="let c" class="bold-text"> {{c.nombre_conferencia}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="ponente">
+          <th mat-header-cell *matHeaderCellDef> Ponente </th>
+          <td mat-cell *matCellDef="let c"> {{c.ponente?.nombre || 'N/A'}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="fecha">
+          <th mat-header-cell *matHeaderCellDef> Fecha </th>
+          <td mat-cell *matCellDef="let c"> {{c.fecha_hora | date:'dd/MM/yyyy'}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="total">
+          <th mat-header-cell *matHeaderCellDef> Asistencias </th>
+          <td mat-cell *matCellDef="let c"> 
+            <span class="badge-asistencia">{{c.asistencias_count || 0}} alumnos</span> 
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columnasVisibles"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnasVisibles;" 
+            (click)="verDetalleConferencia(row)" class="row-hover"></tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+
+  <div *ngIf="conferenciaSeleccionada && !grupoSeleccionado" class="details-container">
+    <div class="archive-banner">
+      <mat-icon>lock</mat-icon> Registro de solo lectura de la base de datos del ITSAL.
+    </div>
+    
+    <div class="groups-grid">
+      <mat-card *ngFor="let grupo of conferenciaSeleccionada.grupos" 
+                class="group-card shadow-sm" (click)="verAlumnos(grupo)">
+        <mat-card-content class="group-card-layout">
+          <div class="icon-circle">
+            <mat-icon>groups</mat-icon>
+          </div>
+          <div class="group-data">
+            <span class="g-name">{{grupo.nombre_grupo}}</span>
+            <span class="g-career">{{grupo.carrera || 'INGENIERÍA'}}</span>
+          </div>
+          <mat-icon class="chevron">chevron_right</mat-icon>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+  <mat-card *ngIf="grupoSeleccionado" class="history-card shadow-sm">
+    <div class="group-header-pill">
+      <mat-icon>school</mat-icon> {{grupoSeleccionado.nombre_grupo}}
+    </div>
+    <mat-card-content>
+      <table class="w-100 table-attendance">
+        <thead>
+          <tr>
+            <th>Nombre Completo</th>
+            <th>No. Control</th>
+            <th>Estado</th>
+            <th>Registro</th>
+          </tr>
+        </thead>
+       <tbody>
+          <tr *ngFor="let asist of alumnosAsistencia">
+            <td class="bold-text">
+              {{asist.alumno?.nombre}} {{asist.alumno?.apellido_paterno}} {{asist.alumno?.apellido_materno}}
+            </td>
+            
+            <td>{{asist.alumno?.num_control}}</td>
+            
+            <td><span class="status-badge">PRESENTE</span></td>
+            
+            <td>{{asist.created_at | date:'shortTime'}}</td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <div *ngIf="alumnosAsistencia.length === 0" class="empty-list">
+        <mat-icon>sentiment_dissatisfied</mat-icon>
+        <p>No se encontraron registros de asistencia para el grupo {{grupoSeleccionado.nombre_grupo}} en este evento archivado.</p>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

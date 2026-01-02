@@ -16,12 +16,10 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar'; // <--- NUEVO: Para notificaciones bonitas
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar'; 
 
-// Componentes Compartidos y Modales
 import { QrCodeDisplayComponent } from '../qr-code-display/qr-code-display.component'; 
 import { RegistroManualComponent } from '../registro-manual/registro-manual.component'; 
-// Importamos el diálogo de confirmación bonito que ya tienes en el proyecto
 import { ConfirmationDialogComponent } from '../../shared/confirmation-dialog/confirmation-dialog.component';
 
 @Component({

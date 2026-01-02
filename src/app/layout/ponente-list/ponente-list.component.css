@@ -18,7 +18,6 @@
   color: #2c3e50;
 }
 
-/* Alineación del icono del botón */
 .header-section button mat-icon {
   margin-right: 8px;
 }
@@ -34,12 +33,10 @@
   border-radius: 4px;
 }
 
-/* Ajuste para quitar fondo gris de Material */
 ::ng-deep .search-field .mat-mdc-text-field-wrapper {
   background-color: white !important;
 }
 
-/* TABLA */
 .table-container {
   background-color: white;
   border-radius: 4px;
@@ -51,7 +48,6 @@ table.mat-mdc-table {
   width: 100%;
 }
 
-/* ENCABEZADOS (Compactos) */
 th.mat-mdc-header-cell {
   padding: 0 16px;
   height: 56px;
@@ -63,10 +59,9 @@ th.mat-mdc-header-cell {
   text-transform: uppercase;
 }
 
-/* CELDAS (Compactas) */
 td.mat-mdc-cell {
   padding: 0 16px;
-  height: 48px; /* Altura delgada */
+  height: 48px; 
   border-bottom: 1px solid #e0e0e0;
   color: #333;
   font-size: 0.875rem;

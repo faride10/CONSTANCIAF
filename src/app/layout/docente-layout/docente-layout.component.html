@@ -29,9 +29,36 @@
     <mat-toolbar class="toolbar">
       <span class="toolbar-spacer"></span>
 
-      <button mat-icon-button aria-label="Notificaciones">
-        <mat-icon>notifications</mat-icon>
+      <button mat-icon-button [matMenuTriggerFor]="notifMenu" aria-label="Notificaciones">
+        <mat-icon matBadge="{{unreadCount}}" 
+                  matBadgeColor="warn" 
+                  [matBadgeHidden]="unreadCount === 0">
+          notifications
+        </mat-icon>
       </button>
+
+      <mat-menu #notifMenu="matMenu" class="notification-menu">
+        <div class="notif-header" (click)="$event.stopPropagation()">
+          <span>Asistencias de Alumnos</span>
+          <button mat-button color="primary" (click)="limpiarNotificaciones()">Limpiar</button>
+        </div>
+        <mat-divider></mat-divider>
+
+        <div *ngIf="notificaciones.length === 0" class="empty-notif" (click)="$event.stopPropagation()">
+          No hay registros de asistencia recientes.
+        </div>
+
+        <div class="notif-container">
+          <button mat-menu-item *ngFor="let n of notificaciones" class="notif-item">
+            <mat-icon [style.color]="n.color">{{ n.icono }}</mat-icon>
+            <div class="notif-text">
+              <p class="notif-title">{{ n.titulo }}</p>
+              <p class="notif-message">{{ n.mensaje }}</p>
+              <span class="notif-time">{{ n.tiempo }}</span>
+            </div>
+          </button>
+        </div>
+      </mat-menu>
 
       <button mat-icon-button 
               class="profile-button" 

@@ -7,13 +7,21 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+
 
 @Component({
   selector: 'app-grupo-form',
   standalone: true,
   imports: [
-    CommonModule, ReactiveFormsModule, MatDialogModule, MatFormFieldModule,
-    MatInputModule, MatButtonModule, MatSelectModule
+    CommonModule, 
+    ReactiveFormsModule, 
+    MatDialogModule, 
+    MatFormFieldModule,
+    MatInputModule, 
+    MatButtonModule, 
+    MatSelectModule,
+    MatIconModule 
   ],
   templateUrl: './grupo-form.component.html',
   styleUrls: ['./grupo-form.component.css']

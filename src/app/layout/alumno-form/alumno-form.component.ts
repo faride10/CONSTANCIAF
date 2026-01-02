@@ -65,7 +65,7 @@ export class AlumnoFormComponent implements OnInit {
     const alumnoData = this.alumnoForm.getRawValue();
 
     if (this.isEditMode) {
-      this.alumnoService.updateAlumno(alumnoData.NUM_CONTROL, alumnoData).subscribe(() => {
+      this.alumnoService.updateAlumno(alumnoData.num_control, alumnoData).subscribe(() => {
         this.dialogRef.close(true); 
       });
     } else {

@@ -1,52 +1,73 @@
-<div class="reporte-container" style="padding: 20px;">
+<div class="reporte-container" style="max-width: 1200px; width: 95%; margin: 0 auto; padding-top: 20px; font-family: Roboto, sans-serif;">
 
-  <div style="display: flex; align-items: center; margin-bottom: 20px;">
-    <button mat-icon-button (click)="volver()" style="margin-right: 10px;">
-      <mat-icon>arrow_back</mat-icon>
-    </button>
-    <div>
-      <h2 style="margin: 0; color: #1B396A;">Grupos Asignados</h2>
-      <p *ngIf="conferencia" style="margin: 0; color: #666;">
-                {{ conferencia.nombre_conferencia }}
-      </p>
-    </div>
-  </div>
+  <div style="display: flex; align-items: flex-start; gap: 15px; margin-bottom: 30px;">
+    
+    <button mat-icon-button (click)="volver()" style="background-color: #f5f5f5; color: #555;">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    
+    <div style="display: flex; flex-direction: column;">
+      <h2 style="margin: 0 0 8px 0; color: #1a237e; font-size: 1.8rem; font-weight: 500; line-height: 1;">
+        Grupos Asignados
+      </h2>
+      
+      <div *ngIf="conferencia" style="display: flex; align-items: center; color: #666;">
+        <mat-icon style="font-size: 18px; width: 18px; height: 18px; margin-right: 5px;">event</mat-icon>
+        <span style="font-weight: 500; font-size: 1rem;">{{ conferencia.nombre_conferencia }}</span>
+      </div>
+    </div>
 
-  <div *ngIf="isLoading" style="text-align: center; margin-top: 40px;">
-    <mat-spinner diameter="40"></mat-spinner>
-    <p>Cargando grupos...</p>
-  </div>
+  </div>
 
-  <div *ngIf="errorMessage" style="color: red; text-align: center; margin-top: 20px;">
-    <mat-icon style="font-size: 40px; height: 40px;">error_outline</mat-icon>
-    <p>{{ errorMessage }}</p>
-  </div>
+  <div *ngIf="isLoading" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 200px;">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p style="margin-top: 15px; color: #888;">Cargando grupos...</p>
+  </div>
 
-  <div *ngIf="!isLoading && !errorMessage" class="grupos-grid">
-    
-    <div *ngIf="grupos.length === 0" style="text-align: center; width: 100%; color: #888;">
-      <p>Esta conferencia no tiene grupos asignados.</p>
-    </div>
+  <div *ngIf="errorMessage" style="background-color: #ffebee; color: #c62828; padding: 15px; border-radius: 8px; text-align: center; margin-top: 20px;">
+    <mat-icon style="vertical-align: middle; margin-right: 5px;">error_outline</mat-icon>
+    <span>{{ errorMessage }}</span>
+  </div>
 
-    <mat-card *ngFor="let grupo of grupos" 
-              class="grupo-card"
-              style="margin-bottom: 15px; cursor: pointer; transition: transform 0.2s;"
-                            [routerLink]="['/panel/admin/reporte-asistencia', idConferencia, 'grupo', grupo.id_grupo]">
-      
-      <mat-card-content style="display: flex; align-items: center; padding: 16px;">
-        <div style="background-color: #e3f2fd; padding: 10px; border-radius: 50%; margin-right: 15px;">
-          <mat-icon style="color: #1565c0;">groups</mat-icon>
-        </div>
-        
-        <div style="flex: 1;">
-                    <h3 style="margin: 0; font-weight: 600;">{{ grupo.nombre }}</h3>
-                    <p style="margin: 0; font-size: 0.9rem; color: #666;">{{ grupo.carrera }}</p>
-        </div>
+  <div *ngIf="!isLoading && !errorMessage" class="grupos-grid">
+    
+    <div *ngIf="grupos.length === 0" style="text-align: center; padding: 50px; background: white; border-radius: 10px; width: 100%; grid-column: 1 / -1;">
+      <mat-icon style="font-size: 50px; width: 50px; height: 50px; color: #e0e0e0; margin-bottom: 10px;">groups_3</mat-icon>
+      <p style="color: #757575; font-size: 1.1rem;">Esta conferencia no tiene grupos asignados.</p>
+    </div>
 
-        <mat-icon style="color: #ccc;">chevron_right</mat-icon>
-      </mat-card-content>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; padding-bottom: 40px;">
 
-    </mat-card>
+      <mat-card *ngFor="let grupo of grupos" 
+                class="grupo-card mat-elevation-z2"
+                style="border-radius: 10px; cursor: pointer; position: relative; overflow: hidden; transition: transform 0.2s;"
+                [routerLink]="['/panel/admin/reporte-asistencia', idConferencia, 'grupo', grupo.id_grupo]">
+        
+        <div style="position: absolute; left: 0; top: 0; bottom: 0; width: 5px; background-color: #1565c0;"></div>
 
-  </div>
+        <mat-card-content style="display: flex; align-items: center; padding: 20px;">
+          
+          <div style="background-color: #e3f2fd; min-width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px;">
+            <mat-icon style="color: #1565c0; font-size: 24px;">groups</mat-icon>
+          </div>
+          
+          <div style="flex: 1; overflow: hidden;">
+            <h3 style="margin: 0 0 5px 0; font-weight: 600; color: #333; font-size: 1.1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+              {{ grupo.nombre }}
+            </h3>
+            <p style="margin: 0; font-size: 0.9rem; color: #757575; display: flex; align-items: center;">
+              <mat-icon style="font-size: 14px; width: 14px; height: 14px; margin-right: 4px;">school</mat-icon>
+              {{ grupo.carrera || 'Carrera no especificada' }}
+            </p>
+          </div>
+
+          <mat-icon style="color: #e0e0e0;">chevron_right</mat-icon>
+
+        </mat-card-content>
+
+      </mat-card>
+
+    </div>
+
+  </div>
 </div>

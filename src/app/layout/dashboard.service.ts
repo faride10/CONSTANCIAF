@@ -6,12 +6,10 @@ import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
-  })
-
+})
 export class DashboardService {
 
   private apiUrl = environment.apiUrl;   
-
   
   constructor(private http: HttpClient, private authService: AuthService) { }
 
@@ -21,7 +19,8 @@ export class DashboardService {
       return new HttpHeaders();
     }
     return new HttpHeaders({
-      'Authorization': `Bearer ${token}`
+      'Authorization': `Bearer ${token}`,
+      'Accept': 'application/json'
     });
   }
 
@@ -38,8 +37,21 @@ export class DashboardService {
       headers: this.getAuthHeaders() 
     });
   }
+
   getReportePorAlumnos(idConferencia: number, idGrupo: number): Observable<any> {
     return this.http.get(`${this.apiUrl}/admin/reporte/conferencia/${idConferencia}/grupo/${idGrupo}`, { 
+      headers: this.getAuthHeaders() 
+    });
+  }
+
+  getNotificaciones(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/notificaciones`, { 
+      headers: this.getAuthHeaders() 
+    });
+  }
+
+  limpiarNotificaciones(): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/notificaciones/limpiar`, { 
       headers: this.getAuthHeaders() 
     });
   }

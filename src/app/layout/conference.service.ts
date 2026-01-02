@@ -64,4 +64,10 @@ export class ConferenceService {
 
     return dataToSend;
   }
+
+  archivarPeriodo(idPeriodo: number): Observable<any> {
+  const url = `${this.apiUrl}/periodos/${idPeriodo}/archivar`;
+  
+  return this.http.post(url, {});
+}
 }

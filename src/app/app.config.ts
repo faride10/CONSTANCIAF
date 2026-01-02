@@ -11,7 +11,8 @@ import { GrupoService } from './layout/grupo.service';
 import { PonenteService } from './layout/ponente.service';
 
 import { TokenInterceptor } from './layout/token.interceptor'; 
-import { routes } from './app.routes'; 
+import { routes } from './app.routes';
+ 
 
 export const appConfig: ApplicationConfig = {
   providers: [

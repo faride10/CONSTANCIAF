@@ -1,43 +1,66 @@
-<h1 mat-dialog-title>{{ titulo }}</h1>
+<div mat-dialog-title style="margin: 0; padding: 20px 24px; background-color: #f8f9fa; border-bottom: 1px solid #e0e0e0; display: flex; justify-content: space-between; align-items: center;">
+  
+  <h2 style="margin: 0; font-size: 1.3rem; color: #1a237e; font-weight: 500; display: flex; align-items: center; gap: 10px;">
+    <mat-icon style="color: #3f51b5;">person_add</mat-icon>
+    {{ titulo }}
+  </h2>
 
-<div mat-dialog-content>
-  <form [formGroup]="docenteForm" class="docente-form">
-
-    <mat-form-field class="full-width">
-      <mat-label>Nombre Completo</mat-label>
-            <input matInput formControlName="nombre" placeholder="Ej. Juan Pérez García">
-            <mat-error *ngIf="docenteForm.get('nombre')?.hasError('required')">
-        El nombre es requerido
-      </mat-error>
-    </mat-form-field>
-
-    <mat-form-field class="full-width">
-      <mat-label>RFC (Será su usuario y contraseña temporal)</mat-label>
-            <input matInput formControlName="rfc" placeholder="Ej. PEGJ800101XXX">
-            <mat-error *ngIf="docenteForm.get('rfc')?.hasError('required')">
-        El RFC es requerido
-      </mat-error>
-    </mat-form-field>
-
-    <mat-form-field class="full-width">
-      <mat-label>Correo Electrónico (Opcional)</mat-label>
-            <input matInput formControlName="correo" placeholder="Ej. juan.perez@tecnm.mx">
-            <mat-error *ngIf="docenteForm.get('correo')?.hasError('email')">
-        Formato de correo inválido
-      </mat-error>
-    </mat-form-field>
-
-    <mat-form-field class="full-width">
-      <mat-label>Teléfono (Opcional)</mat-label>
-            <input matInput formControlName="telefono" placeholder="Ej. 9711234567">
-    </mat-form-field>
-
-  </form>
+  <button mat-icon-button (click)="cerrarModal()" style="color: #666;">
+    <mat-icon>close</mat-icon>
+  </button>
 </div>
 
-<div mat-dialog-actions align="end">
-  <button mat-stroked-button (click)="cerrarModal()">Cancelar</button>
-  <button mat-flat-button color="primary" (click)="guardarDocente()" [disabled]="docenteForm.invalid">
-    Guardar
-  </button>
-</div>
+<mat-dialog-content class="mat-typography" style="min-width: 500px; padding: 24px !important;">
+  
+  <form [formGroup]="docenteForm">
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+
+      <mat-form-field appearance="outline" style="grid-column: 1 / -1; width: 100%;">
+        <mat-label>Nombre Completo</mat-label>
+        <mat-icon matPrefix style="color: #757575; margin-right: 8px;">face</mat-icon>
+        <input matInput formControlName="nombre" placeholder="Ej. Juan Pérez García">
+        <mat-error *ngIf="docenteForm.get('nombre')?.hasError('required')">
+          El nombre es requerido
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="width: 100%;">
+        <mat-label>RFC (Usuario)</mat-label>
+        <mat-icon matPrefix style="color: #757575; margin-right: 8px;">badge</mat-icon>
+        <input matInput formControlName="rfc" placeholder="Ej. PEGJ800101XXX" style="text-transform: uppercase;">
+        <mat-error *ngIf="docenteForm.get('rfc')?.hasError('required')">
+          El RFC es requerido
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="width: 100%;">
+        <mat-label>Teléfono</mat-label>
+        <mat-icon matPrefix style="color: #757575; margin-right: 8px;">phone</mat-icon>
+        <input matInput formControlName="telefono" placeholder="Ej. 9711234567" type="tel">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="grid-column: 1 / -1; width: 100%;">
+        <mat-label>Correo Electrónico (Institucional)</mat-label>
+        <mat-icon matPrefix style="color: #757575; margin-right: 8px;">alternate_email</mat-icon>
+        <input matInput formControlName="correo" placeholder="Ej. juan.perez@tecnm.mx" type="email">
+        <mat-error *ngIf="docenteForm.get('correo')?.hasError('email')">
+          Formato de correo inválido
+        </mat-error>
+      </mat-form-field>
+
+    </div>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" style="padding: 16px 24px; border-top: 1px solid #e0e0e0; background-color: #fafafa; margin-bottom: 0;">
+  <button mat-button (click)="cerrarModal()" style="color: #666; margin-right: 8px;">CANCELAR</button>
+  
+  <button mat-flat-button color="primary" (click)="guardarDocente()" 
+          [disabled]="docenteForm.invalid"
+          style="background-color: #3f51b5; color: white;">
+    <mat-icon style="margin-right: 5px; font-size: 18px;">save</mat-icon>
+    GUARDAR
+  </button>
+</mat-dialog-actions>

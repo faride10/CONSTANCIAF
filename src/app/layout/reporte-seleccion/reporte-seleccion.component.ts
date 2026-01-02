@@ -5,10 +5,20 @@ import { ConferenceService } from '../conference.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+
 @Component({
   selector: 'app-reporte-seleccion',
   standalone: true,
-  imports: [CommonModule, RouterModule, MatIconModule, MatProgressSpinnerModule],
+  imports: [
+    CommonModule, 
+    RouterModule, 
+    MatIconModule, 
+    MatProgressSpinnerModule,
+    MatCardModule,
+    MatButtonModule
+  ],
   templateUrl: './reporte-seleccion.component.html',
   styleUrls: ['./reporte-seleccion.component.css']
 })

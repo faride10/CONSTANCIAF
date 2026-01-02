@@ -10,10 +10,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip'; 
-
 import { PonenteService } from '../ponente.service'; 
 import { PonenteFormComponent } from '../ponente-form/ponente-form.component';
-import { ConfirmationDialogComponent } from '../../shared/confirmation-dialog/confirmation-dialog.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-ponente-list',
@@ -97,26 +96,37 @@ export class PonenteListComponent implements OnInit, AfterViewInit {
   }
 
   deletePonente(ponente: any): void {
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      width: '350px',
-      data: {
-        title: 'Confirmar Eliminación',
-        message: `¿Estás seguro de eliminar al ponente "${ponente.nombre}"?`
-      }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.isLoading = true;
+    Swal.fire({
+      title: 'Confirmar Eliminación',
+      text: `¿Estás seguro de que deseas eliminar al ponente "${ponente.nombre}"? Esta acción no se puede deshacer.`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',   
+      cancelButtonColor: '#3085d6',   
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        
+        this.isLoading = true;  
+        
         this.ponenteService.deletePonente(ponente.id_ponente).subscribe({
           next: () => {
-            console.log('Ponente eliminado');
+            Swal.fire(
+              '¡Eliminado!',
+              'El ponente ha sido eliminado correctamente.',
+              'success'
+            );
             this.loadPonentes();
           },
           error: (err) => {
             console.error('Error al eliminar ponente:', err);
-            this.errorMessage = 'Error al eliminar el ponente.';  
             this.isLoading = false;
+            Swal.fire(
+              'Error',
+              'No se pudo eliminar el ponente. Inténtalo de nuevo.',
+              'error'
+            );
           }
         });
       }

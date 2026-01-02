@@ -1,39 +1,66 @@
-<div class="reporte-container" style="padding: 20px;">
-  
-  <div class="header-section" style="margin-bottom: 20px;">
-    <h2>Reportes de Asistencia (Nivel 1)</h2>
-    <p style="color: #666;">Selecciona una conferencia para auditar la asistencia por grupo.</p>
-  </div>
+<div class="reporte-container" style="max-width: 1200px; width: 95%; margin: 0 auto; padding-top: 0px; font-family: Roboto, sans-serif;">
+  
+  <div class="header-section" style="margin-bottom: 20px; margin-top: 20px;">
+    
+    <h1 style="color: #1a237e; font-size: 1.8rem; font-weight: 500; margin: 0; line-height: 1; display: flex; align-items: center; gap: 10px;">
+      <mat-icon style="color: #3f51b5;">assessment</mat-icon>
+      Reportes de Asistencia
+    </h1>
+    
+    <p style="color: #666; font-size: 0.95rem; margin: 5px 0 0 40px;">
+      Selecciona una conferencia para ver los detalles.
+    </p>
 
-  <div *ngIf="isLoading" style="text-align: center; margin-top: 30px;">
-    <mat-spinner diameter="40"></mat-spinner>
-    <p>Cargando conferencias...</p>
-  </div>
+  </div>
 
-  <div *ngIf="!isLoading && conferencias.length === 0" style="text-align: center; margin-top: 30px; color: #888;">
-    <p>No hay conferencias registradas aún.</p>
-    
-  </div>
+  <div *ngIf="isLoading" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 200px;">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p style="margin-top: 15px; color: #888;">Cargando...</p>
+  </div>
 
-  <div *ngIf="!isLoading" class="conference-list">
-    
-    <div *ngFor="let conf of conferencias" 
-         class="conference-item"
-         style="background: white; padding: 15px; margin-bottom: 10px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); transition: all 0.2s;"
-                  [routerLink]="['/panel/admin/reporte-asistencia', conf.id_conferencia]">
-         
-      <mat-icon style="color: #1B396A; margin-right: 15px;">event_note</mat-icon>
-      
-      <div style="flex: 1;">
-                <h3 style="margin: 0; font-weight: 600; font-size: 1.1rem;">{{ conf.nombre_conferencia }}</h3>
-        
-        <p *ngIf="conf.fecha_hora" style="margin: 0; color: #888; font-size: 0.9rem;">
-                    {{ conf.fecha_hora | date:'mediumDate' }} - {{ conf.fecha_hora | date:'shortTime' }}
-        </p>
-      </div>
+  <div *ngIf="!isLoading && conferencias.length === 0" style="text-align: center; padding: 40px; background: white; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+    <mat-icon style="font-size: 50px; width: 50px; height: 50px; color: #e0e0e0; margin-bottom: 15px;">event_busy</mat-icon>
+    <h3 style="color: #555; margin: 0;">No hay conferencias</h3>
+  </div>
 
-      <mat-icon style="color: #ccc;">chevron_right</mat-icon>
-    </div>
+  <div *ngIf="!isLoading && conferencias.length > 0" 
+       style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; padding-bottom: 40px;">
+    
+    <mat-card *ngFor="let conf of conferencias" 
+              [routerLink]="['/panel/admin/reporte-asistencia', conf.id_conferencia]"
+              class="conference-card mat-elevation-z2"
+              style="border-radius: 10px; cursor: pointer; position: relative; overflow: hidden; height: 100%; display: flex; flex-direction: column; transition: transform 0.2s;">
+      
+      <div style="position: absolute; left: 0; top: 0; bottom: 0; width: 5px; background-color: #1a237e;"></div>
 
-  </div>
+      <mat-card-header style="padding: 15px 15px 0 20px;">
+        <mat-card-title style="font-size: 1rem; font-weight: 600; color: #333; line-height: 1.3; margin-bottom: 0;">
+          {{ conf.nombre_conferencia }}
+        </mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content style="padding: 10px 15px 15px 20px; flex-grow: 1;">
+        
+        <div style="display: flex; align-items: center; margin-bottom: 5px; color: #555;">
+          <mat-icon style="font-size: 16px; width: 16px; height: 16px; margin-right: 8px; color: #1a237e;">calendar_today</mat-icon>
+          <span style="font-size: 0.85rem;">{{ conf.fecha_hora | date:'dd/MM/yyyy' }}</span>
+        </div>
+        
+        <div style="display: flex; align-items: center; color: #555;">
+          <mat-icon style="font-size: 16px; width: 16px; height: 16px; margin-right: 8px; color: #1a237e;">schedule</mat-icon>
+          <span style="font-size: 0.85rem;">{{ conf.fecha_hora | date:'shortTime' }}</span>
+        </div>
+
+      </mat-card-content>
+
+      <mat-card-actions align="end" style="padding: 0 10px 10px 0; border-top: 1px solid #f5f5f5;">
+        <button mat-button color="primary" style="font-size: 0.8rem; font-weight: 600;">
+          VER REPORTE
+          <mat-icon iconPositionEnd style="font-size: 18px;">arrow_forward</mat-icon>
+        </button>
+      </mat-card-actions>
+
+    </mat-card>
+
+  </div>
 </div>

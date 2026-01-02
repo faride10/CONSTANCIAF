@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, ViewContainerRef, ViewChild, AfterViewInit } from '@angular/core'; 
 import { ConferenceService } from '../conference.service';
 import { CommonModule } from '@angular/common';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table'; 
@@ -10,7 +10,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip'; 
 import { ConferenceFormComponent } from '../conference-form/conference-form.component';
-import { ConfirmationDialogComponent } from '../../shared/confirmation-dialog/confirmation-dialog.component';
+import Swal from 'sweetalert2';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-conference-list',
@@ -24,18 +25,21 @@ import { ConfirmationDialogComponent } from '../../shared/confirmation-dialog/co
     MatInputModule,
     MatProgressSpinnerModule,
     MatDialogModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatPaginatorModule
   ],
   templateUrl: './conference-list.component.html',
   styleUrl: './conference-list.component.css'
 })
-export class ConferenceListComponent implements OnInit {
+export class ConferenceListComponent implements OnInit, AfterViewInit { 
 
   conferences = new MatTableDataSource<any>([]); 
   
   displayedColumns: string[] = ['nombre', 'fechaHora', 'ponente', 'lugar', 'gruposAsignados', 'acciones'];
   isLoading: boolean = true;
   errorMessage: string | null = null;
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(
     private conferenceService: ConferenceService,
@@ -47,9 +51,17 @@ export class ConferenceListComponent implements OnInit {
     this.loadConferences();
   }
 
+  ngAfterViewInit() {
+    this.conferences.paginator = this.paginator;
+  }
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.conferences.filter = filterValue.trim().toLowerCase();
+    
+    if (this.conferences.paginator) {
+      this.conferences.paginator.firstPage();
+    }
   }
 
   loadConferences(): void {
@@ -58,14 +70,20 @@ export class ConferenceListComponent implements OnInit {
 
     this.conferenceService.getConferences().subscribe({
       next: (data: any) => {
-        this.conferences.data = data;
+      
+        this.conferences.data = data.filter((conf: any) => !conf.esta_archivado);
+
         this.conferences.filterPredicate = (data: any, filter: string) => {
           const dataStr = JSON.stringify(data).toLowerCase();
           return dataStr.indexOf(filter) !== -1;
         };
 
+        if (this.paginator) {
+          this.conferences.paginator = this.paginator;
+        }
+
         this.isLoading = false;
-        console.log('Conferencias cargadas:', this.conferences.data);
+        console.log('Conferencias activas cargadas:', this.conferences.data);
       },
       error: (err: any) => {
         console.error('Error al cargar conferencias:', err);
@@ -111,32 +129,39 @@ export class ConferenceListComponent implements OnInit {
   deleteConference(conference: any): void {
     console.log('Eliminar conferencia:', conference);
     
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      width: '350px',
-      data: {
-        title: 'Confirmar Eliminación',
-        message: `¿Estás seguro de que deseas eliminar la conferencia "${conference.nombre_conferencia}"?`
-      },
-      viewContainerRef: this.viewContainerRef   
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === true) {
-        this.isLoading = true;
-        this.errorMessage = null;
+    Swal.fire({
+      title: 'Confirmar Eliminación',
+      text: `¿Estás seguro de que deseas eliminar la conferencia "${conference.nombre_conferencia}"? Esta acción no se puede deshacer.`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        
+        this.isLoading = true; 
+        
         this.conferenceService.deleteConference(conference.id_conferencia).subscribe({
           next: () => {
-            console.log('Conferencia eliminada:', conference);
+            Swal.fire(
+              '¡Eliminado!',
+              'La conferencia ha sido eliminada correctamente.',
+              'success'
+            );
             this.loadConferences();   
           },
           error: (err: any) => {
             console.error('Error al eliminar conferencia:', err);
-            this.errorMessage = 'Error al eliminar la conferencia. Inténtalo de nuevo.';
+            Swal.fire(
+              'Error',
+              'No se pudo eliminar la conferencia. Inténtalo de nuevo.',
+              'error'
+            );
             this.isLoading = false;
           }
         });
-      } else {
-        console.log('Eliminación cancelada');
       }
     });
   }

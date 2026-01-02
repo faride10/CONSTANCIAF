@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, ViewContainerRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
@@ -9,23 +9,30 @@ import { MatInputModule } from '@angular/material/input';
 import { DocenteFormComponent } from '../docente-form/docente-form.component';
 import { DocenteService } from '../docente.service';
 import { ConfirmationDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
-
-import { DocenteImportComponent } from '../docente-import/docente-import.component';  
+import { DocenteImportComponent } from '../docente-import/docente-import.component'; 
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-docente-list',
   standalone: true,
   imports: [
-    CommonModule, MatTableModule, MatIconModule, MatButtonModule,
-    MatFormFieldModule, MatInputModule
+    CommonModule, 
+    MatTableModule, 
+    MatIconModule, 
+    MatButtonModule,
+    MatFormFieldModule, 
+    MatInputModule,
+    MatPaginatorModule 
   ],
   templateUrl: './docente-list.component.html', 
   styleUrls: ['./docente-list.component.css']
 })
-export class DocenteListComponent implements OnInit {   
+export class DocenteListComponent implements OnInit, AfterViewInit { 
 
   displayedColumns: string[] = ['nombre', 'rfc', 'correo', 'grupo', 'acciones'];
   dataSource: MatTableDataSource<any>;
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(
     private docenteService: DocenteService,
@@ -39,10 +46,17 @@ export class DocenteListComponent implements OnInit {
     this.cargarDocentes();
   }
 
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
+
   cargarDocentes(): void {
     this.docenteService.getDocentes().subscribe(
       (data: any) => {
         this.dataSource.data = data;
+        if (this.paginator) {
+            this.dataSource.paginator = this.paginator;
+        }
       },
       (error: any) => {
         console.error("Error al cargar docentes:", error);
@@ -53,6 +67,10 @@ export class DocenteListComponent implements OnInit {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
 
   abrirModal(docente?: any): void {
@@ -91,7 +109,6 @@ export class DocenteListComponent implements OnInit {
           }
         );
       }
-      
     });
   }
 
@@ -108,5 +125,4 @@ export class DocenteListComponent implements OnInit {
       }
     });
   }
-  
 }

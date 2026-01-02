@@ -1,0 +1,45 @@
+<div class="main-content-container">
+  <div class="page-header">
+    <button mat-icon-button routerLink="/panel/admin/admin" class="back-button">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h2 class="page-title">Configuración del Ciclo Escolar</h2>
+  </div>
+
+  <mat-card class="status-card shadow-sm">
+    <mat-card-header>
+      <mat-icon mat-card-avatar class="header-icon">history_toggle_off</mat-icon>
+      <mat-card-title>Gestión de Periodo Académico</mat-card-title>
+      <mat-card-subtitle>CONSTANCIAB - Módulo Administrativo</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="info-row">
+        <span class="label">Ciclo detectado:</span>
+        <span class="period-badge">Agosto - Diciembre 2025</span>
+      </div>
+
+      <div class="alert-container">
+        <mat-icon class="alert-icon">warning</mat-icon>
+        <div class="alert-text">
+          <p class="alert-title">¡Atención Administrador!</p>
+          <p class="alert-desc">
+            Al confirmar el cierre, todas las conferencias actuales se moverán al <strong>Historial</strong>. 
+            Esta acción liberará el panel para un nuevo periodo y ya no se podrán registrar asistencias en este ciclo.
+          </p>
+        </div>
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions align="end" class="action-footer">
+      <button mat-button routerLink="/panel/admin/admin" class="btn-secondary">
+        CANCELAR
+      </button>
+      
+      <button mat-raised-button color="warn" (click)="ejecutarCierre()" class="btn-main">
+        <mat-icon>archive</mat-icon>
+        REALIZAR CIERRE DE CICLO
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

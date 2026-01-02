@@ -1,67 +1,147 @@
 <mat-sidenav-container class="layout-container">
 
-  <mat-sidenav mode="side" opened class="sidenav">
-    <div class="sidenav-header">
-      <img src="assets/images/logo_tecblanco.png" alt="Logo TecNM">
-    </div>
-    <mat-nav-list>
-      <a mat-list-item routerLink="admin" routerLinkActive="active-link">
-        <mat-icon matListItemIcon>dashboard</mat-icon>
-        <span matListItemTitle>PANEL</span>
-      </a>
-      <a mat-list-item routerLink="conferencias" routerLinkActive="active-link">
-        <mat-icon matListItemIcon>event</mat-icon>
-        <span matListItemTitle>CONFERENCIAS</span>
-      </a>
-      <a mat-list-item routerLink="ponentes" routerLinkActive="active-link">
-        <mat-icon matListItemIcon>person</mat-icon>
-        <span matListItemTitle>PONENTES</span>
-      </a>
-      <a mat-list-item routerLink="grupos" routerLinkActive="active-link">
-        <mat-icon matListItemIcon>group</mat-icon>
-        <span matListItemTitle>GRUPOS</span>
-      </a>
-      <a mat-list-item routerLink="alumnos" routerLinkActive="active-link">
-        <mat-icon matListItemIcon>school</mat-icon>
-        <span matListItemTitle>ALUMNOS</span>
-      </a>
-      <a mat-list-item routerLink="reporte-asistencia" routerLinkActive="active-link">
-        <mat-icon matListItemIcon>analytics</mat-icon>
-        <span matListItemTitle>REPORTE ASISTENCIA</span>
-      </a>
+  <mat-sidenav mode="side" opened class="sidenav">
+    
+    <div class="sidenav-header">
+      <img src="assets/images/logo_tecblanco.png" alt="Logo TecNM">
+    </div>
 
-      <mat-divider></mat-divider>
+    <mat-nav-list>
+      
+      <a mat-list-item routerLink="admin" routerLinkActive="active-link">
+        <mat-icon matListItemIcon>dashboard</mat-icon>
+        <span matListItemTitle>PANEL</span>
+      </a>
+      
+      <a mat-list-item routerLink="conferencias" routerLinkActive="active-link">
+        <mat-icon matListItemIcon>event</mat-icon>
+        <span matListItemTitle>CONFERENCIAS</span>
+      </a>
+      
+      <a mat-list-item routerLink="ponentes" routerLinkActive="active-link">
+        <mat-icon matListItemIcon>person</mat-icon>
+        <span matListItemTitle>PONENTES</span>
+      </a>
+      
+      <a mat-list-item routerLink="grupos" routerLinkActive="active-link">
+        <mat-icon matListItemIcon>group</mat-icon>
+        <span matListItemTitle>GRUPOS</span>
+      </a>
+      
+      <a mat-list-item routerLink="alumnos" routerLinkActive="active-link">
+        <mat-icon matListItemIcon>school</mat-icon>
+        <span matListItemTitle>ALUMNOS</span>
+      </a>
+      
+      <a mat-list-item routerLink="docentes" routerLinkActive="active-link">
+        <mat-icon matListItemIcon>supervisor_account</mat-icon>
+        <span matListItemTitle>DOCENTES</span>
+      </a>
 
-      <mat-divider></mat-divider>
-      <a mat-list-item routerLink="docentes" routerLinkActive="active-link">
-        <mat-icon matListItemIcon>supervisor_account</mat-icon>
-        <span matListItemTitle>DOCENTES</span>
-      </a>
-      <a mat-list-item routerLink="/ruta-roles" routerLinkActive="active-link">
-        <mat-icon matListItemIcon>admin_panel_settings</mat-icon>
-        <span matListItemTitle>ROLES</span>
-      </a>
-      <mat-divider></mat-divider>
-      <a mat-list-item (click)="logout()">
-        <mat-icon matListItemIcon>exit_to_app</mat-icon>
-        <span matListItemTitle>CERRAR SESIÓN</span>
-      </a>
-    </mat-nav-list>
-  </mat-sidenav>
+      <mat-divider style="border-color: rgba(255,255,255,0.1); margin: 10px 0;"></mat-divider>
 
-  <mat-sidenav-content class="main-content">
-    <mat-toolbar class="toolbar">
-      <span class="toolbar-spacer"></span>
-      <button mat-icon-button aria-label="Notificaciones">
-        <mat-icon>notifications</mat-icon>
-      </button>
-      <button mat-icon-button class="profile-button" aria-label="Perfil de usuario">
-      </button>
-    </mat-toolbar>
+      <a mat-list-item routerLink="reporte-asistencia" routerLinkActive="active-link">
+        <mat-icon matListItemIcon>analytics</mat-icon>
+        <span matListItemTitle>REPORTE ASISTENCIA</span>
+      </a>
+      
+      <a mat-list-item routerLink="/panel/admin/ciclo-escolar" routerLinkActive="active-link">
+       <mat-icon matListItemIcon>calendar_month</mat-icon>
+       <span matListItemTitle>CICLO ESCOLAR</span>
+      </a>
 
-    <div class="content-area">
-      <router-outlet></router-outlet>
-    </div>
-  </mat-sidenav-content>
+      <a mat-list-item routerLink="/panel/admin/historial" routerLinkActive="active-link">
+       <mat-icon matListItemIcon>history</mat-icon>
+       <span matListItemTitle>HISTORIAL</span>
+      </a>
+      
+      <mat-divider style="border-color: rgba(255,255,255,0.1); margin: 10px 0;"></mat-divider>
+      
+      <a mat-list-item (click)="logout()" style="cursor: pointer;">
+        <mat-icon matListItemIcon>exit_to_app</mat-icon>
+        <span matListItemTitle>CERRAR SESIÓN</span>
+      </a>
+
+    </mat-nav-list>
+  </mat-sidenav>
+
+
+  <mat-sidenav-content class="main-content">
+    
+    <mat-toolbar class="toolbar">
+      
+      <span class="toolbar-spacer"></span>
+      
+      <button mat-icon-button class="toolbar-icon-btn" [matMenuTriggerFor]="notifMenu">
+        <mat-icon 
+          aria-hidden="false"
+          [matBadge]="notificaciones.length" 
+          matBadgeColor="warn" 
+          [matBadgeHidden]="notificaciones.length === 0">
+          notifications_none
+        </mat-icon> 
+      </button>
+
+      <mat-menu #notifMenu="matMenu" xPosition="before" class="notification-menu-panel">
+        
+        <div class="notif-header">
+          <span style="font-weight: 600;">Notificaciones</span>
+          <button mat-button color="primary" style="font-size: 12px; height: 30px; line-height: 30px;" (click)="limpiarNotificaciones()" *ngIf="notificaciones.length > 0">
+            Borrar todo
+          </button>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <button mat-menu-item *ngFor="let item of notificaciones" class="notif-item">
+          <mat-icon [style.color]="item.color" style="margin-right: 12px;">{{ item.icono }}</mat-icon>
+          
+          <div class="notif-content">
+            <div class="notif-title">{{ item.titulo }}</div>
+            <div class="notif-msg">{{ item.mensaje }}</div>
+            <div class="notif-time">{{ item.tiempo }}</div>
+          </div>
+        </button>
+
+        <div *ngIf="notificaciones.length === 0" class="empty-state-notif">
+          <mat-icon>notifications_off</mat-icon>
+          <p>No tienes notificaciones nuevas</p>
+        </div>
+
+        <mat-divider *ngIf="notificaciones.length > 0"></mat-divider>
+        
+        <button mat-menu-item *ngIf="notificaciones.length > 0" style="text-align: center; justify-content: center; color: #1a237e;">
+          <span style="font-size: 13px; width: 100%;">Ver todas las notificaciones</span>
+        </button>
+      </mat-menu>
+
+
+      <button mat-icon-button [matMenuTriggerFor]="userMenu" class="toolbar-icon-btn" style="margin-left: 5px;">
+        <div class="avatar-circle">
+          <mat-icon>person</mat-icon>
+        </div>
+      </button>
+
+      <mat-menu #userMenu="matMenu" xPosition="before" class="custom-menu">
+        <button mat-menu-item routerLink="perfil">
+          <mat-icon>account_circle</mat-icon>
+          <span>Mi Perfil</span>
+        </button>
+        
+        <mat-divider></mat-divider>
+
+        <button mat-menu-item (click)="logout()">
+          <mat-icon style="color: #d32f2f;">logout</mat-icon>
+          <span>Cerrar Sesión</span>
+        </button>
+      </mat-menu>
+
+    </mat-toolbar>
+
+    <div class="content-area">
+      <router-outlet></router-outlet>
+    </div>
+    
+  </mat-sidenav-content>
 
 </mat-sidenav-container>
